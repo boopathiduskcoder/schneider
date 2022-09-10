@@ -69,7 +69,11 @@
 		<td><?php echo ucfirst($value->status); ?></td>
 		<td class="jsgrid-align-center ">
 			<a href="#" title="Edit" class="btn btn-sm btn-info waves-effect waves-light assets" data-id="<?php echo $value->id ?>"><i class="fa fa-pencil-square-o"></i></a>
-			<a href="#" title="View" class="btn btn-sm btn-info waves-effect waves-light assets" data-id="<?php echo $value->id ?>"><i class="fa fa-eye"></i></a>
+
+  			<a href="<?php echo base_url(); ?>equipment/ViewPlants?I=<?php echo base64_encode($value->id); ?>" title="Edit" class="btn btn-sm btn-info waves-effect waves-light"><i class="fa fa-eye"></i></a>
+
+
+
 		</td>
 </tr>
 <?php endforeach; ?>
@@ -107,7 +111,8 @@
 							</div>
 							<div class="form-group">
 								<label class="control-label">Asset Tag No</label>
-								<input type="text" name="tag_no" value="" class="form-control" id="recipient-name1" autocomplete="off">
+								<input type="text" name="tag_no" value="<?php echo $prefix;?>" class="form-control col-md-4" id="recipient-name1" autocomplete="off">
+								<input type="text" name="tag_no" value="<?php echo $tag_no;?>" class="form-control col-md-4" id="recipient-name1" autocomplete="off" readonly>
 							</div>
 							<div class="form-group">
 								<label class="control-label">Model</label>
@@ -206,5 +211,14 @@ $('#btnSubmit').find('[name="specification"]').val(response.assetsByid.specifica
 });
 });
 	});
+
+	function testInput(event) {
+   var value = String.fromCharCode(event.which);
+   var pattern = new RegExp(/[a-zåäö ]/i);
+   return pattern.test(value);
+}
+
+$('#recipient-name1').bind('keypress', testInput);
+
 </script>                        
 <?php $this->load->view('backend/footer'); ?>        

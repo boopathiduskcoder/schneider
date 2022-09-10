@@ -15,8 +15,17 @@ class Equipment extends CI_Controller {
         $this->load->model('logistic_model');    
         $this->load->model('project_model');    
         $this->load->model('equipment_model');    
+                $this->load->model('payroll_model');
+
     }
-    
+    public function index()
+    {
+        if ($this->session->userdata('user_login_access') != 1)
+            redirect(base_url() . 'login', 'refresh');
+        if ($this->session->userdata('user_login_access') == 1)
+          $data= array();
+        redirect('employee/Employees');
+    }
 /*    public function View(){
         if($this->session->userdata('user_login_access') != False) {
         $data['logisticview'] = $this->logistic_model->LogisticValue();
@@ -259,8 +268,25 @@ class Equipment extends CI_Controller {
 	}         
     }
     public function plant_equipment(){
-        if($this->session->userdata('user_login_access') != False) {         
+        if($this->session->userdata('user_login_access') != False) {   
+        
         $data['assets'] = $this->equipment_model->GetAssetsList(1);
+
+        $cc = $this->db->count_all('equipments');
+     
+
+        $coun = str_pad($cc,5,0,STR_PAD_LEFT);
+        $id = "TAG"."-";
+        $d = date('y') ;
+        $mnth = date("m");
+        $prefix = "TAG"."-";
+        $tag_no = $d.$mnth.$coun;
+        //$tag_no = $id.$d.$mnth.$coun;
+        $data['tag_no']= $tag_no;
+        $data['prefix'] =$prefix;
+
+
+
         $data['catvalue'] = $this->project_model->GetEquipmentCategory();
         $data['locations'] = $this->project_model->GetLocation();
         $this->load->view('backend/plant_equipment',$data);
@@ -339,11 +365,13 @@ class Equipment extends CI_Controller {
                     $data['specification']=$specification;
                 if(empty($id)){
                     $success = $this->equipment_model->Add_equipment($data); 
-        			echo "Successfully Added";            
+        			echo "Successfully Added"; 
+                    redirect(base_url() , 'refresh');           
                 } 
                 else {
                     $success = $this->equipment_model->Update_Equipment($id,$data); 
         			echo "Successfully Updated"; 
+                    redirect(base_url() , 'refresh');
                 }   
             } 
         }
@@ -351,7 +379,10 @@ class Equipment extends CI_Controller {
     		redirect(base_url() , 'refresh');
     	}    
     } 
-    public function AssetsByID(){
+    public function AssetsByID($id){
+
+
+
         if($this->session->userdata('user_login_access') != False) {  
 		$id= $this->input->get('id');
 		$data['assetsByid'] = $this->equipment_model->GetAssetById($id);
@@ -359,7 +390,21 @@ class Equipment extends CI_Controller {
         }
     else{
 		redirect(base_url() , 'refresh');
-	}         
-    }    
+	}  
+
+    }  
+    public function ViewPlants()
+    {
+        if($this->session->userdata('user_login_access') != False) 
+        {
+            $id = base64_decode($this->input->get('I'));
+            $data['plant_data']= $this->equipment_model->GetAssetById($id);
+            $this->load->view('backend/plant_view',$data);  
+        }
+        else
+        {
+            redirect(base_url() , 'refresh');
+        }
+    }
 }
 ?>
