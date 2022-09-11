@@ -69,7 +69,9 @@
 		<td><?php echo ucfirst($value->status); ?></td>
 		<td class="jsgrid-align-center ">
 			<a href="#" title="Edit" class="btn btn-sm btn-info waves-effect waves-light assets" data-id="<?php echo $value->id ?>"><i class="fa fa-pencil-square-o"></i></a>
-			<a href="#" title="View" class="btn btn-sm btn-info waves-effect waves-light assets" data-id="<?php echo $value->id ?>"><i class="fa fa-eye"></i></a>
+		<!-- 	<a href="#" title="View" class="btn btn-sm btn-info waves-effect waves-light assets" data-id="<?php echo $value->id ?>"><i class="fa fa-eye"></i></a> -->
+			<a href="<?php echo base_url(); ?>equipment/ViewPlants?I=<?php echo base64_encode($value->id); ?>" title="Edit" class="btn btn-sm btn-info waves-effect waves-light"><i class="fa fa-eye"></i></a>
+			
 		</td>
 </tr>
 <?php endforeach; ?>
