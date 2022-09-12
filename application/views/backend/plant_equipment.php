@@ -2,6 +2,7 @@
 <?php $this->load->view('backend/sidebar'); ?>
 <div class="page-wrapper">
 	<div class="message"></div>
+	<div class="error_msg"></div>
 	<div class="row page-titles">
 		<div class="col-md-5 align-self-center">
 			<h3 class="text-themecolor"><i class="fa fa-cart-plus"></i> Plant Equipment</h3>
@@ -70,7 +71,7 @@
 		<td class="jsgrid-align-center ">
 			<a href="#" title="Edit" class="btn btn-sm btn-info waves-effect waves-light assets" data-id="<?php echo $value->id ?>"><i class="fa fa-pencil-square-o"></i></a>
 
-  			<a href="<?php echo base_url(); ?>equipment/ViewPlants?I=<?php echo base64_encode($value->id); ?>" title="Edit" class="btn btn-sm btn-info waves-effect waves-light"><i class="fa fa-eye"></i></a>
+  			<a href="<?php echo base_url(); ?>equipment/ViewPlants?equipment_id=<?php echo base64_encode($value->id); ?>" title="Edit" class="btn btn-sm btn-info waves-effect waves-light"><i class="fa fa-eye"></i></a>
 
 
 
@@ -111,24 +112,23 @@
 							</div>
 							<div class="form-group">
 								<label class="control-label">Asset Tag No</label>
-								<input type="text" name="tag_no" value="<?php echo $prefix;?>" class="form-control col-md-4" id="recipient-name1" autocomplete="off">
-								<input type="text" name="tag_no" value="<?php echo $tag_no;?>" class="form-control col-md-4" id="recipient-name1" autocomplete="off" readonly>
+								<input type="text" name="tag_no" value="<?php echo $tag_no;?>" class="form-control"  autocomplete="off">
 							</div>
 							<div class="form-group">
 								<label class="control-label">Model</label>
-								<input type="text" name="model" value="" class="form-control" id="recipient-name1" autocomplete="off">
+								<input type="text" name="model" value="" class="form-control"  autocomplete="off">
 							</div>
 							<div class="form-group">
 								<label class="control-label">Installation Date</label>
-								<input type="text" name="installation_date" value="" class="form-control mydatepicker" id="recipient-name1" autocomplete="off">
+								<input type="text" name="installation_date" value="" class="form-control mydatepicker"  autocomplete="off">
 							</div>
 							<div class="form-group">
 								<label class="control-label">Manufacturer</label>
-								<input type="text" name="manufacturer" value="" class="form-control" id="recipient-name1" autocomplete="off">
+								<input type="text" name="manufacturer" value="" class="form-control"  autocomplete="off">
 							</div>  
 							<div class="form-group">
 								<label class="control-label">Add Parts (,)</label>
-								<input type="text" name="parts_included" value="" class="form-control" id="recipient-name1" autocomplete="off">
+								<input type="text" name="parts_included" value="" class="form-control"  autocomplete="off">
 							</div>                                                  
 						</div>
 						<div class="col-md-6">

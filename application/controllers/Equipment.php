@@ -272,21 +272,9 @@ class Equipment extends CI_Controller {
         
         $data['assets'] = $this->equipment_model->GetAssetsList(1);
 
-        $cc = $this->db->count_all('equipments');
-     
-
-        $coun = str_pad($cc,5,0,STR_PAD_LEFT);
-        $id = "TAG"."-";
-        $d = date('y') ;
-        $mnth = date("m");
-        $prefix = "TAG"."-";
-        $tag_no = $d.$mnth.$coun;
-        //$tag_no = $id.$d.$mnth.$coun;
-        $data['tag_no']= $tag_no;
-        $data['prefix'] =$prefix;
-
-
-
+        $tag_no = $this->db->count_all('equipments');
+        $tag_no = str_pad($tag_no,4,0,STR_PAD_LEFT);
+        $data['tag_no']= ASSET_PREFIX.$tag_no;
         $data['catvalue'] = $this->project_model->GetEquipmentCategory();
         $data['locations'] = $this->project_model->GetLocation();
         $this->load->view('backend/plant_equipment',$data);
@@ -319,26 +307,49 @@ class Equipment extends CI_Controller {
     }
     public function Add_Assets()
     {
-        if($this->session->userdata('user_login_access') != False) 
-        {        
-            $id = $this->input->post('aid');    
-            $name = $this->input->post('name');    
-        	$type = $this->input->post('type');
-        	$tag_no = $this->input->post('tag_no');
-        	$model= $this->input->post('model');		
-        	$installation_date = $this->input->post('installation_date');		
-        	$manufacturer = $this->input->post('manufacturer');		
-        	$parts_included = $this->input->post('parts_included');		
-        	$location = $this->input->post('location');		
-        	$warrenty = $this->input->post('warrenty');				
-            $power = $this->input->post('power');             
-            $status = $this->input->post('status');             
-            $specification = $this->input->post('specification');                        		
+        try {
+            if($this->session->userdata('user_login_access') == False) 
+            {
+                throw new Exception("Session expired", 1);                
+            }        
+            $id     = $this->input->post('aid');    
+            $name   = $this->input->post('name');    
+            $type   = $this->input->post('type');
+            $tag_no = $this->input->post('tag_no');
+            $model  = $this->input->post('model');        
+            $installation_date  = $this->input->post('installation_date');       
+            $manufacturer       = $this->input->post('manufacturer');     
+            $parts_included     = $this->input->post('parts_included');     
+            $location           = $this->input->post('location');     
+            $warrenty           = $this->input->post('warrenty');             
+            $power              = $this->input->post('power');             
+            $status             = $this->input->post('status');             
+            $specification      = $this->input->post('specification');  
+            if($_FILES['image']['name']){
+                $config = array(
+                    'upload_path'   => "./assets/images/equipments",
+                    'allowed_types' => "gif|jpg|png|jpeg",
+                    'overwrite'     => FALSE,
+                    'remove_spaces' => TRUE,
+                    'encrypt_name'  => TRUE,
+                    'max_size'      => "51200", // Can be set to particular file size , here it is 2 MB(2048 Kb)
+                    'max_height'    => "1200",
+                    'max_width'     => "1200"
+                );    
+                $this->load->library('Upload', $config);
+                $this->upload->initialize($config);                
+                if (!$this->upload->do_upload('image')) {
+                    throw new Exception($this->upload->display_errors(), 1);
+                }      
+                $path = $this->upload->data();
+                $img_url = $path['file_name'];  
+                $data['image']=$img_url;
+            }                   
             $this->load->library('form_validation');
             $this->form_validation->set_error_delimiters();
             $this->form_validation->set_rules('name', 'Name','trim|required|min_length[2]|max_length[2024]|xss_clean');
             $this->form_validation->set_rules('type', 'Type','trim|required');
-            $this->form_validation->set_rules('tag_no', 'Tag No','trim|required|min_length[2]|max_length[2024]|xss_clean');
+            $this->form_validation->set_rules('tag_no', 'Tag No','trim|required|xss_clean');
             $this->form_validation->set_rules('model', 'Model','trim|required|min_length[2]|max_length[2024]|xss_clean');
             $this->form_validation->set_rules('installation_date', 'Installation date','trim|required');
             $this->form_validation->set_rules('manufacturer', 'Manufacturer','trim|required|xss_clean');
@@ -347,44 +358,41 @@ class Equipment extends CI_Controller {
             $this->form_validation->set_rules('power', 'power','trim|required|xss_clean');
             $this->form_validation->set_rules('specification', 'specification','trim|required|xss_clean');
             $this->form_validation->set_rules('status', 'status','trim|required|xss_clean');
-            if ($this->form_validation->run() == FALSE) {
-                echo validation_errors();
-    			} 
-                else {
-                    $data['name']=$name;
-                    $data['type']=$type;
-                    $data['tag_no']=$tag_no;
-                    $data['model']=$model;
-                    $data['installation_date']=$installation_date;
-                    $data['manufacturer']=$manufacturer;
-                    $data['parts_included']=$parts_included;
-                    $data['location_id']=$location;
-                    $data['warrenty']=$warrenty;
-                    $data['power']=$power;
-                    $data['status']=$status;
-                    $data['specification']=$specification;
-                if(empty($id)){
-                    $success = $this->equipment_model->Add_equipment($data); 
-        			echo "Successfully Added"; 
-                    redirect(base_url() , 'refresh');           
-                } 
-                else {
-                    $success = $this->equipment_model->Update_Equipment($id,$data); 
-        			echo "Successfully Updated"; 
-                    redirect(base_url() , 'refresh');
-                }   
+            if ($this->form_validation->run() == FALSE) 
+            {
+                throw new Exception(validation_errors(), 1);             
             } 
-        }
-        else{
-    		redirect(base_url() , 'refresh');
-    	}    
+            $data['name']=$name;
+            $data['type']=$type;
+            $data['tag_no']=$tag_no;
+            $data['model']=$model;
+            $data['installation_date']=$installation_date;
+            $data['manufacturer']=$manufacturer;
+            $data['parts_included']=$parts_included;
+            $data['location_id']=$location;
+            $data['warrenty']=$warrenty;
+            $data['power']=$power;
+            $data['status']=$status;
+            $data['specification']=$specification;
+            if(empty($id)){
+                $success = $this->equipment_model->Add_equipment($data); 
+                $message="Successfully added";      
+            } 
+            else {
+                $success = $this->equipment_model->Update_Equipment($id,$data); 
+                $message= "Successfully updated"; 
+            }
+            $response['status']=TRUE;
+            $response['message']=$message;  
+        } catch (Exception $e) {
+            $response['status']=FALSE;
+            $response['message']=$e->getMessage();
+        }    
+        echo json_encode($response);
     } 
-    public function AssetsByID($id){
-
-
-
+    public function AssetsByID(){
         if($this->session->userdata('user_login_access') != False) {  
-		$id= $this->input->get('id');
+            $id = $_GET['id'];
 		$data['assetsByid'] = $this->equipment_model->GetAssetById($id);
 		echo json_encode($data);
         }
@@ -397,7 +405,7 @@ class Equipment extends CI_Controller {
     {
         if($this->session->userdata('user_login_access') != False) 
         {
-            $id = base64_decode($this->input->get('I'));
+            $id = base64_decode($this->input->get('equipment_id'));
             $data['plant_data']= $this->equipment_model->GetAssetById($id);
             $this->load->view('backend/plant_view',$data);  
         }

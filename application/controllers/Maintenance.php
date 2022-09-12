@@ -568,10 +568,7 @@ class Maintenance extends CI_Controller
 	public function preventive()
 	{
 		if ($this->session->userdata('user_login_access') != False) {
-			$data['employee'] = $this->employee_model->emselect();
-			$data['projects'] = $this->project_model->GetProjectsValue();
 			$data['tasks']    = $this->project_model->GetAllTasksList();
-			$data['assets']   = $this->project_model->GetAllLogisticList();
 			$this->load->view('backend/preventive', $data);
 		} else {
 			redirect(base_url(), 'refresh');
