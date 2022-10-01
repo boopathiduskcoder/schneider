@@ -36,7 +36,7 @@
                                     <table id="example23" class="display nowrap table table-hover table-striped table-bordered" cellspacing="0" width="100%">
                                         <thead>
                                             <tr>
-                                                <th>Asset Name</th>
+                                                <th>Equipment Name</th>
                                                 <th>Location</th>
                                                 <th>Last Date </th>
                                                 <th>Next Date </th>
@@ -46,7 +46,7 @@
                                         </thead>
                                         <tfoot>
                                             <tr>
-                                                <th>Asset Name</th>
+                                                <th>Equipment Name</th>
                                                 <th>Location</th>
                                                 <th>Last Date </th>
                                                 <th>Next Date </th>

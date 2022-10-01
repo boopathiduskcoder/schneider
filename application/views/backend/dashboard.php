@@ -240,7 +240,7 @@
                                 <div class="new-todo">
                                    <form method="post" action="add_todo" enctype="multipart/form-data" id="add_todo" >
                                     <div class="input-group">
-                                        <input type="text" name="todo_data" class="form-control" style="border: 1px solid #fff !IMPORTANT;" placeholder="Add new task">
+                                        <input type="text" name="todo_data" class="form-control" style="border: 1px solid #fff !IMPORTANT;" placeholder="Add new complaint">
                                         <span class="input-group-btn">
                                         <input type="hidden" name="userid" value="<?php echo $this->session->userdata('user_login_id'); ?>">
                                         <button type="submit" class="btn btn-success todo-submit"><i class="fa fa-plus"></i></button>
@@ -252,69 +252,6 @@
                         </div>
                     </div>
                 </div>
-                <!-- Row -->
-                <div class="row">
-                    <div class="col-md-8">
-                        <div class="card">
-                            <div class="card-body">
-                                <h4 class="card-title">Running Complaints</h4>
-                            </div>
-                            <div class="card-body">
-                                <div class="table-responsive" style="height:600px;overflow-y:scroll">
-                                    <table class="table table-hover earning-box">
-                                        <thead>
-                                            <tr>
-                                                <th>Location</th>
-                                                <th>Name</th>
-                                                <th>Start Date</th>
-                                                <th>End Date</th>
-                                            </tr>
-                                        </thead>
-                                        <tbody>
-                                           <?php foreach($running AS $value): ?>
-                                            <tr style="vertical-align:top;background-color:#e3f0f7">
-                                                <td><a href="<?php echo base_url(); ?>Projects/view?P=<?php echo base64_encode($value->id); ?>"><?php echo substr("$value->pro_name",0,25).'...'; ?></a></td>
-                                                <td><?php echo $value->pro_start_date; ?></td>
-                                                <td><?php echo $value->pro_start_date; ?></td>
-                                                <td><?php echo $value->pro_end_date; ?></td>
-                                            </tr>
-                                            <?php endforeach; ?>
-                                        </tbody>
-                                    </table>
-                                </div>                                
-                            </div>
-                        </div>
-                    </div>
-                    <div class="col-md-4">
-                        <div class="card">
-                            <div class="card-body">
-                                <h4 class="card-title">
-                                    Conversation
-                                </h4>
-                            </div>
-                            <div class="card-body">
-                                <div class="table-responsive" style="height:600px;overflow-y:scroll">
-                                    <table class="table table-hover earning-box">
-                                       <thead>
-                                            <tr>
-                                                <th>From</th>
-                                                <th>Date</th>
-                                            </tr>                                           
-                                       </thead>
-                                       <tbody>
-                                          <?php foreach($holiday as $value): ?>
-                                           <tr style="background-color:#e3f0f7">
-                                               <td><?php echo $value->holiday_name ?></td>
-                                               <td><?php echo $value->from_date; ?></td>
-                                           </tr>
-                                           <?php endforeach ?>
-                                       </tbody> 
-                                    </table>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                </div> 
 <script>
   $(".to-do").on("click", function(){
       //console.log($(this).attr('data-value'));

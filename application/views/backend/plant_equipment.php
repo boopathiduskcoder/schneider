@@ -34,9 +34,9 @@
 <tr><!--
 <th>ID</th>
 <th>Type </th>-->
-<th>category</th>
-<th>Name </th>
-<th>Tag No </th>
+<th>Location</th>
+<th>Equipment Name </th>
+<th>Asset Tag No </th>
 <th>Model</th>
 <th>Installation Date </th>
 <th>Manufacturer </th>
@@ -49,8 +49,8 @@
 <!--                                                <th>ID</th>
 	<th>Type </th>-->
 	<th>Location</th>
-	<th>Name </th>
-	<th>Tag No </th>
+	<th>Equipment Name </th>
+	<th>Asset Tag No </th>
 	<th>Model</th>
 	<th>Installation Date </th>
 	<th>Manufacturer </th>
@@ -98,7 +98,7 @@
 					<div class="row">
 						<div class="col-md-6">      
 							<div class="form-group">
-								<label class="control-label">Name</label>
+								<label class="control-label">Equipment Name</label>
 								<input type="text" name="name" value="" class="form-control" id="recipient-name1" required autocomplete="off">
 							</div>
 							<div class="form-group">
@@ -119,12 +119,20 @@
 								<input type="text" name="model" value="" class="form-control"  autocomplete="off">
 							</div>
 							<div class="form-group">
+								<label class="control-label">Type</label>
+								<input type="text" name="type" value="" class="form-control"  autocomplete="off">
+							</div>
+							<div class="form-group">
 								<label class="control-label">Installation Date</label>
 								<input type="text" name="installation_date" value="" class="form-control mydatepicker"  autocomplete="off">
 							</div>
 							<div class="form-group">
 								<label class="control-label">Manufacturer</label>
 								<input type="text" name="manufacturer" value="" class="form-control"  autocomplete="off">
+							</div> 
+							<div class="form-group">
+								<label class="control-label">Serial No</label>
+								<input type="text" name="slno" value="" class="form-control"  autocomplete="off">
 							</div>  
 							<div class="form-group">
 								<label class="control-label">Add Parts (,)</label>
@@ -202,7 +210,8 @@ $('#btnSubmit').find('[name="type"]').val(response.assetsByid.type).end();
 $('#btnSubmit').find('[name="tag_no"]').val(response.assetsByid.tag_no).end();
 $('#btnSubmit').find('[name="model"]').val(response.assetsByid.model).end();                                                   
 $('#btnSubmit').find('[name="installation_date"]').val(response.assetsByid.installation_date).end();                                                 
-$('#btnSubmit').find('[name="manufacturer"]').val(response.assetsByid.manufacturer).end();          
+$('#btnSubmit').find('[name="manufacturer"]').val(response.assetsByid.manufacturer).end();     
+$('#btnSubmit').find('[name="slno"]').val(response.assetsByid.slno).end();      
 $('#btnSubmit').find('[name="parts_included"]').val(response.assetsByid.parts_included).end();                                              
 $('#btnSubmit').find('[name="warrenty"]').val(response.assetsByid.warrenty).end();                                              
 $('#btnSubmit').find('[name="power"]').val(response.assetsByid.power).end();                                              
