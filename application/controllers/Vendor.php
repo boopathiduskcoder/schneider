@@ -27,6 +27,7 @@ class Vendor extends CI_Controller {
         $this->load->model('payroll_model');
         $this->load->model('settings_model');
         $this->load->model('leave_model');
+        $this->load->model('vendor_model');
   
     }
     
@@ -40,7 +41,8 @@ class Vendor extends CI_Controller {
 	}
     public function vendors(){
         if($this->session->userdata('user_login_access') != False) { 
-        $data['employee'] = $this->employee_model->emselect();
+        $data['vendor_list'] = $this->vendor_model->vendor_list();
+
         $this->load->view('backend/vendors',$data);
         }
     else{
@@ -49,7 +51,8 @@ class Vendor extends CI_Controller {
     }
      public function stock(){
         if($this->session->userdata('user_login_access') != False) { 
-        $data['employee'] = $this->employee_model->emselect();
+        $data['vendor_list'] = $this->vendor_model->vendor_list();
+        $data['stock'] = $this->vendor_model->getstock();
         $this->load->view('backend/stock',$data);
         }
     else{
@@ -1031,4 +1034,129 @@ class Vendor extends CI_Controller {
         $data['invalidem'] = $this->employee_model->getInvalidUser();
         $this->load->view('backend/invalid_user',$data);
     }
+    public function VendorByID($id){
+        if($this->session->userdata('user_login_access') != False) {  
+        $id= $this->input->get('id');
+     
+
+        $data['vendorByid'] = $this->vendor_model->GetVendorByID($id);
+        echo json_encode($data);
+        }
+    else{
+        redirect(base_url() , 'refresh');
+    }  
+
+    }
+    public function Add_vendor()
+    {
+        if($this->session->userdata('user_login_access') != False) 
+        {        
+            $id = $this->input->post('aid');    
+            $vendor_name = $this->input->post('vendor_name');    
+            $contact_person = $this->input->post('contact_person');
+            $email_id = $this->input->post('email_id');
+            $contact_number= $this->input->post('contact_number');      
+
+            $this->load->library('form_validation');
+            $this->form_validation->set_error_delimiters();
+            $this->form_validation->set_rules('vendor_name', 'Vendor','trim|required|min_length[2]|max_length[2024]|xss_clean');
+            $this->form_validation->set_rules('contact_person', 'Contact Person','trim|required');
+            $this->form_validation->set_rules('email_id', 'Email','trim|required|min_length[2]|max_length[2024]|xss_clean|valid_email|is_unique[vendor_list.email_id]');
+            $this->form_validation->set_rules('contact_number', 'Contact Number', 'trim|required|min_length[10]|max_length[15]|xss_clean');
+            
+            if ($this->form_validation->run() == FALSE) {
+                echo validation_errors();
+                } 
+                else
+                {
+                        $time = date("Y-m-d h:i:sa");
+                        $data['vendor_name']=$vendor_name;
+                        $data['email_id']=$email_id;
+                        $data['contact_number']=$contact_number;
+                        $data['contact_person']=$contact_person;
+                        $data['status']= 'ACTIVE';
+                        $data['updated_at']= $time;
+                
+                if(empty($id)){
+                    $success = $this->vendor_model->Add_vendor($data);  
+                    echo "Successfully Added"; 
+                    redirect(base_url() , 'refresh');           
+                } 
+                else {
+                    $data['updated_at']= $time = date("Y-m-d h:i:sa");
+                    $success = $this->vendor_model->Update_vendor($id,$data); 
+                    echo "Successfully Updated"; 
+                    redirect(base_url() , 'refresh');
+                }   
+            } 
+        }
+        else{
+            redirect(base_url() , 'refresh');
+        }    
+    }
+
+    // public function Add_vendor1()
+    // {
+    //     if($this->session->userdata('user_login_access') != False) 
+    //     {        
+    //         $id = $this->input->post('aid');    
+    //         $vendor_name = $this->input->post('vendor_name');    
+    //         $contact_person = $this->input->post('contact_person');
+    //         $email_id = $this->input->post('email_id');
+    //         $contact_number= $this->input->post('contact_number');        
+                                           
+    //         $this->load->library('form_validation');
+
+    //         // Validating Name Field
+            
+
+    //         $this->form_validation->set_error_delimiters();
+    //         $this->form_validation->set_rules('vendor_name', 'Vendor','trim|required|min_length[2]|max_length[2024]|xss_clean');
+
+    //         $this->form_validation->set_rules('contact_person', 'Contact Person','trim|required');
+    //         $this->form_validation->set_rules('email_id', 'Email','trim|required|min_length[2]|max_length[2024]|xss_clean|valid_email');
+
+    //        $this->form_validation->set_rules('contact_number', 'Contact Number', 'trim|required|min_length[10]|max_length[15]|xss_clean');
+    //         /*validating email field*/
+            
+    //         //$date= date("");
+    //         $time = date("Y-m-d h:i:sa");
+    //         $data['vendor_name']=$vendor_name;
+    //         $data['email_id']=$email_id;
+    //         $data['contact_number']=$contact_number;
+    //         $data['contact_person']=$contact_person;
+    //         $data['status']= 'ACTIVE';
+    //         $data['updated_at']= $time;
+
+    //         if ($this->form_validation->run() == FALSE) {
+    //             echo validation_errors();
+
+    //             } 
+    //             else {
+    //                 if($this->vendor_model->Does_email_exists($email_id)){
+    //                 // $this->session->set_flashdata('formdata','Email is already Exist or Check your email id');
+    //                 echo "Email is already Exist";
+    //                 }       
+                    
+                    
+                    
+    //             if(empty($id)){ 
+                    
+    //                 $success = $this->vendor_model->Add_vendor($data); 
+    //                 echo "Successfully Added"; 
+    //                 redirect(base_url() , 'refresh');           
+    //             } 
+    //             else {
+                    
+    //                 $data['updated_at']= $time = date("Y-m-d h:i:sa");
+    //                 $success = $this->vendor_model->Update_vendor($id,$data); 
+    //                 echo "Successfully Updated"; 
+    //                 redirect(base_url() , 'refresh');
+    //             }   
+    //         } 
+    //     }
+    //     else{
+    //         redirect(base_url() , 'refresh');
+    //     }    
+    // }   
 }

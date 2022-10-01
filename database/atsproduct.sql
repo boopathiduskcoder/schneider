@@ -1,11 +1,11 @@
 -- phpMyAdmin SQL Dump
--- version 5.1.0
+-- version 5.1.1
 -- https://www.phpmyadmin.net/
 --
 -- Host: 127.0.0.1
--- Generation Time: Sep 06, 2022 at 05:16 PM
--- Server version: 10.4.18-MariaDB
--- PHP Version: 7.4.16
+-- Generation Time: Oct 01, 2022 at 06:17 AM
+-- Server version: 10.4.19-MariaDB
+-- PHP Version: 8.0.7
 
 SET SQL_MODE = "NO_AUTO_VALUE_ON_ZERO";
 START TRANSACTION;
@@ -253,7 +253,6 @@ CREATE TABLE `designation` (
 
 INSERT INTO `designation` (`id`, `des_name`) VALUES
 (2, 'Vice Chairman'),
-(3, 'Chief Executive Officer (CEO)'),
 (4, 'Chief Finance & Admin Officer'),
 (5, 'Sr. Finance & Admin Officer - I'),
 (6, 'Jr. Finance & Admin Officer'),
@@ -303,6 +302,31 @@ CREATE TABLE `education` (
   `result` varchar(64) DEFAULT NULL,
   `year` varchar(64) DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
+
+-- --------------------------------------------------------
+
+--
+-- Table structure for table `electricity_consuming`
+--
+
+CREATE TABLE `electricity_consuming` (
+  `id` int(10) NOT NULL,
+  `date` date NOT NULL,
+  `am_6` varchar(255) NOT NULL,
+  `pm_2` varchar(255) NOT NULL,
+  `pm_10` varchar(255) NOT NULL,
+  `created_at` timestamp NOT NULL DEFAULT current_timestamp()
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
+
+--
+-- Dumping data for table `electricity_consuming`
+--
+
+INSERT INTO `electricity_consuming` (`id`, `date`, `am_6`, `pm_2`, `pm_10`, `created_at`) VALUES
+(4, '2022-09-30', '1234', '4352', '2344', '2022-09-30 10:00:53'),
+(6, '2022-09-28', '1236', '4356', '2356', '2022-09-30 10:12:08'),
+(7, '2022-09-28', '1234', '2456', '2345', '2022-09-30 10:14:11'),
+(8, '2022-09-12', '12345', '4356', '23454', '2022-09-30 10:16:54');
 
 -- --------------------------------------------------------
 
@@ -475,12 +499,14 @@ CREATE TABLE `equipments` (
   `model` varchar(255) NOT NULL,
   `installation_date` date NOT NULL,
   `manufacturer` varchar(255) NOT NULL,
+  `slno` int(10) NOT NULL,
   `parts_included` text NOT NULL,
   `location_id` int(11) NOT NULL,
   `warrenty` varchar(255) NOT NULL,
   `power` varchar(255) NOT NULL,
   `status` varchar(255) NOT NULL,
   `specification` text NOT NULL,
+  `image` varchar(255) NOT NULL,
   `created_at` timestamp NOT NULL DEFAULT current_timestamp(),
   `created_by` int(11) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
@@ -489,13 +515,16 @@ CREATE TABLE `equipments` (
 -- Dumping data for table `equipments`
 --
 
-INSERT INTO `equipments` (`id`, `name`, `type`, `tag_no`, `model`, `installation_date`, `manufacturer`, `parts_included`, `location_id`, `warrenty`, `power`, `status`, `specification`, `created_at`, `created_by`) VALUES
-(1, 'scooty', 1, 'tool/tag/56', 'zest', '2022-08-24', 'TVS', 'TYRE', 1, '10 YEARS', '125CC', 'active', 'SELFSTART\r\nHORN\r\n', '2022-08-20 07:45:35', 0),
-(2, 'Tools', 3, 'TOOL/TAG/01', 'MOF001', '2022-08-03', 'Honda', 'light,holder', 3, '2 years', '10KV', 'active', 'sfsdklf skfjsdkfjdsk sakfsaflk', '2022-08-22 16:17:11', 0),
-(3, 'fan', 2, 'TOOL/TAG/02', 'celing fan', '2022-08-10', 'usha', 'three wings ', 2, '2 years', '230v', 'active', 'good condition', '2022-08-27 05:29:14', 0),
-(4, 'TV', 2, 'TOOL/TAG/03', 'LED', '2022-08-11', 'HAEIR', '', 2, '2 years', '230v', 'active', 'good condition', '2022-08-27 05:35:05', 0),
-(5, 'frige', 1, 'TOOL/TAG/03', 'single door', '2022-08-01', 'croma', '', 1, '3 years', '440v', 'active', 'good condition', '2022-08-27 05:38:30', 0),
-(6, 'two viller', 1, 'TOOL/TAG/03', 'super splander 125', '0000-00-00', 'hero ', 'tyre', 0, '15 years', 'petrol', 'active', '125cc,\r\nselfstart\r\nhorn\r\n', '2022-08-27 05:48:54', 0);
+INSERT INTO `equipments` (`id`, `name`, `type`, `tag_no`, `model`, `installation_date`, `manufacturer`, `slno`, `parts_included`, `location_id`, `warrenty`, `power`, `status`, `specification`, `image`, `created_at`, `created_by`) VALUES
+(1, 'scooty', 1, 'ABC/EQP/2022/0004', 'zest', '2022-08-24', 'TVS', 12, 'TYRE', 1, '10 YEARS', '125CC', 'active', 'SELFSTART\r\nHORN\r\n', 'fb6da1013369110e9d9cad972487f70d.jpg', '2022-08-20 07:45:35', 0),
+(2, 'Tools', 3, 'TOOL/TAG/01', 'MOF001', '2022-08-03', 'Honda', 13, 'light,holder', 3, '2 years', '10KV', 'active', 'sfsdklf skfjsdkfjdsk sakfsaflk', '', '2022-08-22 16:17:11', 0),
+(3, 'fan', 2, 'TOOL/TAG/02', 'celing fan', '2022-08-10', 'usha', 14, 'three wings ', 2, '2 years', '230v', 'active', 'good condition', '', '2022-08-27 05:29:14', 0),
+(4, 'TV', 2, 'TOOL/TAG/03', 'LED', '2022-08-11', 'HAEIR', 15, '', 2, '2 years', '230v', 'active', 'good condition', '', '2022-08-27 05:35:05', 0),
+(5, 'frige', 1, 'TOOL/TAG/03', 'single door', '2022-08-01', 'croma', 16, '', 1, '3 years', '440v', 'active', 'good condition', '', '2022-08-27 05:38:30', 0),
+(6, 'two viller', 1, 'TOOL/TAG/03', 'super splander 125', '0000-00-00', 'hero ', 17, 'tyre', 0, '15 years', 'petrol', 'active', '125cc,\r\nselfstart\r\nhorn\r\n', '', '2022-08-27 05:48:54', 0),
+(7, 'Induction', 1, 'ABC/EQP/2022/0006', 'MODEL A', '2022-09-01', 'ANDROID', 18, 'wire, plug', 1, '2 Year', '100kw', 'active', 'Warrenty 2 years', '7798f500bce7112cca2d80423b863517.jpeg', '2022-09-11 14:45:44', 0),
+(8, 'tes', 2, 'ABC/EQP/2022/0007', 'model12', '2022-09-09', 'ADD', 19, '', 1, '2', '123', 'active', 'test test trest', '', '2022-09-11 15:23:52', 0),
+(9, 'sadfrg', 0, 'ABC/EQP/2022/0008', 'dfgh', '2022-09-01', 'sdfg', 0, 'sdfghj', 1, 'dfghju', 'dfghyju', 'active', 'sdfghjkl;\'dfghjkl;', '1e8514ba3c2c7a9f965ac4446f70b353.jpg', '2022-09-29 12:47:41', 0);
 
 -- --------------------------------------------------------
 
@@ -648,7 +677,9 @@ INSERT INTO `location` (`id`, `location_name`, `status`) VALUES
 (2, 'Hall B', 1),
 (3, 'Hall C', 1),
 (4, 'Hall D', 1),
-(5, 'Hall E', 1);
+(5, 'Hall E', 1),
+(28, 'sdff', 1),
+(29, 'DSF', 1);
 
 -- --------------------------------------------------------
 
@@ -755,6 +786,22 @@ CREATE TABLE `penalty` (
   `id` int(11) NOT NULL,
   `penalty_name` varchar(64) NOT NULL,
   `status` tinyint(1) NOT NULL DEFAULT 1
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+
+-- --------------------------------------------------------
+
+--
+-- Table structure for table `preventives`
+--
+
+CREATE TABLE `preventives` (
+  `id` int(11) NOT NULL,
+  `equipment_id` int(11) NOT NULL,
+  `location_id` int(11) NOT NULL,
+  `interval_id` int(11) NOT NULL,
+  `last_date` date NOT NULL,
+  `next_date` date NOT NULL,
+  `status` tinyint(4) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
 -- --------------------------------------------------------
@@ -883,6 +930,31 @@ INSERT INTO `salary_type` (`id`, `salary_type`, `create_date`) VALUES
 -- --------------------------------------------------------
 
 --
+-- Table structure for table `service_interval`
+--
+
+CREATE TABLE `service_interval` (
+  `id` int(11) NOT NULL,
+  `days` int(11) NOT NULL,
+  `name` varchar(255) NOT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+
+--
+-- Dumping data for table `service_interval`
+--
+
+INSERT INTO `service_interval` (`id`, `days`, `name`) VALUES
+(1, 1, 'Daily'),
+(2, 7, 'Weekly'),
+(3, 15, 'Fortnight'),
+(4, 30, 'Monthly'),
+(5, 90, 'Quarterly'),
+(6, 180, 'Half Yearly'),
+(7, 365, 'Yearly');
+
+-- --------------------------------------------------------
+
+--
 -- Table structure for table `settings`
 --
 
@@ -925,6 +997,52 @@ CREATE TABLE `social_media` (
 -- --------------------------------------------------------
 
 --
+-- Table structure for table `stock`
+--
+
+CREATE TABLE `stock` (
+  `id` int(10) NOT NULL,
+  `productname` varchar(255) NOT NULL,
+  `vendor` varchar(255) NOT NULL,
+  `stock_in_hand` int(10) NOT NULL,
+  `unit` varchar(255) NOT NULL,
+  `status` varchar(255) NOT NULL,
+  `created_at` timestamp NOT NULL DEFAULT current_timestamp()
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
+
+--
+-- Dumping data for table `stock`
+--
+
+INSERT INTO `stock` (`id`, `productname`, `vendor`, `stock_in_hand`, `unit`, `status`, `created_at`) VALUES
+(1, 'Product A', 'anusha', 10, 'ml', 'In Stock', '2022-09-30 13:00:38'),
+(2, 'Product B', 'test', 0, 'pack', 'Out of stock', '2022-09-30 13:00:38');
+
+-- --------------------------------------------------------
+
+--
+-- Table structure for table `temperature`
+--
+
+CREATE TABLE `temperature` (
+  `id` int(10) NOT NULL,
+  `date` date NOT NULL,
+  `location` varchar(255) NOT NULL,
+  `reading` varchar(255) NOT NULL,
+  `created_at` timestamp NOT NULL DEFAULT current_timestamp()
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
+
+--
+-- Dumping data for table `temperature`
+--
+
+INSERT INTO `temperature` (`id`, `date`, `location`, `reading`, `created_at`) VALUES
+(1, '2022-09-30', 'Hall A', '12345', '2022-09-30 07:55:15'),
+(4, '2022-09-22', 'Hall A', '1234', '2022-09-30 08:29:47');
+
+-- --------------------------------------------------------
+
+--
 -- Table structure for table `to-do_list`
 --
 
@@ -935,6 +1053,33 @@ CREATE TABLE `to-do_list` (
   `date` varchar(128) DEFAULT NULL,
   `value` varchar(14) DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+
+-- --------------------------------------------------------
+
+--
+-- Table structure for table `vendor_list`
+--
+
+CREATE TABLE `vendor_list` (
+  `vid` int(11) NOT NULL,
+  `vendor_name` varchar(30) NOT NULL,
+  `contact_person` varchar(30) NOT NULL,
+  `email_id` varchar(30) NOT NULL,
+  `contact_number` int(10) NOT NULL,
+  `nature_of_work` varchar(255) NOT NULL,
+  `status` varchar(10) NOT NULL,
+  `created_at` timestamp NOT NULL DEFAULT current_timestamp() ON UPDATE current_timestamp(),
+  `updated_at` varchar(19) NOT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
+
+--
+-- Dumping data for table `vendor_list`
+--
+
+INSERT INTO `vendor_list` (`vid`, `vendor_name`, `contact_person`, `email_id`, `contact_number`, `nature_of_work`, `status`, `created_at`, `updated_at`) VALUES
+(5, 'anusuya gunasekaran', 'Anusuya Gunasekaran', 'vsanushyavel@gmail.com', 2147483647, 'test', 'ACTIVE', '2022-09-29 10:37:56', '2022-09-10 02:48:35'),
+(6, 'anusha', 'Anusuya Gunasekaran', 'vsanushyavel@gmail.com', 2147483647, 'testing', 'ACTIVE', '2022-09-29 10:38:03', '2022-09-10 02:49:10'),
+(7, 'test', 'Anusuya Gunasekaran', 'vsanushyavel@gmail.com', 2147483647, 'design', 'ACTIVE', '2022-09-29 10:38:07', '2022-09-10 02:51:38');
 
 --
 -- Indexes for dumped tables
@@ -1022,6 +1167,12 @@ ALTER TABLE `earned_leave`
 -- Indexes for table `education`
 --
 ALTER TABLE `education`
+  ADD PRIMARY KEY (`id`);
+
+--
+-- Indexes for table `electricity_consuming`
+--
+ALTER TABLE `electricity_consuming`
   ADD PRIMARY KEY (`id`);
 
 --
@@ -1139,6 +1290,12 @@ ALTER TABLE `pay_salary`
   ADD PRIMARY KEY (`pay_id`);
 
 --
+-- Indexes for table `preventives`
+--
+ALTER TABLE `preventives`
+  ADD PRIMARY KEY (`id`);
+
+--
 -- Indexes for table `project`
 --
 ALTER TABLE `project`
@@ -1181,6 +1338,12 @@ ALTER TABLE `salary_type`
   ADD PRIMARY KEY (`id`);
 
 --
+-- Indexes for table `service_interval`
+--
+ALTER TABLE `service_interval`
+  ADD PRIMARY KEY (`id`);
+
+--
 -- Indexes for table `settings`
 --
 ALTER TABLE `settings`
@@ -1193,10 +1356,28 @@ ALTER TABLE `social_media`
   ADD PRIMARY KEY (`id`);
 
 --
+-- Indexes for table `stock`
+--
+ALTER TABLE `stock`
+  ADD PRIMARY KEY (`id`);
+
+--
+-- Indexes for table `temperature`
+--
+ALTER TABLE `temperature`
+  ADD PRIMARY KEY (`id`);
+
+--
 -- Indexes for table `to-do_list`
 --
 ALTER TABLE `to-do_list`
   ADD PRIMARY KEY (`id`);
+
+--
+-- Indexes for table `vendor_list`
+--
+ALTER TABLE `vendor_list`
+  ADD PRIMARY KEY (`vid`);
 
 --
 -- AUTO_INCREMENT for dumped tables
@@ -1287,6 +1468,12 @@ ALTER TABLE `education`
   MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=22;
 
 --
+-- AUTO_INCREMENT for table `electricity_consuming`
+--
+ALTER TABLE `electricity_consuming`
+  MODIFY `id` int(10) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=9;
+
+--
 -- AUTO_INCREMENT for table `employee`
 --
 ALTER TABLE `employee`
@@ -1338,7 +1525,7 @@ ALTER TABLE `eqiuipment_type`
 -- AUTO_INCREMENT for table `equipments`
 --
 ALTER TABLE `equipments`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=7;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=10;
 
 --
 -- AUTO_INCREMENT for table `field_visit`
@@ -1374,7 +1561,7 @@ ALTER TABLE `loan_installment`
 -- AUTO_INCREMENT for table `location`
 --
 ALTER TABLE `location`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=6;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=30;
 
 --
 -- AUTO_INCREMENT for table `logistic_asset`
@@ -1443,6 +1630,12 @@ ALTER TABLE `salary_type`
   MODIFY `id` int(14) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=5;
 
 --
+-- AUTO_INCREMENT for table `service_interval`
+--
+ALTER TABLE `service_interval`
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=8;
+
+--
 -- AUTO_INCREMENT for table `settings`
 --
 ALTER TABLE `settings`
@@ -1455,10 +1648,28 @@ ALTER TABLE `social_media`
   MODIFY `id` int(14) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=5;
 
 --
+-- AUTO_INCREMENT for table `stock`
+--
+ALTER TABLE `stock`
+  MODIFY `id` int(10) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=3;
+
+--
+-- AUTO_INCREMENT for table `temperature`
+--
+ALTER TABLE `temperature`
+  MODIFY `id` int(10) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=5;
+
+--
 -- AUTO_INCREMENT for table `to-do_list`
 --
 ALTER TABLE `to-do_list`
   MODIFY `id` int(14) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=31;
+
+--
+-- AUTO_INCREMENT for table `vendor_list`
+--
+ALTER TABLE `vendor_list`
+  MODIFY `vid` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=8;
 COMMIT;
 
 /*!40101 SET CHARACTER_SET_CLIENT=@OLD_CHARACTER_SET_CLIENT */;

@@ -13,7 +13,10 @@ class Monitoring extends CI_Controller {
         $this->load->model('organization_model');
         $this->load->model('settings_model');
         $this->load->model('leave_model');
+        $this->load->model('electricity_model');
+        $this->load->model('temperature_model');
     }
+    
     
 	public function index()
 	{
@@ -35,16 +38,18 @@ class Monitoring extends CI_Controller {
     }
     public function electricity(){
         if($this->session->userdata('user_login_access') != False) { 
-        $data['department'] = $this->organization_model->depselect();
-        $this->load->view('backend/electricity',$data); 
+        $data['electricity'] = $this->electricity_model->getelectricity();
+        $this->load->view('backend/electricity',$data);
         }
-    else{
-        redirect(base_url() , 'refresh');
-    }            
+        else{
+            redirect(base_url() , 'refresh');
+        }        
     }
     public function temperature(){
         if($this->session->userdata('user_login_access') != False) { 
-        $data['department'] = $this->organization_model->depselect();
+        $data['locations'] = $this->temperature_model->GetLocation();
+        $data['temperature'] = $this->temperature_model->gettemperature();
+       // $data['department'] = $this->organization_model->depselect();
         $this->load->view('backend/temperature',$data); 
         }
     else{
@@ -192,6 +197,160 @@ class Monitoring extends CI_Controller {
     else{
 		redirect(base_url() , 'refresh');
 	}        
+    }
+    public function Add_electricity(){
+        if($this->session->userdata('user_login_access') != False) 
+        {
+                                  
+        $date = $this->input->post('date');       
+        $am_6  = $this->input->post('am_6');     
+        $pm_2  = $this->input->post('pm_2');     
+        $pm_10 = $this->input->post('pm_10');     
+        $this->load->library('form_validation');
+        $this->form_validation->set_error_delimiters();
+        $this->form_validation->set_rules('date', 'Date','trim|required');
+        $this->form_validation->set_rules('am_6', '6 AM','trim|required|xss_clean');
+        $this->form_validation->set_rules('pm_2', '2 PM','trim|required|xss_clean');
+        $this->form_validation->set_rules('pm_10', '10 PM','trim|required|xss_clean');
+       
+        if ($this->form_validation->run() == FALSE) {
+            echo validation_errors();
+        }else{
+            $data = array();
+            $data = array('date' => $date,'am_6' => $am_6,'pm_2' => $pm_2,'pm_10' => $pm_10);
+            print_r($data);
+            $success = $this->electricity_model->Add_Electricity($data);
+            $this->session->set_flashdata('addsuccess', 'Successfully Added');
+            redirect('monitoring/electricity');
+        }
+        }
+    else{
+        redirect(base_url() , 'refresh');
+    }       
+}
+public function edit_electricity($elec){
+    if($this->session->userdata('user_login_access') != False) { 
+    $data['electricity'] = $this->electricity_model->getelectricity();
+    $data['editelectricity']=$this->electricity_model->electricity_edit($elec);
+    $this->load->view('backend/electricity', $data);
+    }
+else{
+    redirect(base_url() , 'refresh');
+}        
+}
+public function Update_electricity(){
+
+    if($this->session->userdata('user_login_access') != False) {
+    $id = $this->input->post('id');
+    $date = $this->input->post('date');       
+        $am_6  = $this->input->post('am_6');     
+        $pm_2  = $this->input->post('pm_2');     
+        $pm_10 = $this->input->post('pm_10');     
+        $this->load->library('form_validation');
+        $this->form_validation->set_error_delimiters();
+        $this->form_validation->set_rules('date', 'Date','trim|required');
+        $this->form_validation->set_rules('am_6', '6 AM','trim|required|xss_clean');
+        $this->form_validation->set_rules('pm_2', '2 PM','trim|required|xss_clean');
+        $this->form_validation->set_rules('pm_10', '10 PM','trim|required|xss_clean');
+       
+        if ($this->form_validation->run() == FALSE) {
+            echo validation_errors();
+        }else{
+            $data = array();
+            $data = array('date' => $date,'am_6' => $am_6,'pm_2' => $pm_2,'pm_10' => $pm_10);
+        
+    $this->electricity_model->Update_Electricity($id, $data);
+    $this->session->set_flashdata('updatesuccess', 'Successfully Updated');
+     
+    }
+}
+else{
+    redirect(base_url() , 'refresh');
+}        
+}
+public function electricity_delete($id){
+    if($this->session->userdata('user_login_access') != False) {
+    $this->electricity_model->electricity_delete($id);
+    $this->session->set_flashdata('delsuccess', 'Successfully Deleted');
+    redirect('monitoring/electricity');
+    }
+else{
+    redirect(base_url() , 'refresh');
+}        
+}
+
+
+public function Save_temp(){
+    if($this->session->userdata('user_login_access') != False) { 
+       $date = $this->input->post('date');
+       $location = $this->input->post('location');
+       $reading = $this->input->post('reading');
+       $this->load->library('form_validation');
+       $this->form_validation->set_error_delimiters('<div class="error">', '</div>');
+       $this->form_validation->set_rules('date','date','trim|required|xss_clean');
+       $this->form_validation->set_rules('location','location','trim|required|xss_clean');
+       $this->form_validation->set_rules('reading','reading','trim|required|xss_clean');
+
+       if ($this->form_validation->run() == FALSE) {
+           echo validation_errors();
+       }else{
+        $data = array();
+        $data = array('date' => $date,'location' => $location,'reading' => $reading);
+        $success = $this->temperature_model->Add_Temperature($data);
+        $this->session->set_flashdata('addsuccess','Successfully Added');
+       }
+        }
+    else{
+		redirect(base_url() , 'refresh');
+	}        
+    }
+    public function edit_temp($temp){
+        if($this->session->userdata('user_login_access') != False) { 
+        $data['locations'] = $this->temperature_model->GetLocation();
+        $data['temperature'] = $this->temperature_model->gettemperature();
+        $data['edittemperature']=$this->temperature_model->temperature_edit($temp);
+        $this->load->view('backend/temperature', $data);
+        }
+    else{
+        redirect(base_url() , 'refresh');
+    }        
+    }
+    public function Update_temp(){
+
+        if($this->session->userdata('user_login_access') != False) {
+        $id = $this->input->post('id');
+        $date = $this->input->post('date');
+        $location = $this->input->post('location');
+        $reading = $this->input->post('reading');
+        $this->load->library('form_validation');
+        $this->form_validation->set_error_delimiters('<div class="error">', '</div>');
+        $this->form_validation->set_rules('date','date','trim|required|xss_clean');
+        $this->form_validation->set_rules('location','location','trim|required|xss_clean');
+        $this->form_validation->set_rules('reading','reading','trim|required|xss_clean');
+ 
+        if ($this->form_validation->run() == FALSE) {
+            echo validation_errors();
+        }else{
+         $data = array();
+         $data = array('date' => $date,'location' => $location,'reading' => $reading);
+        $this->temperature_model->Update_Temperature($id, $data);
+        $this->session->set_flashdata('updatesuccess', 'Successfully Updated');
+         
+        }
+    }
+    else{
+        redirect(base_url() , 'refresh');
+    }        
+    }
+    public function Delete_temp($id){
+        if($this->session->userdata('user_login_access') != False) {
+        $this->temperature_model->temperature_delete($id);
+        $this->session->set_flashdata('delsuccess', 'Successfully Deleted');
+        redirect('monitoring/temperature');
+        }
+    else{
+        redirect(base_url() , 'refresh');
+    }        
     }
     
 }

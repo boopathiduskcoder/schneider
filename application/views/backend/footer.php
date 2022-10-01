@@ -205,15 +205,23 @@ $('form').each(function() {
             // url: "crud/Add_userInfo",
             url: url,
             data: data,
+            dataType:'json',
             processData: false,
             contentType: false,
             cache: false,
             timeout: 600000,
             success: function (response) {
-                console.log(response);            
-                $(".message").fadeIn('fast').delay(3000).fadeOut('fast').html(response);
-                $('form').trigger("reset");
-                // window.setTimeout(function(){location.reload()},3000);
+                console.log(response);   
+                if(response.status==true)
+                {
+                    $(".message").fadeIn('fast').delay(3000).fadeOut('fast').html(response.message);
+                    $('form').trigger("reset");
+                    window.setTimeout(function(){location.reload()},3000);
+                }         
+                else
+                {
+                    alert(response.message);
+                }
             },
             error: function (e) {
                 console.log(e);

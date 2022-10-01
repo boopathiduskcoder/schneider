@@ -33,8 +33,8 @@
 <tr><!--
 <th>ID</th>
 <th>Type </th>-->
-<th>category</th>
-<th>Name </th>
+<th>Location</th>
+<th>Equipment Name </th>
 <th>Tag No </th>
 <th>Model</th>
 <th>Installation Date </th>
@@ -48,7 +48,7 @@
 <!--                                                <th>ID</th>
 	<th>Type </th>-->
 	<th>Location</th>
-	<th>Name </th>
+	<th>Equipment Name </th>
 	<th>Tag No </th>
 	<th>Model</th>
 	<th>Installation Date </th>
@@ -95,7 +95,7 @@
 					<div class="row">
 						<div class="col-md-6">      
 							<div class="form-group">
-								<label class="control-label">Name</label>
+								<label class="control-label">Equipment Name</label>
 								<input type="text" name="name" value="" class="form-control" id="recipient-name1" required>
 							</div>
 							<div class="form-group">

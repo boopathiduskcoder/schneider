@@ -95,49 +95,49 @@
                             <div class="modal-dialog modal-lg" role="document">
                                 <div class="modal-content ">
                                     <div class="modal-header">
-                                        <h4 class="modal-title" id="exampleModalLabel1">Add Tasks</h4>
+                                        <h4 class="modal-title" id="exampleModalLabel1">Add Complaints</h4>
                                         <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
                                     </div>
                                     <form method="post" action="Add_Tasks" id="tasksModalform" enctype="multipart/form-data">
                                     <div class="modal-body">
                                              <div class="form-group row">
-                                                <label class="control-label col-md-3">Project List</label>
-                                                <select class="form-control custom-select col-md-8 proid" data-placeholder="Choose a Category" tabindex="1" name="projectid">
+                                                <label class="control-label col-md-3">Equipment List</label>
+                                                <select class="form-control custom-select col-md-8 proid" data-placeholder="Select Equipment" tabindex="1" name="projectid">
                                                    <?php foreach($projects as $value): ?>
                                                     <option value="<?php echo $value->id; ?>"><?php echo $value->pro_name; ?></option>
                                                    <?php endforeach; ?>
                                                 </select>
                                             </div>
-                                            <div class="form-group row">
+                                            <!-- <div class="form-group row">
                                                 <label class="control-label col-md-3">Project Date</label>
                                                 <input type="text" value="" name="prostart" class="form-control col-md-4" id="recipient-name1" readonly>
                                                 <input type="text" value="" name="proend" class="form-control col-md-4" id="recipient-name1" readonly>
-                                            </div>                                              
+                                            </div>  -->                                             
                                              <div class="form-group row">
                                                 <label class="control-label col-md-3">Assign To</label>
-                                                <select class="select2 form-control custom-select col-md-3" data-placeholder="Choose a Category" style="width:25%" tabindex="1" name="teamhead">
+                                                <select class="select2 form-control custom-select col-md-3" data-placeholder="Select Technician" style="width:25%" tabindex="1" name="teamhead">
                                                   <option value="">Select Here</option>
                                                    <?php foreach($employee as $value): ?>
                                                     <option value="<?php echo $value->em_id; ?>"><?php echo $value->first_name.' '.$value->last_name; ?></option>
                                                     <?php endforeach; ?>
                                                 </select>
-                                                <label class="control-label col-md-2">Collaborators</label>
+                                               <!--  <label class="control-label col-md-2">Collaborators</label>
                                                 <select class="select2 form-control select2-multiple col-md-3" data-placeholder="Choose a Category" multiple="multiple" style="width:25%" tabindex="1" name="assignto[]">
                                                   <option value="">Select Here</option>
                                                    <?php foreach($employee as $value): ?>
                                                     <option value="<?php echo $value->em_id; ?>"><?php echo $value->first_name.' '.$value->last_name; ?></option>
                                                     <?php endforeach; ?>
-                                                </select>
+                                                </select> -->
                                             </div>                                                                                   
                                             <div class="form-group row">
-                                                <label class="control-label col-md-3">Task Title</label>
-                                                <input type="text" name="tasktitle" class="form-control col-md-8" id="recipient-name1" minlength="8" maxlength="250" placeholder="Task....">
+                                                <label class="control-label col-md-3">Title</label>
+                                                <input type="text" name="tasktitle" class="form-control col-md-8" id="recipient-name1" minlength="8" maxlength="250" placeholder="">
                                             </div>
                                             <div class="form-group row">
-                                                <label class="control-label col-md-3">Task Start Date</label>
+                                                <label class="control-label col-md-3">Start Date</label>
                                                 <input type="text" name="startdate" class="form-control col-md-3 mydatetimepickerFull" id="recipient-name1">
                                                 
-                                                <label class="control-label col-md-2">Task End Date</label>
+                                                <label class="control-label col-md-2">End Date</label>
                                                 <input type="text" name="enddate" class="form-control col-md-3 mydatetimepickerFull" id="recipient-name1">
                                             </div>
                                             <div class="form-group row">
@@ -153,13 +153,12 @@
                                                 <input name="status" type="radio" id="radio_3" data-value="Logistic" class="type" value="cancel">
                                                 <label for="radio_3">Cancel</label>
                                             </div>                                             
-                                              <div class="form-group row">
+                                              <!-- <div class="form-group row">
                                                <label class="control-label col-md-3">Type: </label>
                                                 <input name="type" type="radio" id="radio_4" data-value="Logistic" class="type" value="Office">
                                                 <label for="radio_4">Office</label>
-                                               <!-- <input name="type" type="radio" id="radio_5" data-value="Logistic" class="type" value="Field">
-                                                <label for="radio_5">Field</label>-->
-                                              </div>  
+                                              
+                                              </div>   -->
                                     </div>
                                     <div class="modal-footer">
                                         <input type="hidden" name="id" class="form-control" id="recipient-name1">                                       
