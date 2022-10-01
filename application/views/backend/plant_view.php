@@ -15,7 +15,7 @@
 <div class="col-md-7 align-self-center">
     <ol class="breadcrumb">
         <li class="breadcrumb-item"><a href="javascript:void(0)">Home</a></li>
-        <li class="breadcrumb-item active">Profile</li>
+        <li class="breadcrumb-item active">Assets</li>
     </ol>
 </div>
 </div>
@@ -25,16 +25,14 @@
         <div class="col-lg-12 col-xlg-12 col-md-12">
             <div class="card card-outline-info">
                 <div class="card-header">
-                <h4 class="m-b-0 text-white"> Plant Equipment List</h4>
+                <h4 class="m-b-0 text-white"> Assets Details</h4>
             </div>
                 <!-- Nav tabs -->
                 <ul class="nav nav-tabs profile-tab" role="tablist">
                     <li class="nav-item"> <a class="nav-link active" data-toggle="tab" href="#home" role="tab" style="font-size: 14px;">  Basic Info </a> </li>
-                    <li class="nav-item"> <a class="nav-link" data-toggle="tab" href="#profile" role="tab" style="font-size: 14px;"> Address </a> </li>
-                    <li class="nav-item"> <a class="nav-link" data-toggle="tab" href="#education" role="tab" style="font-size: 14px;"> Plant Detail</a> </li>
-                    <li class="nav-item"> <a class="nav-link" data-toggle="tab" href="#experience" role="tab" style="font-size: 14px;"> Manufacturer</a> </li>
-                    <li class="nav-item"> <a class="nav-link" data-toggle="tab" href="#bank" role="tab" style="font-size: 14px;"> Location</a> </li>
-
+                    <li class="nav-item"> <a class="nav-link" data-toggle="tab" href="#profile" role="tab" style="font-size: 14px;"> Preventive Maintenance </a> </li>
+                    <li class="nav-item"> <a class="nav-link" data-toggle="tab" href="#education" role="tab" style="font-size: 14px;"> Breakdown</a> </li>
+                    <li class="nav-item"> <a class="nav-link" data-toggle="tab" href="#experience" role="tab" style="font-size: 14px;"> Complaints</a> </li>
                 </ul>
                 <!-- Tab panes -->
 
@@ -47,10 +45,10 @@
                                         <div class="card">
                                             <div class="card-body">
                                                 <center class="m-t-30">
-                                                   <?php if(!empty($basic->em_image)){ ?>
-                                                    <img src="<?php echo base_url(); ?>assets/images/users/<?php echo $basic->em_image; ?>" class="img-circle" width="150" />
+                                                   <?php if(!empty($plant_data->image)){ ?>
+                                                    <img src="<?php echo base_url(); ?>assets/images/equipments/<?php echo $plant_data->image; ?>" class="img-circle" width="150" />
                                                 <?php } else { ?>
-                                                    <img src="<?php echo base_url(); ?>assets/images/users/user.png" class="img-circle" width="150" alt="                      <?php echo $plant_data->name ?>
+                                                    <img src="<?php echo base_url(); ?>assets/images/no_image.png" class="img-circle" width="150" alt="                      <?php echo $plant_data->name ?>
                                                     " title="                      <?php echo $plant_data->name ?>
                                                     "/>                                   
                                                 <?php } ?>
@@ -102,6 +100,15 @@
                   </div>
                   <div class="col-sm-9 text-secondary">
                       <?php echo $plant_data->model ?>
+                  </div>
+              </div>
+              <hr>
+              <div class="row">
+                    <div class="col-sm-3">
+                      <h6 class="mb-0">Type</h6>
+                  </div>
+                  <div class="col-sm-9 text-secondary">
+                      <?php echo $plant_data->type ?>
                   </div>
               </div>
               <hr>

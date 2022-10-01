@@ -86,3 +86,4 @@ defined('EXIT__AUTO_MAX')      OR define('EXIT__AUTO_MAX', 125); // highest auto
 define('DISPLAY_DATE_FORMAT', 'M d, Y');
 define('DISPLAY_TIME_FORMAT', 'h:i A');
 define('DISPLAY_DATE_TIME_FORMAT', 'M d, Y h:i A');
+define('ASSET_PREFIX', 'ABC/EQP/2022/');
