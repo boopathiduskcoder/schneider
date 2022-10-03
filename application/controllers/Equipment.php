@@ -311,6 +311,20 @@ class Equipment extends CI_Controller {
             redirect(base_url() , 'refresh');
         }            
     }
+    public function ac_equipment(){
+        if($this->session->userdata('user_login_access') != False) {         
+        $data['assets'] = $this->equipment_model->GetAssetsList(4);
+        $tag_no = $this->db->count_all('equipments');
+        $tag_no = str_pad($tag_no,4,0,STR_PAD_LEFT);
+        $data['tag_no']= ASSET_PREFIX.$tag_no;
+        $data['catvalue'] = $this->project_model->GetEquipmentCategory();
+        $data['locations'] = $this->project_model->GetLocation();
+        $this->load->view('backend/tools_others',$data);
+        }
+        else{
+            redirect(base_url() , 'refresh');
+        }            
+    }
     public function Add_Assets()
     {
         try {

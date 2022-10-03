@@ -111,7 +111,7 @@
                       <h6 class="mb-0">Type</h6>
                   </div>
                   <div class="col-sm-9 text-secondary">
-                      <?php echo $plant_data->type ?>
+                      <?php echo $plant_data->type_name ?>
                   </div>
               </div>
               <hr>

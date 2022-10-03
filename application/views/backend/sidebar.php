@@ -49,6 +49,7 @@
                                 <li><a href="<?php echo base_url(); ?>equipment/plant_equipment">Plant Equipments</a></li>
                                 <li><a href="<?php echo base_url(); ?>equipment/office_equipment">Office Equipments</a></li>
                                 <li><a href="<?php echo base_url(); ?>equipment/tools_equipment">Tools/Others</a></li>
+                                <li><a href="<?php echo base_url(); ?>equipment/ac_equipment">Ac Equipments</a></li>
                                 <li><a href="#">Audit</a></li>
                             </ul>
                         </li>
