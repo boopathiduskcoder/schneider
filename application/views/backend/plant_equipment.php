@@ -120,7 +120,7 @@
 							</div>
 							<div class="form-group">
 								<label class="control-label">Type</label>
-								<input type="text" name="type" value="" class="form-control"  autocomplete="off">
+								<input type="text" name="type1" value="" class="form-control"  autocomplete="off">
 							</div>
 							<div class="form-group">
 								<label class="control-label">Installation Date</label>
@@ -174,6 +174,10 @@
 								<label class="control-label">Image</label>
 								<input type="file" name="image" value="" class="form-control" id="recipient-name1">
 							</div>
+							<div class="form-group">
+								<label class="control-label">Attachments</label>
+								<input type="file" name="attachments" value="" class="form-control" id="recipient-name1">
+							</div>
 
 						</div>
 					</div>
@@ -208,7 +212,8 @@ $('#btnSubmit').find('[name="location"]').val(response.assetsByid.location_id).e
 $('#btnSubmit').find('[name="name"]').val(response.assetsByid.name).end();
 $('#btnSubmit').find('[name="type"]').val(response.assetsByid.type).end();
 $('#btnSubmit').find('[name="tag_no"]').val(response.assetsByid.tag_no).end();
-$('#btnSubmit').find('[name="model"]').val(response.assetsByid.model).end();                                                   
+$('#btnSubmit').find('[name="model"]').val(response.assetsByid.model).end();   
+$('#btnSubmit').find('[name="type1"]').val(response.assetsByid.type1).end();                                                
 $('#btnSubmit').find('[name="installation_date"]').val(response.assetsByid.installation_date).end();                                                 
 $('#btnSubmit').find('[name="manufacturer"]').val(response.assetsByid.manufacturer).end();     
 $('#btnSubmit').find('[name="slno"]').val(response.assetsByid.slno).end();      
@@ -228,6 +233,7 @@ $('#btnSubmit').find('[name="specification"]').val(response.assetsByid.specifica
 }
 
 $('#recipient-name1').bind('keypress', testInput);
+
 
 </script>                        
 <?php $this->load->view('backend/footer'); ?>        
