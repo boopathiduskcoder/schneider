@@ -70,7 +70,7 @@
 		<td class="jsgrid-align-center ">
 			<a href="#" title="Edit" class="btn btn-sm btn-info waves-effect waves-light assets" data-id="<?php echo $value->id ?>"><i class="fa fa-pencil-square-o"></i></a>
 			<!-- <a href="#" title="View" class="btn btn-sm btn-info waves-effect waves-light assets" data-id="<?php echo $value->id ?>"><i class="fa fa-eye"></i></a> -->
-			<a href="<?php echo base_url(); ?>equipment/ViewPlants?I=<?php echo base64_encode($value->id); ?>" title="Edit" class="btn btn-sm btn-info waves-effect waves-light"><i class="fa fa-eye"></i></a>
+			<a href="<?php echo base_url(); ?>equipment/ViewPlants?equipment_id=<?php echo base64_encode($value->id); ?>" title="Edit" class="btn btn-sm btn-info waves-effect waves-light"><i class="fa fa-eye"></i></a>
 		</td>
 </tr>
 <?php endforeach; ?>
@@ -108,11 +108,15 @@
 							</div>
 							<div class="form-group">
 								<label class="control-label">Asset Tag No</label>
-								<input type="text" name="tag_no" value="" class="form-control" id="recipient-name1">
+								<input type="text" name="tag_no" value="<?php echo $tag_no;?>" class="form-control" id="recipient-name1">
 							</div>
 							<div class="form-group">
 								<label class="control-label">Model</label>
 								<input type="text" name="model" value="" class="form-control" id="recipient-name1">
+							</div>
+							<div class="form-group">
+								<label class="control-label">Type</label>
+								<input type="text" name="type1" value="" class="form-control" id="recipient-name1 ">
 							</div>
 							<div class="form-group">
 								<label class="control-label">Installation Date</label>
@@ -122,6 +126,10 @@
 								<label class="control-label">Manufacturer</label>
 								<input type="text" name="manufacturer" value="" class="form-control" id="recipient-name1 ">
 							</div>  
+							<div class="form-group">
+								<label class="control-label">Serial No</label>
+								<input type="text" name="slno" value="" class="form-control"  autocomplete="off">
+							</div> 
 							<div class="form-group">
 								<label class="control-label">Add Parts (,)</label>
 								<input type="text" name="parts_included" value="" class="form-control" id="recipient-name1 ">
@@ -162,7 +170,10 @@
 								<label class="control-label">Image</label>
 								<input type="file" name="image" value="" class="form-control" id="recipient-name1">
 							</div>
-
+                            <div class="form-group">
+								<label class="control-label">Attachments</label>
+								<input type="file" name="attachments" value="" class="form-control" id="recipient-name1">
+							</div>
 						</div>
 					</div>
 </div>
@@ -196,9 +207,11 @@ $('#btnSubmit').find('[name="location"]').val(response.assetsByid.location_id).e
 $('#btnSubmit').find('[name="name"]').val(response.assetsByid.name).end();
 $('#btnSubmit').find('[name="type"]').val(response.assetsByid.type).end();
 $('#btnSubmit').find('[name="tag_no"]').val(response.assetsByid.tag_no).end();
-$('#btnSubmit').find('[name="model"]').val(response.assetsByid.model).end();                                                   
+$('#btnSubmit').find('[name="model"]').val(response.assetsByid.model).end(); 
+$('#btnSubmit').find('[name="type1"]').val(response.assetsByid.type1).end();                                                   
 $('#btnSubmit').find('[name="installation_date"]').val(response.assetsByid.installation_date).end();                                                 
-$('#btnSubmit').find('[name="manufacturer"]').val(response.assetsByid.manufacturer).end();          
+$('#btnSubmit').find('[name="manufacturer"]').val(response.assetsByid.manufacturer).end();
+$('#btnSubmit').find('[name="slno"]').val(response.assetsByid.slno).end();           
 $('#btnSubmit').find('[name="parts_included"]').val(response.assetsByid.parts_included).end();                                              
 $('#btnSubmit').find('[name="warrenty"]').val(response.assetsByid.warrenty).end();                                              
 $('#btnSubmit').find('[name="power"]').val(response.assetsByid.power).end();                                              

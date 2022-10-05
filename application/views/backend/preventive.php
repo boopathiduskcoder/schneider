@@ -38,6 +38,7 @@
                                             <tr>
                                                 <th>Equipment Name</th>
                                                 <th>Location</th>
+                                                <th>Service</th>
                                                 <th>Last Date </th>
                                                 <th>Next Date </th>
                                                 <th>Status</th>
@@ -48,6 +49,7 @@
                                             <tr>
                                                 <th>Equipment Name</th>
                                                 <th>Location</th>
+                                                <th>Service</th>
                                                 <th>Last Date </th>
                                                 <th>Next Date </th>
                                                 <th>Status</th>
@@ -55,7 +57,37 @@
                                             </tr>
                                         </tfoot>
                                         <tbody>
+                                        <?php foreach ($preventive as $value) { ?>
                                             <tr>
+                                                <td><?php $aid =  $value->equipment_id;
+                                                          $adata = $this->db->get_where('assets',array('ass_id '=>$aid))->row();
+                                                          echo  $adata->ass_name; ?>
+                                                </td>
+                                                <td><?php $lid =  $value->location_id;
+                                                          $ldata = $this->db->get_where('location',array('id '=>$lid))->row();
+                                                          echo  $ldata->location_name; ?></td>
+                                                <td><?php $sid =  $value->interval_id;
+                                                          $sdata = $this->db->get_where('service_interval',array('id '=>$sid))->row();
+                                                          echo  $sdata->name; ?></td>
+                                                <td><?php echo $value->last_date;?></td>
+                                                <td><?php echo $value->next_date;?>
+                                                <br><span class="badge badge-success">
+                                                     <?php
+                                                         $date1= $value->next_date;
+                                                         $date2 =$value->last_date;
+                                                         $date1 = strtotime($date1);
+                                                         $date2 = strtotime($date2);
+                                                         $datediff = $date1 - $date2;
+                                                         $no_of_days =  floor($datediff / (60 * 60 * 24));
+                                                         echo $no_of_days.' ' .'days left'; ?></span></td>
+                                                <td><?php echo $value->status;?></td>
+                                                <td class="jsgrid-align-center ">
+                                                    <a href="<?php echo base_url();?>monitoring/edit_temp/<?php echo $value->id;?>" title="Edit" class="btn btn-sm btn-info waves-effect waves-light"><i class="fa fa-pencil-square-o"></i></a>
+                                                    <a onclick="return confirm('Are you sure to delete this data?')" href="<?php echo base_url();?>monitoring/Delete_temp/<?php echo $value->id;?>" title="Delete" class="btn btn-sm btn-info waves-effect waves-light"><i class="fa fa-trash-o"></i></a>
+                                                </td>
+                                            </tr>
+                                            <?php }?>
+                                            <!--<tr>
                                               <td> Asset 10</td>
                                               <td> Hall A</td>
                                               <td>July 3, 2022</td>
@@ -73,7 +105,7 @@
                                               <td>
                                               <a href="#" title="Edit" class="btn btn-sm btn-info waves-effect waves-light"><i class="fa fa-eye"></i></a>
                                           </td>
-                                          </tr>
+                                          </tr>-->
                                         </tbody>
                                     </table>
                                 </div>
@@ -90,21 +122,33 @@
                                         <h4 class="modal-title" id="exampleModalLabel1">Add Maintenance</h4>
                                         <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
                                     </div>
-                                    <form method="post" action="Add_Tasks" id="tasksModalform" enctype="multipart/form-data">
+                                    <form method="post" action="Add_Preventive" id="tasksModalform" enctype="multipart/form-data">
                                     <div class="modal-body">
                                              <div class="form-group row">
                                                 <label class="control-label col-md-3">Asset List</label>
-                                                <select class="form-control custom-select col-md-8 proid" data-placeholder="Choose a Category" tabindex="1" name="projectid">
-                                                   <?php foreach($projects as $value): ?>
-                                                    <option value="<?php echo $value->id; ?>"><?php echo $value->pro_name; ?></option>
+                                                <select class="form-control custom-select col-md-8 proid" data-placeholder="Choose a Category" tabindex="1" name="ass_name">
+                                                <option>Select</option>  
+                                                <?php foreach($assets as $value): ?>
+                                                    <option value="<?php echo $value->ass_id; ?>"><?php echo $value->ass_name; ?></option>
                                                    <?php endforeach; ?>
                                                 </select>
-                                            </div>                           
+                                            </div>   
+                                            <div class="form-group row">
+							
+								               <label class="control-label col-md-3">Location</label>
+								               <select name="location" class="form-control custom-select col-md-8 proid" style="width: 100%" required >
+									           <option>Select Location</option>
+									           <?php foreach($locations as $locate): ?>
+										              <option value="<?php echo $locate->id ?>"><?php echo $locate->location_name ?></option>
+									           <?php endforeach; ?>
+								              </select>
+							                </div>                        
                                             <div class="form-group row">
                                                 <label class="control-label col-md-3">Service Days</label>
-                                                <select class="form-control custom-select col-md-8 proid" data-placeholder="Choose a Category" tabindex="1" name="projectid">
-                                                   <?php foreach($projects as $value): ?>
-                                                    <option value="<?php echo $value->id; ?>"><?php echo $value->pro_name; ?></option>
+                                                <select class="form-control custom-select col-md-8 proid" data-placeholder="Choose a Category" tabindex="1" name="service_days">
+                                                <option>Select Service</option>
+                                                <?php foreach($service as $value): ?>
+                                                    <option value="<?php echo $value->id; ?>"><?php echo $value->name; ?></option>
                                                    <?php endforeach; ?>
                                                 </select>
                                             </div>
@@ -115,6 +159,14 @@
                                                 <label class="control-label col-md-2">Next Service Date</label>
                                                 <input type="text" name="enddate" class="form-control col-md-3 mydatetimepickerFull" id="recipient-name1">
                                         </div>
+                                        <div class="form-group row">
+								            <label class="control-label col-md-3">Status</label>
+								            <select name="status" class="form-control custom-select col-md-8 proid" style="width: 100%" required>
+									        <option>Select</option>
+									        <option value="Active">Active</option>
+									        <option value="In-active">In-active</option>
+								       </select>
+							           </div> 
                                     </div>
                                     <div class="modal-footer">
                                         <input type="hidden" name="id" class="form-control" id="recipient-name1">                                       
@@ -125,7 +177,7 @@
                                 </div>
                             </div>
                         </div>
-<script type="text/javascript">
+<!--<script type="text/javascript">
                                         $(document).ready(function () {
                                             $(".assetsstock").change(function (e) {
                                                 e.preventDefault(e);
@@ -217,5 +269,5 @@
 												});
                                             });
                                         });
-</script>     
+</script>     -->
     <?php $this->load->view('backend/footer'); ?>        

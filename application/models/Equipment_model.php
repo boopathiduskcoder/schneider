@@ -392,9 +392,10 @@
         $this->db->insert('equipments',$data);
     }
     public function GetAssetById($id){
-        $this->db->select('e.*,l.location_name');
+        $this->db->select('e.*,l.location_name,t.name as type_name');
         $this->db->from('equipments e');
         $this->db->join('location l','e.location_id=l.id');
+        $this->db->join('eqiuipment_type t','e.type=t.id');
         $this->db->where('e.id',$id);
         $query=$this->db->get();
         $result = $query->row();

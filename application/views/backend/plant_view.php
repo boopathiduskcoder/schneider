@@ -67,6 +67,9 @@
                                     <h6>                                           <?php echo $plant_data->model ?>
 
                                 </h6> 
+                                <small class="text-muted p-t-30 db">Attachment</small>
+                                    <h6><?php echo $plant_data->attachment ?><a href="<?= base_url('assets/attachments/equipments/' . $plant_data->attachment); ?>"> <i class="fa fa-download" aria-hidden="true"></i> </a>
+                                </h6> 
                                 
                             </div>
                         </div>                                                    
@@ -108,7 +111,7 @@
                       <h6 class="mb-0">Type</h6>
                   </div>
                   <div class="col-sm-9 text-secondary">
-                      <?php echo $plant_data->type ?>
+                      <?php echo $plant_data->type_name ?>
                   </div>
               </div>
               <hr>
