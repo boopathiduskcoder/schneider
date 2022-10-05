@@ -1,7 +1,7 @@
 <?php
 defined('BASEPATH') OR exit('No direct script access allowed');
 
-class Worker extends CI_Controller {
+class Technician extends CI_Controller {
 
 	/**
 	 * Index Page for this controller.
@@ -27,6 +27,7 @@ class Worker extends CI_Controller {
         $this->load->model('payroll_model');
         $this->load->model('settings_model');
         $this->load->model('leave_model');
+        $this->load->model('technician_model');
   
     }
     
@@ -38,10 +39,10 @@ class Worker extends CI_Controller {
           $data= array();
         redirect('employee/Employees');
 	}
-    public function workers(){
+    public function technicians(){
         if($this->session->userdata('user_login_access') != False) { 
-        $data['employee'] = $this->employee_model->emselect();
-        $this->load->view('backend/workers',$data);
+        $data['technicians'] = $this->technician_model->getalltechnicians();
+        $this->load->view('backend/technicians',$data);
         }
     else{
 		redirect(base_url() , 'refresh');
@@ -56,6 +57,125 @@ class Worker extends CI_Controller {
         redirect(base_url() , 'refresh');
     }        
     }
+    public function Add_Technicians(){
+        try {
+            if($this->session->userdata('user_login_access') == False) 
+            {
+                throw new Exception("Session expired", 1);                
+            }        
+            $id     = $this->input->post('aid');    
+            $firstname   = $this->input->post('firstname');    
+            $lastname   = $this->input->post('lastname');
+            $email = $this->input->post('email');
+            $password = md5($this->input->post('password'));
+            $contact  = $this->input->post('contact'); 
+            $status  = $this->input->post('status');        
+           
+            $this->load->library('form_validation');
+            $this->form_validation->set_error_delimiters();
+            $this->form_validation->set_rules('firstname', 'First Name','trim|required|min_length[2]|max_length[2024]|xss_clean');
+            $this->form_validation->set_rules('lastname', 'Last Name','trim|required');
+            $this->form_validation->set_rules('email', 'Email','trim|required|xss_clean|is_unique[technicians.email]',array('is_unique' => 'This %s already exists.'));
+            $this->form_validation->set_rules('password', 'Password','trim|required|min_length[2]|max_length[2024]|xss_clean');
+            $this->form_validation->set_rules('contact', 'Contact','trim|required|min_length[2]|max_length[2024]|xss_clean');
+            $this->form_validation->set_rules('status', 'status','trim|required|xss_clean');
+            if ($this->form_validation->run() == FALSE) 
+            {
+                throw new Exception(validation_errors(), 1);             
+            } 
+            
+            
+            $data['firstname']=$firstname;
+            $data['lastname']=$lastname;
+            $data['email']=$email;
+            $data['password']=$password;
+            $data['contact']=$contact;
+            $data['status']=$status;
+            if(empty($id)){
+                $success = $this->technician_model->Add_technician($data); 
+                $message="Successfully added";      
+            } 
+            else {
+                $success = $this->technician_model->Update_technician($id,$data); 
+                $message= "Successfully updated"; 
+            }
+        
+            $response['status']=TRUE;
+            $response['message']=$message;  
+        
+        }   catch (Exception $e) {
+            $response['status']=FALSE;
+            $response['message']=$e->getMessage();
+        }    
+        echo json_encode($response);
+    }
+    
+    public function EditTechnician(){
+        if($this->session->userdata('user_login_access') != False) {  
+            $id = $_GET['id'];
+		$data['technicianbyid'] = $this->technician_model->GetTechnicianById($id);
+		echo json_encode($data);
+        }
+    else{
+		redirect(base_url() , 'refresh');
+	}  
+
+    }  
+   
+    public function ChangePassword(){
+                try {
+                    if($this->session->userdata('user_login_access') == False) 
+                    {
+                        throw new Exception("Session expired", 1);                
+                    }   
+                    $id = $_GET['id'];
+                    print_r($id);exit;
+                    $data['technicianbyid'] = $this->technician_model->GetTechnicianById($id); 
+                    echo json_encode($data);    
+                    $aid   = $this->input->post('aid');    
+                    $firstname   = $this->input->post('firstname');    
+                    $lastname   = $this->input->post('lastname');
+                    $email = $this->input->post('email');
+                    $password = md5($this->input->post('password'));
+                    $confirmpassword = md5($this->input->post('password'));
+                    $contact  = $this->input->post('contact'); 
+                    $status  = $this->input->post('status');        
+                   
+                    $this->load->library('form_validation');
+                    $this->form_validation->set_error_delimiters();
+                    $this->form_validation->set_rules('firstname', 'First Name','trim|required|min_length[2]|max_length[2024]|xss_clean');
+                    $this->form_validation->set_rules('lastname', 'Last Name','trim|required');
+                    $this->form_validation->set_rules('email', 'Email','trim|required|xss_clean|is_unique[technicians.email]',array('is_unique' => 'This %s already exists.'));
+                    $this->form_validation->set_rules('password', 'Password','trim|required|min_length[2]|max_length[2024]|xss_clean');
+                    $this->form_validation->set_rules('contact', 'Contact','trim|required|min_length[2]|max_length[2024]|xss_clean');
+                    $this->form_validation->set_rules('status', 'status','trim|required|xss_clean');
+                    if ($this->form_validation->run() == FALSE) 
+                    {
+                        throw new Exception(validation_errors(), 1);             
+                    } 
+                    
+                    
+                    $data['firstname']=$firstname;
+                    $data['lastname']=$lastname;
+                    $data['email']=$email;
+                    $data['password']=$password;
+                    $data['contact']=$contact;
+                    $data['status']=$status;
+                    if(!empty($aid)){
+                        $success = $this->technician_model->Update_changepassword($aid,$data); 
+                        $message= "Successfully updated";      
+                    } 
+            
+                
+                    $response['status']=TRUE;
+                    $response['message']=$message;  
+                
+                }   catch (Exception $e) {
+                    $response['status']=FALSE;
+                    $response['message']=$e->getMessage();
+                }    
+                echo json_encode($response);
+            }
     public function Add_employee(){
         if($this->session->userdata('user_login_access') != False) { 
         $this->load->view('backend/add-employee');
