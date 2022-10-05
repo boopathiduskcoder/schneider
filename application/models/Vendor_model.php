@@ -47,5 +47,24 @@
      
         return $result;
         }
+        public function GetStockById($id){
+            $this->db->select('s.*');
+            $this->db->from('stock s');
+            $this->db->where('s.id',$id);
+            $query=$this->db->get();
+            $result = $query->row();
+            return $result;         
+        }
+        public function Add_stock($data){
+            $this->db->insert('stock',$data);
+        }
+        public function Update_stock($id,$data){
+            $this->db->where('id',$id);
+            $this->db->update('stock',$data);
+        }
+        public function deletestock($id){
+            $this->db->delete('stock',array('id'=> $id));
+        }
 }
+
 ?>

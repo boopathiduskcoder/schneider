@@ -1047,6 +1047,80 @@ class Vendor extends CI_Controller {
     }  
 
     }
+    public function Add_stock()
+    {
+        try {
+            if($this->session->userdata('user_login_access') == False) 
+            {
+                throw new Exception("Session expired", 1);                
+            }        
+            $id = $this->input->post('aid');    
+            $productname = $this->input->post('productname');    
+            $vendor = $this->input->post('vendor');
+            $stock_in_hand = $this->input->post('stock_in_hand');
+            $unit= $this->input->post('unit');     
+    
+           
+            $this->load->library('form_validation');
+            $this->form_validation->set_error_delimiters();
+            $this->form_validation->set_rules('productname', 'Product Name','trim|required|min_length[2]|max_length[2024]|xss_clean');
+            $this->form_validation->set_rules('vendor', 'Vendor','trim|required');
+            $this->form_validation->set_rules('stock_in_hand', 'stock in hand','trim|required');
+            $this->form_validation->set_rules('unit', 'Unit','trim|required');
+            if ($this->form_validation->run() == FALSE) 
+            {
+                throw new Exception(validation_errors(), 1);             
+            } 
+            
+            
+            $data['productname']=$productname;
+            $data['vendor']=$vendor;
+            $data['stock_in_hand']=$stock_in_hand;
+            $data['unit']=$unit;
+            if(empty($id)){
+                $success = $this->vendor_model->Add_stock($data);  
+                $message="Successfully added";      
+            } 
+            else {
+                $success = $this->vendor_model->Update_stock($id,$data); 
+                $message= "Successfully updated"; 
+            }
+        
+            $response['status']=TRUE;
+            $response['message']=$message;  
+        
+        }   catch (Exception $e) {
+            $response['status']=FALSE;
+            $response['message']=$e->getMessage();
+        }    
+        echo json_encode($response);
+        
+                       
+                    
+    }
+
+    public function EditStock(){
+        if($this->session->userdata('user_login_access') != False) {  
+            $id = $_GET['id'];
+		$data['stockbyid'] = $this->vendor_model->GetStockById($id);
+		echo json_encode($data);
+        }
+    else{
+		redirect(base_url() , 'refresh');
+	}  
+
+    } 
+    public function deletestock(){
+        if($this->session->userdata('user_login_access') != False) {  
+		$id= $this->input->get('id');
+		$success = $this->vendor_model->deletestock($id);
+		#echo "Successfully Deletd";
+            redirect('vendor/stock');
+        }
+    else{
+		redirect(base_url() , 'refresh');
+	} 
+    } 
     public function Add_vendor()
     {
         if($this->session->userdata('user_login_access') != False) 
@@ -1094,6 +1168,7 @@ class Vendor extends CI_Controller {
             redirect(base_url() , 'refresh');
         }    
     }
+
 
     // public function Add_vendor1()
     // {

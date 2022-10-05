@@ -58,16 +58,17 @@
                                 <tr>
                                     <td><?php echo $value->productname;?></td>
                                     <td><?php echo $value->vendor;?></td>
-                                    <td><?php  echo $value->stock_in_hand;?></td>
+                                    <td><?php echo $value->stock_in_hand;?></td>
                                     <td><?php echo $value->unit;?></td>
                                     <?php if($value->stock_in_hand != 0){?>
-                                    <td><?php echo $value->status;?></td>
+                                    <td><?php echo 'In Stock';?></td>
                                     <?php } else{ ?>
-                                        <td><span class="badge badge-danger"><?php echo $value->status;?></span></td>
+                                        <td><span class="badge badge-danger"><?php echo 'Out of stock';?></span></td>
                                         
                                    <?php } ?>
                                     <td class="jsgrid-align-center ">
-                                        <a href="<?php echo base_url();?>monitoring/edit_electricity/<?php echo $value->id?>" title="Edit" class="btn btn-sm btn-info waves-effect waves-light"><i class="fa fa-pencil-square-o"></i></a>
+                                    <a href="#" title="Edit" class="btn btn-sm btn-info waves-effect waves-light stocks" data-id="<?php echo $value->id ?>"><i class="fa fa-pencil-square-o"></i></a>
+                                    <a href="deletestock?id=<?php echo $value->id; ?>" onclick="return confirm('Are you sure want to delete this stock?')" title="Delete" class="btn btn-sm btn-danger waves-effect waves-light"><i class="fa fa-trash-o"></i></a>
                                     </td>
                                 </tr>
                                 <?php }?>
@@ -87,10 +88,9 @@
                 <h4 class="modal-title" id="exampleModalLabel1">Add Stock </h4>
                 <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
             </div>
-            <form method="post" action="Add_vendor" id="btnSubmit" enctype="multipart/form-data">
+            <form method="post" action="Add_stock" id="btnSubmit" enctype="multipart/form-data">
                 <div class="modal-body">
-                    <div class="row">
-                        <div class="col-md-6">      
+                    
                             <div class="form-group">
                                 <label class="control-label">Product Name</label>
                                 <input type="text" name="productname" value="" class="form-control" id="productname" required>
@@ -110,18 +110,12 @@
                             </div>
                             <div class="form-group">
                                 <label class="control-label">Unit</label>
-                                <input type="text" name="unit" value="" class="form-control" id="unit"  minlength="10" maxlength="12" required>
-                            </div>
-                            <div class="form-group">
-                                <label class="control-label">Status</label>
-                                <input type="text" name="nature_of_work" value="" class="form-control" id="nature_of_work"  minlength="10" maxlength="12" required>
+                                <input type="text" name="unit" value="" class="form-control" id="unit" required>
                             </div>
                             <?php echo validation_errors(); ?>
                             <?php echo $this->upload->display_errors(); ?>
-                            <?php echo $this->session->flashdata('formdata'); ?>    
-                        </div>
-                        
-                    </div>
+                            
+                       
 </div>
 <div class="modal-footer">
     <input type="hidden" name="aid" value="">
@@ -132,6 +126,33 @@
 </div>
 </div>
 </div>
+<script type="text/javascript">
+	$(document).ready(function () {
+		$(".stocks").click(function (e) {
+			e.preventDefault(e);
+// Get the record's ID via attribute  
+var iid = $(this).attr('data-id');
+$('#btnSubmit').trigger("reset");
+$('#stockmodel').modal('show');
+$.ajax({
+	url: 'EditStock?id=' + iid,
+	method: 'GET',
+	data: '',
+	dataType: 'json',
+}).done(function (response) {
+	console.log(response);
+// Populate the form fields with the data returned from server
+$('#btnSubmit').find('[name="aid"]').val(response.stockbyid.id).end();
+$('#btnSubmit').find('[name="productname"]').val(response.stockbyid.productname).end();
+$('#btnSubmit').find('[name="vendor"]').val(response.stockbyid.vendorname).end();
+$('#btnSubmit').find('[name="stock_in_hand"]').val(response.stockbyid.stock_in_hand).end();
+$('#btnSubmit').find('[name="unit"]').val(response.stockbyid.unit).end();
+ 
+                           
+});
+});
+	});
+</script>
 <?php $this->load->view('backend/footer'); ?>
 <script>
     $('#stock123').DataTable({
