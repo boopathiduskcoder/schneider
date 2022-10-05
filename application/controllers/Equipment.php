@@ -15,7 +15,7 @@ class Equipment extends CI_Controller {
         $this->load->model('logistic_model');    
         $this->load->model('project_model');    
         $this->load->model('equipment_model');    
-                $this->load->model('payroll_model');
+        $this->load->model('payroll_model');
 
     }
     public function index()
@@ -286,6 +286,9 @@ class Equipment extends CI_Controller {
     public function office_equipment(){
         if($this->session->userdata('user_login_access') != False) {         
         $data['assets'] = $this->equipment_model->GetAssetsList(2);
+        $tag_no = $this->db->count_all('equipments');
+        $tag_no = str_pad($tag_no,4,0,STR_PAD_LEFT);
+        $data['tag_no']= ASSET_PREFIX.$tag_no;
         $data['catvalue'] = $this->project_model->GetEquipmentCategory();
         $data['locations'] = $this->project_model->GetLocation();
         $this->load->view('backend/office_equipment',$data);
@@ -297,6 +300,23 @@ class Equipment extends CI_Controller {
     public function tools_equipment(){
         if($this->session->userdata('user_login_access') != False) {         
         $data['assets'] = $this->equipment_model->GetAssetsList(3);
+        $tag_no = $this->db->count_all('equipments');
+        $tag_no = str_pad($tag_no,4,0,STR_PAD_LEFT);
+        $data['tag_no']= ASSET_PREFIX.$tag_no;
+        $data['catvalue'] = $this->project_model->GetEquipmentCategory();
+        $data['locations'] = $this->project_model->GetLocation();
+        $this->load->view('backend/tools_others',$data);
+        }
+        else{
+            redirect(base_url() , 'refresh');
+        }            
+    }
+    public function ac_equipment(){
+        if($this->session->userdata('user_login_access') != False) {         
+        $data['assets'] = $this->equipment_model->GetAssetsList(4);
+        $tag_no = $this->db->count_all('equipments');
+        $tag_no = str_pad($tag_no,4,0,STR_PAD_LEFT);
+        $data['tag_no']= ASSET_PREFIX.$tag_no;
         $data['catvalue'] = $this->project_model->GetEquipmentCategory();
         $data['locations'] = $this->project_model->GetLocation();
         $this->load->view('backend/tools_others',$data);
@@ -316,9 +336,11 @@ class Equipment extends CI_Controller {
             $name   = $this->input->post('name');    
             $type   = $this->input->post('type');
             $tag_no = $this->input->post('tag_no');
-            $model  = $this->input->post('model');        
+            $model  = $this->input->post('model'); 
+            $type1  = $this->input->post('type1');        
             $installation_date  = $this->input->post('installation_date');       
-            $manufacturer       = $this->input->post('manufacturer');     
+            $manufacturer       = $this->input->post('manufacturer');  
+            $slno               = $this->input->post('slno');    
             $parts_included     = $this->input->post('parts_included');     
             $location           = $this->input->post('location');     
             $warrenty           = $this->input->post('warrenty');             
@@ -332,7 +354,7 @@ class Equipment extends CI_Controller {
                     'overwrite'     => FALSE,
                     'remove_spaces' => TRUE,
                     'encrypt_name'  => TRUE,
-                    'max_size'      => "51200", // Can be set to particular file size , here it is 2 MB(2048 Kb)
+                    'max_size'      => "2048000", // Can be set to particular file size , here it is 2 MB(2048 Kb)
                     'max_height'    => "1200",
                     'max_width'     => "1200"
                 );    
@@ -344,15 +366,37 @@ class Equipment extends CI_Controller {
                 $path = $this->upload->data();
                 $img_url = $path['file_name'];  
                 $data['image']=$img_url;
-            }                   
+            }   
+            if($_FILES['attachments']['name']){
+                $config1 = array(
+                    'upload_path'   => "./assets/attachments/equipments",
+                    'allowed_types' => "zip|rar|doc|docx|xls|xlsx|ppt|pptx|csv|ods|odt|odp|pdf",
+                    'overwrite'     => FALSE,
+                    'remove_spaces' => TRUE,
+                    'encrypt_name'  => TRUE,
+                    'max_size'      => "2048000", // Can be set to particular file size , here it is 2 MB(2048 Kb)
+                    'max_height'    => "1200",
+                    'max_width'     => "1200"
+                );    
+                $this->load->library('Upload', $config1);
+                $this->upload->initialize($config1);                
+                if (!$this->upload->do_upload('attachments')) {
+                    throw new Exception($this->upload->display_errors(), 1);
+                }      
+                $path = $this->upload->data();
+                $file_url = $path['file_name'];  
+                $data['attachment']=$file_url;
+            }     
             $this->load->library('form_validation');
             $this->form_validation->set_error_delimiters();
             $this->form_validation->set_rules('name', 'Name','trim|required|min_length[2]|max_length[2024]|xss_clean');
             $this->form_validation->set_rules('type', 'Type','trim|required');
             $this->form_validation->set_rules('tag_no', 'Tag No','trim|required|xss_clean');
             $this->form_validation->set_rules('model', 'Model','trim|required|min_length[2]|max_length[2024]|xss_clean');
+            $this->form_validation->set_rules('type1', 'Type1','trim|required|min_length[2]|max_length[2024]|xss_clean');
             $this->form_validation->set_rules('installation_date', 'Installation date','trim|required');
             $this->form_validation->set_rules('manufacturer', 'Manufacturer','trim|required|xss_clean');
+            $this->form_validation->set_rules('slno', 'Sl No','trim|required|xss_clean');
             $this->form_validation->set_rules('location', 'Location','trim|required|xss_clean');
             $this->form_validation->set_rules('warrenty', 'Warrenty','trim|required|xss_clean');
             $this->form_validation->set_rules('power', 'power','trim|required|xss_clean');
@@ -366,8 +410,10 @@ class Equipment extends CI_Controller {
             $data['type']=$type;
             $data['tag_no']=$tag_no;
             $data['model']=$model;
+            $data['type1']=$type1;
             $data['installation_date']=$installation_date;
             $data['manufacturer']=$manufacturer;
+            $data['slno']=$slno;
             $data['parts_included']=$parts_included;
             $data['location_id']=$location;
             $data['warrenty']=$warrenty;

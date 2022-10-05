@@ -16,6 +16,7 @@ class Maintenance extends CI_Controller
 		$this->load->model('leave_model');
 		$this->load->model('logistic_model');
 		$this->load->model('attendance_model');
+		$this->load->model('preventive_model');
 	}
 
 	public function index()
@@ -568,7 +569,10 @@ class Maintenance extends CI_Controller
 	public function preventive()
 	{
 		if ($this->session->userdata('user_login_access') != False) {
-			$data['tasks']    = $this->project_model->GetAllTasksList();
+			$data['service']    = $this->preventive_model->Getallservicelist();
+			$data['assets']    = $this->preventive_model->Getallassetslist();
+			$data['locations']    = $this->preventive_model->Getlocationlist();
+			$data['preventive']    = $this->preventive_model->Getpreventivelist();
 			$this->load->view('backend/preventive', $data);
 		} else {
 			redirect(base_url(), 'refresh');
@@ -905,6 +909,41 @@ class Maintenance extends CI_Controller
 			redirect(base_url(), 'refresh');
 		}
 	}
+
+	public function Add_Preventive(){
+        if($this->session->userdata('user_login_access') != False) 
+        {
+                                  
+        $ass_name = $this->input->post('ass_name');   
+		$location = $this->input->post('location');    
+        $service_days  = $this->input->post('service_days');     
+        $startdate  = $this->input->post('startdate');     
+        $enddate = $this->input->post('enddate'); 
+		$status = $this->input->post('status');      
+        $this->load->library('form_validation');
+        $this->form_validation->set_error_delimiters();
+        $this->form_validation->set_rules('ass_name', 'Ass name','trim|required');
+		$this->form_validation->set_rules('location', 'location','trim|required');
+        $this->form_validation->set_rules('service_days', 'service days','trim|required|xss_clean');
+        $this->form_validation->set_rules('startdate', 'start date','trim|required|xss_clean');
+        $this->form_validation->set_rules('enddate', 'end date','trim|required|xss_clean');
+		$this->form_validation->set_rules('status', 'status','trim|required');
+       
+        if ($this->form_validation->run() == FALSE) {
+            echo validation_errors();
+        }else{
+            $data = array();
+            $data = array('equipment_id' => $ass_name,'location_id' => $location,'interval_id' => $service_days,'last_date' => $startdate,'next_date' => $enddate,'status' => $status);
+            print_r($data);
+            $success = $this->preventive_model->Add_Preventive($data);
+            $this->session->set_flashdata('addsuccess', 'Successfully Added');
+            redirect('maintenance/preventive');
+        }
+        }
+    else{
+        redirect(base_url() , 'refresh');
+    }       
+}
 
 }
 ?>

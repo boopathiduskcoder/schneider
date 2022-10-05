@@ -49,6 +49,7 @@
                                 <li><a href="<?php echo base_url(); ?>equipment/plant_equipment">Plant Equipments</a></li>
                                 <li><a href="<?php echo base_url(); ?>equipment/office_equipment">Office Equipments</a></li>
                                 <li><a href="<?php echo base_url(); ?>equipment/tools_equipment">Tools/Others</a></li>
+                                <li><a href="<?php echo base_url(); ?>equipment/ac_equipment">Ac Equipments</a></li>
                                 <li><a href="#">Audit</a></li>
                             </ul>
                         </li>
@@ -74,9 +75,9 @@
                                 <li><a href="<?php echo base_url(); ?>vendor/stock">Stock </a></li>
                             </ul>
                         </li>
-                        <li> <a class="has-arrow waves-effect waves-dark" href="#" aria-expanded="false"><i class="mdi mdi-account-multiple"></i><span class="hide-menu">Workers</span></a>
+                        <li> <a class="has-arrow waves-effect waves-dark" href="#" aria-expanded="false"><i class="mdi mdi-account-multiple"></i><span class="hide-menu">Technicians</span></a>
                             <ul aria-expanded="false" class="collapse">
-                                <li><a href="<?php echo base_url(); ?>worker/workers">Workers </a></li>
+                                <li><a href="<?php echo base_url(); ?>worker/workers">Technicians </a></li>
                                 <!-- <li><a href="<?php echo base_url(); ?>worker/in_active_worker">In-active Workers</a></li> -->
                             </ul>
                         </li>
