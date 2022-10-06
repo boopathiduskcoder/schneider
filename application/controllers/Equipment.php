@@ -319,7 +319,7 @@ class Equipment extends CI_Controller {
         $data['tag_no']= ASSET_PREFIX.$tag_no;
         $data['catvalue'] = $this->project_model->GetEquipmentCategory();
         $data['locations'] = $this->project_model->GetLocation();
-        $this->load->view('backend/tools_others',$data);
+        $this->load->view('backend/ac_equipment',$data);
         }
         else{
             redirect(base_url() , 'refresh');

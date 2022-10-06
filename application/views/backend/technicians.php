@@ -139,7 +139,7 @@
 				<button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
 			</div>
 
-			<form method="post" action="ChangePassword" id="btnSub" enctype="multipart/form-data">
+			<form method="post" action="changepasswordsave" id="btnSub" enctype="multipart/form-data">
 				<div class="modal-body">
                     
 							<div class="form-group">
@@ -153,7 +153,7 @@
                         
                      </div>    
 <div class="modal-footer">
-	<input type="hidden" name="aid" value="">
+    <input type="hidden" name="aid" value="">
 	<button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
 	<button type="submit" class="btn btn-primary">Submit</button>
 </div>
@@ -214,14 +214,7 @@ $.ajax({
 	dataType: 'json',
 }).done(function (response) {
 	console.log(response);
-    $('#btnSub').find('[name="aid"]').val(response.technicianbyid.id).end();
-$('#btnSub').find('[name="firstname"]').val(response.technicianbyid.firstname).end();
-$('#btnSub').find('[name="lastname"]').val(response.technicianbyid.lastname).end();
-$('#btnSub').find('[name="email"]').val(response.technicianbyid.email).end();
-$('#btnSub').find('[name="password"]').val(response.technicianbyid.password).end();
-$('#btnSub').find('[name="contact"]').val(response.technicianbyid.contact).end();  
-$('#btnSub').find('[name="status"]').val(response.technicianbyid.status).end();  
-                           
+    $('#btnSub').find('[name="aid"]').val(response.getid.id).end();
 });
 });
 	});

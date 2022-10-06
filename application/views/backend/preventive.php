@@ -20,7 +20,7 @@
                         <?php if($this->session->userdata('user_type')=='EMPLOYEE'){ ?>
                         
                         <?php } else { ?>                        
-                        <button type="button" class="btn btn-info"><i class="fa fa-plus"></i><a data-toggle="modal" data-target="#exampleModal" data-whatever="@getbootstrap" class="text-white"><i class="" aria-hidden="true"></i> Add Maintenance </a></button>
+                        <button type="button" class="btn btn-info"><i class="fa fa-plus"></i><a data-toggle="modal" data-target="#preventivemodel" data-whatever="@getbootstrap" class="text-white"><i class="" aria-hidden="true"></i> Add Maintenance </a></button>
                         <?php } ?>
                     </div>
                 </div>
@@ -60,8 +60,8 @@
                                         <?php foreach ($preventive as $value) { ?>
                                             <tr>
                                                 <td><?php $aid =  $value->equipment_id;
-                                                          $adata = $this->db->get_where('assets',array('ass_id '=>$aid))->row();
-                                                          echo  $adata->ass_name; ?>
+                                                          $adata = $this->db->get_where('equipments',array('id '=>$aid))->row();
+                                                          echo  $adata->name; ?>
                                                 </td>
                                                 <td><?php $lid =  $value->location_id;
                                                           $ldata = $this->db->get_where('location',array('id '=>$lid))->row();
@@ -82,8 +82,8 @@
                                                          echo $no_of_days.' ' .'days left'; ?></span></td>
                                                 <td><?php echo $value->status;?></td>
                                                 <td class="jsgrid-align-center ">
-                                                    <a href="<?php echo base_url();?>monitoring/edit_temp/<?php echo $value->id;?>" title="Edit" class="btn btn-sm btn-info waves-effect waves-light"><i class="fa fa-pencil-square-o"></i></a>
-                                                    <a onclick="return confirm('Are you sure to delete this data?')" href="<?php echo base_url();?>monitoring/Delete_temp/<?php echo $value->id;?>" title="Delete" class="btn btn-sm btn-info waves-effect waves-light"><i class="fa fa-trash-o"></i></a>
+                                                    <a href="#" title="Edit" class="btn btn-sm btn-info waves-effect waves-light preventive" data-id="<?php echo $value->id ?>"><i class="fa fa-pencil-square-o"></i></a>
+                                                    <a href="delete_preventive?id=<?php echo $value->id; ?>" onclick="return confirm('Are you sure want to delete this data?')" title="Delete" class="btn btn-sm btn-danger waves-effect waves-light"><i class="fa fa-trash-o"></i></a>
                                                 </td>
                                             </tr>
                                             <?php }?>
@@ -115,7 +115,7 @@
                 </div>  
             </div>
                         <!-- sample modal content -->
-                        <div class="modal fade" id="exampleModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel1">
+                        <div class="modal fade" id="preventivemodel" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel1">
                             <div class="modal-dialog modal-lg" role="document">
                                 <div class="modal-content ">
                                     <div class="modal-header">
@@ -128,8 +128,8 @@
                                                 <label class="control-label col-md-3">Asset List</label>
                                                 <select class="form-control custom-select col-md-8 proid" data-placeholder="Choose a Category" tabindex="1" name="ass_name">
                                                 <option>Select</option>  
-                                                <?php foreach($assets as $value): ?>
-                                                    <option value="<?php echo $value->ass_id; ?>"><?php echo $value->ass_name; ?></option>
+                                                <?php foreach($equipments as $value): ?>
+                                                    <option value="<?php echo $value->id; ?>"><?php echo $value->name; ?></option>
                                                    <?php endforeach; ?>
                                                 </select>
                                             </div>   
@@ -154,10 +154,10 @@
                                             </div>
                                             <div class="form-group row">
                                                 <label class="control-label col-md-3">Last Service Date</label>
-                                                <input type="text" name="startdate" class="form-control col-md-3 mydatetimepickerFull" id="recipient-name1">
+                                                <input type="text" name="startdate" value="" class="form-control col-md-3 mydatetimepickerFull" id="recipient-name1">
                                                 
                                                 <label class="control-label col-md-2">Next Service Date</label>
-                                                <input type="text" name="enddate" class="form-control col-md-3 mydatetimepickerFull" id="recipient-name1">
+                                                <input type="text" name="enddate" value="" class="form-control col-md-3 mydatetimepickerFull" id="recipient-name1">
                                         </div>
                                         <div class="form-group row">
 								            <label class="control-label col-md-3">Status</label>
@@ -177,97 +177,40 @@
                                 </div>
                             </div>
                         </div>
-<!--<script type="text/javascript">
-                                        $(document).ready(function () {
-                                            $(".assetsstock").change(function (e) {
-                                                e.preventDefault(e);
-                                                // Get the record's ID via attribute  
-                                                var iid = +this.value;
-                                                //console.log(this.value);
-                                                //"#taskval option:selected" ).text();
-                                                $( "#qty" ).change();
-                                                //$('#salaryform').trigger("reset");
-                                                $.ajax({
-                                                    url: '<?php echo base_url();?>logistice/GetInstock?id=' + this.value,
-                                                    method: 'GET',
-                                                    data: 'data',
-                                                }).done(function (response) {
-                                                    console.log(response);
-                                                    // Populate the form fields with the data returned from server
-                                                    $('.qty').html(response);                                                                             $('#tasksModalform').find('[name="qty"]').attr("max",response);           
-												});
-                                            });
-                                        });
-</script>
-<script type="text/javascript">
-                                        $(document).ready(function () {
-                                            $(".proid").click(function (e) {
-                                                e.preventDefault(e);
-                                                // Get the record's ID via attribute  
-                                                var iid = $(this).val();
-                                                console.log(iid);
-                                                $('#tasksModalform').trigger("reset");
-                                                $('#tasksmodel').modal('show');
-                                                $.ajax({
-                                                    url: 'projectbyId?id=' + iid,
-                                                    method: 'GET',
-                                                    data: '',
-                                                    dataType: 'json',
-                                                }).done(function (response) {
-                                                    console.log(response);
-                                                    // Populate the form fields with the data returned from server
-													$('#tasksModalform').find('[name="prostart"]').val(response.provalue.pro_start_date).end();
-                                                    $('#tasksModalform').find('[name="proend"]').val(response.provalue.pro_end_date).end();
-												});
-                                            });
-                                        });
-</script>
-                                       <script type="text/javascript">
-                                        $(document).ready(function () {
-                                            $(".taskmodal").click(function (e) {
-                                                e.preventDefault(e);
-                                                // Get the record's ID via attribute  
-                                                var iid = $(this).attr('data-id');
-                                                //console.log(iid);
-                                                $('#tasksModalform').trigger("reset");
-                                                $('#tasksmodel').modal('show');
-                                                $.ajax({
-                                                    url: 'TasksById?id=' + iid,
-                                                    method: 'GET',
-                                                    data: '',
-                                                    dataType: 'json',
-                                                }).done(function (response) {
-                                                    console.log(response);
-                                                    // Populate the form fields with the data returned from server
-													$('#tasksModalform').find('[name="id"]').val(response.tasksvalue.id).end();
-                                                    $('#tasksModalform').find('[name="projectid"]').val(response.tasksvalue.pro_id).end();
-                                                    $('#tasksModalform').find('[name="assignto"]').val(response.tasksvalue.assigned_id).end();
-                                                    $('#tasksModalform').find('[name="tasktitle"]').val(response.tasksvalue.task_title).end();
-                                                    $('#tasksModalform').find('[name="startdate"]').val(response.tasksvalue.start_date).end();
-                                                    $('#tasksModalform').find('[name="enddate"]').val(response.tasksvalue.end_date).end();
-                                                    $('#tasksModalform').find('[name="details"]').val(response.tasksvalue.description).end();
-                                                    $('#tasksModalform').find('[name="status"]').val(response.tasksvalue.status).end();
-												});
-                                            });
-                                        });
-</script>
-<script type="text/javascript">
-                                        $(document).ready(function () {
-                                            $(".TasksDelet").click(function (e) {
-                                                e.preventDefault(e);
-                                                // Get the record's ID via attribute  
-                                                var iid = $(this).attr('data-id');
-                                                $.ajax({
-                                                    url: 'TasksDeletByid?id=' + iid,
-                                                    method: 'GET',
-                                                    data: 'data',
-                                                }).done(function (response) {
-                                                    console.log(response);
-                                                    $(".message").fadeIn('fast').delay(3000).fadeOut('fast').html(response);
-                                                    window.setTimeout(function(){location.reload()},2000)
-                                                    // Populate the form fields with the data returned from server
-												});
-                                            });
-                                        });
-</script>     -->
+                        <script type="text/javascript">
+	$(document).ready(function () {
+		$(".preventive").click(function (e) {
+			e.preventDefault(e);
+// Get the record's ID via attribute  
+var iid = $(this).attr('data-id');
+$('#btnSubmit').trigger("reset");
+$('#preventivemodel').modal('show');
+$.ajax({
+	url: 'EditPreventive?id=' + iid,
+	method: 'GET',
+	data: '',
+	dataType: 'json',
+}).done(function (response) {
+	console.log(response);
+// Populate the form fields with the data returned from server
+$('#btnSubmit').find('[name="id"]').val(response.preventivebyid.id).end();
+$('#btnSubmit').find('[name="ass_name"]').val(response.preventivebyid.equipment_id).end();
+$('#btnSubmit').find('[name="location"]').val(response.preventivebyid.location_id).end();
+$('#btnSubmit').find('[name="service_days"]').val(response.preventivebyid.interval_id).end();
+$('#btnSubmit').find('[name="startdate"]').val(response.preventivebyid.last_date).datepicker('option', 'dateFormat', 'YYYY-MM-DD').end();
+$('#btnSubmit').find('[name="enddate"]').val(response.preventivebyid.next_date).end();  
+$('#btnSubmit').find('[name="status"]').val(response.preventivebyid.status).end();  
+                           
+});
+});
+	});
+
+	function testInput(event) {
+   var value = String.fromCharCode(event.which);
+   var pattern = new RegExp(/[a-zåäö ]/i);
+   return pattern.test(value);
+}
+
+$('#recipient-name1').bind('keypress', testInput);
+</script> 
     <?php $this->load->view('backend/footer'); ?>        

@@ -28,8 +28,16 @@
         $this->db->where('id',$id);
         $this->db->update('technicians',$data);
     }
-    public function Update_changepassword($aid,$data){
-        $this->db->where('id',$aid);
+    public function changepassword($id){
+        $this->db->select('id');
+        $this->db->from('technicians t');
+        $this->db->where('t.id',$id);
+        $query=$this->db->get();
+        $result = $query->row();
+        return $result;        
+    }
+    public function Update_technicianpassword($id,$data){
+        $this->db->where('id',$id);
         $this->db->update('technicians',$data);
     }
     public function deletetechnician($id){
