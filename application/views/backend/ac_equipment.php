@@ -5,7 +5,7 @@
 	<div class="error_msg"></div>
 	<div class="row page-titles">
 		<div class="col-md-5 align-self-center">
-			<h3 class="text-themecolor"><i class="fa fa-cart-plus"></i> Plant Equipment</h3>
+			<h3 class="text-themecolor"><i class="fa fa-cart-plus"></i> Ac Equipment</h3>
 		</div>
 		<div class="col-md-7 align-self-center">
 			<ol class="breadcrumb">
@@ -17,14 +17,14 @@
 	<div class="container-fluid">
 		<div class="row m-b-10"> 
 			<div class="col-12">
-				<button type="button" class="btn btn-info"><i class="fa fa-plus"></i><a data-toggle="modal" data-target="#assetsmodel" data-whatever="@getbootstrap" class="text-white"><i class="" aria-hidden="true"></i> Add Plant Equipment </a></button>
+				<button type="button" class="btn btn-info"><i class="fa fa-plus"></i><a data-toggle="modal" data-target="#assetsmodel" data-whatever="@getbootstrap" class="text-white"><i class="" aria-hidden="true"></i> Add Ac Equipment </a></button>
 			</div>
 		</div>
 		<div class="row">
 			<div class="col-12">
 				<div class="card card-outline-info">
 					<div class="card-header">
-						<h4 class="m-b-0 text-white"> Plant Equipment List</h4>
+						<h4 class="m-b-0 text-white"> Ac Equipment List</h4>
 					</div>
 
 					<div class="card-body">
@@ -135,8 +135,8 @@
 								<input type="text" name="slno" value="" class="form-control"  autocomplete="off">
 							</div>  
 							<div class="form-group">
-								<label class="control-label">Add Parts (,)</label>
-								<input type="text" name="parts_included" value="" class="form-control"  autocomplete="off">
+							<label class="control-label">Add Accessories</label>
+								<textarea class="form-control" name="parts_included" id="message-text1" required minlength="14" rows="6"></textarea>
 							</div>                                                  
 						</div>
 						<div class="col-md-6">

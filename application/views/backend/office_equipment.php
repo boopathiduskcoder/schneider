@@ -132,8 +132,8 @@
 								<input type="text" name="slno" value="" class="form-control"  autocomplete="off">
 							</div>   
 							<div class="form-group">
-								<label class="control-label">Add Parts (,)</label>
-								<input type="text" name="parts_included" value="" class="form-control" id="recipient-name1 ">
+							<label class="control-label">Add Accessories</label>
+								<textarea class="form-control" name="parts_included" id="message-text1" required minlength="14" rows="6"></textarea>
 							</div>                                                  
 						</div>
 						<div class="col-md-6">

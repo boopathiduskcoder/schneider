@@ -139,7 +139,7 @@
 				<button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
 			</div>
 
-			<form method="post" action="ChangePassword" id="btnSub" enctype="multipart/form-data">
+			<form method="post" action="changepasswordsave" id="btnSub" enctype="multipart/form-data">
 				<div class="modal-body">
                     
 							<div class="form-group">
@@ -153,7 +153,7 @@
                         
                      </div>    
 <div class="modal-footer">
-	<input type="hidden" name="aid" value="">
+    <input type="hidden" name="aid" value="">
 	<button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
 	<button type="submit" class="btn btn-primary">Submit</button>
 </div>
@@ -176,6 +176,7 @@ $.ajax({
 	dataType: 'json',
 }).done(function (response) {
 	console.log(response);
+    //alert(JSON.stringify(response));
 // Populate the form fields with the data returned from server
 $('#btnSubmit').find('[name="aid"]').val(response.technicianbyid.id).end();
 $('#btnSubmit').find('[name="firstname"]').val(response.technicianbyid.firstname).end();
@@ -183,8 +184,11 @@ $('#btnSubmit').find('[name="lastname"]').val(response.technicianbyid.lastname).
 $('#btnSubmit').find('[name="email"]').val(response.technicianbyid.email).end();
 $('#btnSubmit').find('[name="password"]').val(response.technicianbyid.password).end();
 $('#btnSubmit').find('[name="contact"]').val(response.technicianbyid.contact).end();  
-$('#btnSubmit').find('[name="status"]').val(response.technicianbyid.status).end();  
-                           
+$('#btnSubmit').find('[name="status"]').val(response.technicianbyid.status).end();
+/*var status =  $('#btnSubmit').find('[name="status"]').val(response.technicianbyid.status);
+alert(status);
+$("select[name^='status'] option[value='active']").attr("selected","selected").trigger('change');*/
+                         
 });
 });
 	});
@@ -214,14 +218,7 @@ $.ajax({
 	dataType: 'json',
 }).done(function (response) {
 	console.log(response);
-    $('#btnSub').find('[name="aid"]').val(response.technicianbyid.id).end();
-$('#btnSub').find('[name="firstname"]').val(response.technicianbyid.firstname).end();
-$('#btnSub').find('[name="lastname"]').val(response.technicianbyid.lastname).end();
-$('#btnSub').find('[name="email"]').val(response.technicianbyid.email).end();
-$('#btnSub').find('[name="password"]').val(response.technicianbyid.password).end();
-$('#btnSub').find('[name="contact"]').val(response.technicianbyid.contact).end();  
-$('#btnSub').find('[name="status"]').val(response.technicianbyid.status).end();  
-                           
+    $('#btnSub').find('[name="aid"]').val(response.getid.id).end();
 });
 });
 	});
