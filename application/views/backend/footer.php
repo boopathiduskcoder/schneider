@@ -42,9 +42,11 @@
 
     
  <script src="<?php echo base_url(); ?>assets/plugins/moment/moment.js"></script>
- 
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-datetimepicker/4.17.47/js/bootstrap-datetimepicker.min.js"></script>  
-   
+ <script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-datetimepicker/3.1.3/js/bootstrap-datetimepicker.min.js"></script>
+
+    <!--<script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-datetimepicker/4.17.47/js/bootstrap-datetimepicker.min.js"></script> 
+    <<script src="<?php echo base_url(); ?>assets/plugins/bootstrap-material-datetimepicker/bootstrap-datetimepicker.min.js"></script>--> 
+
     <script src="<?php echo base_url(); ?>assets/plugins/styleswitcher/jQuery.style.switcher.js"></script>
 
     <!-- Editable -->
@@ -98,9 +100,8 @@
         });
         $(function () {
             $('#datetimepicker1').datetimepicker({
-                format: 'DD-MM-YYYY hh:mm A',
-                
-                
+                format: 'YYYY-MM-DD hh:mm:ss',
+                minDate:new Date(),
 
 // Your Icons
 // as Bootstrap 4 is not using Glyphicons anymore

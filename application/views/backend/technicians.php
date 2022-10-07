@@ -176,6 +176,7 @@ $.ajax({
 	dataType: 'json',
 }).done(function (response) {
 	console.log(response);
+    //alert(JSON.stringify(response));
 // Populate the form fields with the data returned from server
 $('#btnSubmit').find('[name="aid"]').val(response.technicianbyid.id).end();
 $('#btnSubmit').find('[name="firstname"]').val(response.technicianbyid.firstname).end();
@@ -183,8 +184,11 @@ $('#btnSubmit').find('[name="lastname"]').val(response.technicianbyid.lastname).
 $('#btnSubmit').find('[name="email"]').val(response.technicianbyid.email).end();
 $('#btnSubmit').find('[name="password"]').val(response.technicianbyid.password).end();
 $('#btnSubmit').find('[name="contact"]').val(response.technicianbyid.contact).end();  
-$('#btnSubmit').find('[name="status"]').val(response.technicianbyid.status).end();  
-                           
+$('#btnSubmit').find('[name="status"]').val(response.technicianbyid.status).end();
+/*var status =  $('#btnSubmit').find('[name="status"]').val(response.technicianbyid.status);
+alert(status);
+$("select[name^='status'] option[value='active']").attr("selected","selected").trigger('change');*/
+                         
 });
 });
 	});

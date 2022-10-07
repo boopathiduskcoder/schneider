@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: 127.0.0.1
--- Generation Time: Oct 06, 2022 at 05:08 PM
+-- Generation Time: Oct 07, 2022 at 04:12 PM
 -- Server version: 10.4.19-MariaDB
 -- PHP Version: 8.0.7
 
@@ -206,18 +206,27 @@ CREATE TABLE `breakdown` (
   `equipment_id` int(10) NOT NULL,
   `department_id` int(10) NOT NULL,
   `breakdown_id` int(10) NOT NULL,
+  `technician_id` int(10) NOT NULL,
   `date_and_time` timestamp NOT NULL DEFAULT current_timestamp() ON UPDATE current_timestamp(),
-  `details` varchar(255) NOT NULL
+  `details` varchar(255) NOT NULL,
+  `completeddate` date NOT NULL,
+  `actiontaken` varchar(255) NOT NULL,
+  `status` varchar(255) NOT NULL,
+  `type` int(10) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
 
 --
 -- Dumping data for table `breakdown`
 --
 
-INSERT INTO `breakdown` (`id`, `equipment_id`, `department_id`, `breakdown_id`, `date_and_time`, `details`) VALUES
-(1, 1, 2, 1, '0000-00-00 00:00:00', 'sdfghjkdfghjk'),
-(3, 4, 5, 2, '0000-00-00 00:00:00', 'testsdfgsghsdhghd'),
-(4, 1, 2, 3, '0000-00-00 00:00:00', 'asdfghjxcfvghjk');
+INSERT INTO `breakdown` (`id`, `equipment_id`, `department_id`, `breakdown_id`, `technician_id`, `date_and_time`, `details`, `completeddate`, `actiontaken`, `status`, `type`) VALUES
+(1, 1, 2, 1, 1, '2022-10-07 07:09:55', 'sdfghjkdfghjk', '2022-10-07', '', '', 1),
+(3, 4, 5, 2, 6, '2022-10-07 07:11:21', 'testsdfgsghsdhghd', '2022-10-07', '', '', 1),
+(4, 1, 2, 3, 2, '2022-10-07 11:55:30', 'asdfghjxcfvghjk', '2022-10-20', 'sdfghdfghsdfghjdfg', 'Completed', 1),
+(5, 1, 4, 2, 2, '2022-10-07 07:10:08', 'asdfghjsdfghsdfghj', '2022-10-07', '', '', 1),
+(6, 2, 3, 1, 2, '2022-10-07 06:59:50', 'xcvbnasdzxfghj', '2022-10-07', '', '', 1),
+(7, 5, 2, 1, 2, '2022-10-07 08:19:02', 'asdfghjzdxfcgvhbgsdfg', '2022-10-07', '', '', 2),
+(8, 1, 3, 1, 6, '2022-10-06 20:19:56', 'sadfghjkasdfghj', '2022-10-07', '', '', 2);
 
 -- --------------------------------------------------------
 
@@ -1551,7 +1560,7 @@ ALTER TABLE `bank_info`
 -- AUTO_INCREMENT for table `breakdown`
 --
 ALTER TABLE `breakdown`
-  MODIFY `id` int(10) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=5;
+  MODIFY `id` int(10) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=11;
 
 --
 -- AUTO_INCREMENT for table `breakdowntypes`
