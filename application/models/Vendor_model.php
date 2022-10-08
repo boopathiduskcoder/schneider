@@ -8,7 +8,7 @@
 	public function GetVendorByID($id){
         $this->db->select('v.*');
         $this->db->from('vendor_list v');
-        $this->db->where('v.id',$id);
+        $this->db->where('v.vid',$id);
         $query=$this->db->get();
         $result = $query->row();
         
@@ -30,7 +30,7 @@
         }
     }
     public function Update_vendor($id,$data){
-        $this->db->where('id',$id);
+        $this->db->where('vid',$id);
         $this->db->update('vendor_list',$data);
     }
     public function vendor_list(){

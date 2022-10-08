@@ -1034,9 +1034,9 @@ class Vendor extends CI_Controller {
         $data['invalidem'] = $this->employee_model->getInvalidUser();
         $this->load->view('backend/invalid_user',$data);
     }
-    public function VendorByID($id){
+    public function VendorByID(){
         if($this->session->userdata('user_login_access') != False) {  
-        $id= $this->input->get('id');
+        $id= $_GET['id'];
      
 
         $data['vendorByid'] = $this->vendor_model->GetVendorByID($id);
@@ -1123,50 +1123,57 @@ class Vendor extends CI_Controller {
     } 
     public function Add_vendor()
     {
-        if($this->session->userdata('user_login_access') != False) 
-        {        
+        try {
+        if($this->session->userdata('user_login_access') == False) 
+        {
+            throw new Exception("Session expired", 1);                
+        }       
             $id = $this->input->post('aid');    
             $vendor_name = $this->input->post('vendor_name');    
             $contact_person = $this->input->post('contact_person');
             $email_id = $this->input->post('email_id');
-            $contact_number= $this->input->post('contact_number');      
+            $contact_number= $this->input->post('contact_number'); 
+            $nature_of_work= $this->input->post('nature_of_work');          
 
             $this->load->library('form_validation');
             $this->form_validation->set_error_delimiters();
             $this->form_validation->set_rules('vendor_name', 'Vendor','trim|required|min_length[2]|max_length[2024]|xss_clean');
             $this->form_validation->set_rules('contact_person', 'Contact Person','trim|required');
-            $this->form_validation->set_rules('email_id', 'Email','trim|required|min_length[2]|max_length[2024]|xss_clean|valid_email|is_unique[vendor_list.email_id]');
-            $this->form_validation->set_rules('contact_number', 'Contact Number', 'trim|required|min_length[10]|max_length[15]|xss_clean');
+            $this->form_validation->set_rules('email_id', 'Email','trim|required|min_length[2]|max_length[2024]|xss_clean|is_unique[vendor_list.email_id.vid'.$id.']',array('is_unique' => 'This %s already exists.'));
+            $this->form_validation->set_rules('contact_number', 'Contact Number', 'trim|required');
+            $this->form_validation->set_rules('nature_of_work', 'Nature of Work', 'trim|required');
             
             if ($this->form_validation->run() == FALSE) {
-                echo validation_errors();
+                throw new Exception(validation_errors(), 1);    
                 } 
-                else
-                {
+               
                         $time = date("Y-m-d h:i:sa");
                         $data['vendor_name']=$vendor_name;
                         $data['email_id']=$email_id;
                         $data['contact_number']=$contact_number;
                         $data['contact_person']=$contact_person;
+                        $data['nature_of_work']=$nature_of_work;
                         $data['status']= 'ACTIVE';
                         $data['updated_at']= $time;
                 
                 if(empty($id)){
                     $success = $this->vendor_model->Add_vendor($data);  
-                    echo "Successfully Added"; 
-                    redirect(base_url() , 'refresh');           
+                    $message="Successfully added";         
                 } 
                 else {
                     $data['updated_at']= $time = date("Y-m-d h:i:sa");
                     $success = $this->vendor_model->Update_vendor($id,$data); 
-                    echo "Successfully Updated"; 
-                    redirect(base_url() , 'refresh');
-                }   
-            } 
-        }
-        else{
-            redirect(base_url() , 'refresh');
+                    $message="Successfully Updated";         
+                } 
+                $response['status']=TRUE;
+            $response['message']=$message;  
+        
+    
+       }   catch (Exception $e) {
+            $response['status']=FALSE;
+            $response['message']=$e->getMessage();
         }    
+        echo json_encode($response);
     }
 
 

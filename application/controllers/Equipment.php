@@ -453,6 +453,9 @@ class Equipment extends CI_Controller {
         {
             $id = base64_decode($this->input->get('equipment_id'));
             $data['plant_data']= $this->equipment_model->GetAssetById($id);
+            $data['preventive']= $this->equipment_model->GetAssetByIdtechnicians($id);
+            $data['breakdowns']= $this->equipment_model->GetAssetByIdbreakdown($id,1);
+            $data['complaints']= $this->equipment_model->GetAssetByIdcomplaints($id,2);
             $this->load->view('backend/plant_view',$data);  
         }
         else

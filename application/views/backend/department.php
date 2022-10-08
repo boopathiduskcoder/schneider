@@ -62,7 +62,7 @@
                             
 
                             <div class="card-body">
-                                    <form method="post" action="Save_dep" enctype="multipart/form-data">
+                                    <form method="post" action="Save_department" enctype="multipart/form-data">
                                         <div class="form-body">
                                             <div class="row ">
                                                 <div class="col-md-12">

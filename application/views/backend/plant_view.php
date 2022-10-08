@@ -182,12 +182,212 @@
 <div class="tab-pane" id="profile" role="tabpanel">
     <div class="card">
         <div class="card-body">
-            <h3 class="card-title">Permanent Contact Information</h3>
+            <div class="row">
+                    <div class="col-12">
+                        <div class="card card-outline-info">
+                            <div class="card-header">
+                                <h4 class="m-b-0 text-white"> Maintenance List                   
+                                </h4>
+                            </div>
+                            <div class="card-body">
+                                <div class="table-responsive ">
+                                    <table id="example23" class="display nowrap table table-hover table-striped table-bordered" cellspacing="0" width="100%">
+                                        <thead>
+                                            <tr>
+                                                <th>Equipment Name</th>
+                                                <th>Location</th>
+                                                <th>Service</th>
+                                                <th>Last Date </th>
+                                                <th>Next Date </th>
+                                                <th>Status</th>
+                                            </tr>
+                                        </thead>
+                                        <tfoot>
+                                            <tr>
+                                                <th>Equipment Name</th>
+                                                <th>Location</th>
+                                                <th>Service</th>
+                                                <th>Last Date </th>
+                                                <th>Next Date </th>
+                                                <th>Status</th>
+                                            </tr>
+                                        </tfoot>
+                                        <tbody>
+                                        <?php foreach ($preventive as $value) { ?>
+                                            <tr>
+                                                <td><?php $aid =  $value->equipment_id;
+                                                          $adata = $this->db->get_where('equipments',array('id '=>$aid))->row();
+                                                          echo  $adata->name; ?>
+                                                </td>
+                                                <td><?php $lid =  $value->location_id;
+                                                          $ldata = $this->db->get_where('location',array('id '=>$lid))->row();
+                                                          echo  $ldata->location_name; ?></td>
+                                                <td><?php $sid =  $value->interval_id;
+                                                          $sdata = $this->db->get_where('service_interval',array('id '=>$sid))->row();
+                                                          echo  $sdata->name; ?></td>
+                                                <td><?php $date= strtotime($value->last_date);
+                                                          echo date("d-F-y", $date);;?></td>
+                                                <td><?php $date= strtotime($value->next_date);
+                                                          echo date("d-F-y", $date);;?>
+                                                <br><span class="badge badge-success">
+                                                     <?php
+                                                         $date1= $value->next_date;
+                                                         $date2 =$value->last_date;
+                                                         $date1 = strtotime($date1);
+                                                         $date2 = strtotime($date2);
+                                                         $datediff = $date1 - $date2;
+                                                         $no_of_days =  floor($datediff / (60 * 60 * 24));
+                                                         echo $no_of_days.' ' .'days left'; ?></span></td>
+                                                <td><?php echo $value->status;?></td>
 
+                                            </tr>
+                                            <?php }?>
+                                            <!--<tr>
+                                              <td> Asset 10</td>
+                                              <td> Hall A</td>
+                                              <td>July 3, 2022</td>
+                                              <td>December 3, 2022 <br><span class="badge badge-success">112 days left</span></td>
+                                              <td>Completed</td>
+                                              <td>
+                                              <a href="#" title="Edit" class="btn btn-sm btn-info waves-effect waves-light"><i class="fa fa-eye"></i></a>
+                                          </td>
+                                          <tr>
+                                              <td> Asset 10</td>
+                                              <td> Hall A</td>
+                                              <td>July 3, 2022</td>
+                                              <td>December 3, 2022 <br><span class="badge badge-success">112 days left</span></td>
+                                              <td>Completed</td>
+                                              <td>
+                                              <a href="#" title="Edit" class="btn btn-sm btn-info waves-effect waves-light"><i class="fa fa-eye"></i></a>
+                                          </td>
+                                          </tr>-->
+                                        </tbody>
+                                    </table>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>  
+        </div>
+    </div>
+</div>
+<!--third tab-->
+<div class="tab-pane" id="education" role="tabpanel">
+    <div class="card">
+        <div class="card-body">
+            <div class="row">
+                    <div class="col-12">
+                        <div class="card card-outline-info">
+                            <div class="card-header">
+                                <h4 class="m-b-0 text-white"> Breakdown List                   
+                                </h4>
+                            </div>
+                            <div class="card-body">
+                                <div class="table-responsive ">
+                                    <table id="example12" class="display nowrap table table-hover table-striped table-bordered" cellspacing="0" width="100%">
+                                        <thead>
+                                            <tr>
+                                                <th>Equipment Name</th>
+                                                <th>Department</th>
+                                                <th>Breakdown</th>
+                                                <th>Assigned To</th>
+                                                <th>Reported Date & Time</th>
+                                                <th>Details</th>
+                                            </tr>
+                                        </thead>
+                                        <tfoot>
+                                            <tr>
+                                                <th>Equipment Name</th>
+                                                <th>Department</th>
+                                                <th>Breakdown </th>
+                                                <th>Assigned To</th>
+                                                <th>Reported Date & Time</th>
+                                                <th>Details</th>
+                                                
+                                            </tr>
+                                        </tfoot>
+                                        <tbody>
+                                        <?php foreach ($breakdowns as $value) {
+                                           ?>
+                                            <tr>
+                                                <td><?php echo $value->equipmentname;?></td>
+                                                <td><?php echo $value->dep_name;?></td>
+                                                <td><?php echo $value->breakdown_name;?></td>
+                                                <td><?php echo $value->firstname.' '.$value->lastname;?></td>
+                                                <td><?php $date= strtotime($value->date_and_time);
+                                                          echo date("d-F-y, H:i:s", $date);?></td>
+                                                <td><?php echo $value->details;?></td>
+                                            </tr>
+                                            <?php }?>
+                                        </tbody>
+                                    </table>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
         </div>
     </div>
 </div>
 
+<!--fourth tab-->
+<div class="tab-pane" id="experience" role="tabpanel">
+    <div class="card">
+        <div class="card-body">
+        <div class="row">
+                    <div class="col-12">
+                        <div class="card card-outline-info">
+                            <div class="card-header">
+                                <h4 class="m-b-0 text-white"> Complaints List                   
+                                </h4>
+                            </div>
+                            <div class="card-body">
+                                <div class="table-responsive ">
+                                    <table id="example13" class="display nowrap table table-hover table-striped table-bordered" cellspacing="0" width="100%">
+                                        <thead>
+                                            <tr>
+                                                <th>Equipment Name</th>
+                                                <th>Department</th>
+                                                <th>Breakdown</th>
+                                                <th>Assigned To</th>
+                                                <th>Reported Date & Time</th>
+                                                <th>Details</th>
+                                        
+                                            </tr>
+                                        </thead>
+                                        <tfoot>
+                                            <tr>
+                                                <th>Equipment Name</th>
+                                                <th>Department</th>
+                                                <th>Breakdown </th>
+                                                <th>Assigned To</th>
+                                                <th>Reported Date & Time</th>
+                                                <th>Details</th>
+                                        
+                                            </tr>
+                                        </tfoot>
+                                        <tbody>
+                                        <?php foreach ($complaints as $value) {
+                                           ?>
+                                            <tr>
+                                                <td><?php echo $value->equipmentname;?></td>
+                                                <td><?php echo $value->dep_name;?></td>
+                                                <td><?php echo $value->breakdown_name;?></td>
+                                                <td><?php echo $value->firstname.' '.$value->lastname;?></td>
+                                                <td><?php $date= strtotime($value->date_and_time);
+                                                          echo date("d-F-y, H:i:s", $date);?></td>
+                                                <td><?php echo $value->details;?></td>
+                                            </tr>
+                                            <?php }?>
+                                    </table>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>  
+        </div>
+    </div>
+</div>
 
 
 </div>

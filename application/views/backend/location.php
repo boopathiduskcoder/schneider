@@ -16,26 +16,26 @@
             <div class="container-fluid">         
     <div class="row">
         <div class="col-lg-5">
-            <?php if (isset($editdesignation)) { ?>
+            <?php if (isset($editlocation)) { ?>
                 <div class="card card-outline-info">
                     <div class="card-header">
                         <h4 class="m-b-0 text-white">Edit Location</h4>
                     </div>
                     
-                    <?php echo validation_errors(); ?>
-                    <?php echo $this->upload->display_errors(); ?>
-                    <?php echo $this->session->flashdata('feedback'); ?>
+                    <?php //echo validation_errors(); ?>
+                    <?php //echo $this->upload->display_errors(); ?>
+                    <?php //echo $this->session->flashdata('feedback'); ?>
                     
 
                     <div class="card-body">
-                            <form method="post" action="<?php echo base_url();?>organization/Update_des" enctype="multipart/form-data">
+                            <form method="post" action="<?php echo base_url();?>Settings/Update_location" enctype="multipart/form-data">
                                 <div class="form-body">
                                     <div class="row ">
                                         <div class="col-md-12">
                                             <div class="form-group">
                                                 <label class="control-label">Location Name</label>
-                                                <input type="text" name="designation" id="firstName" value="<?php  echo $editdesignation->des_name;?>" class="form-control" placeholder="">
-                                                <input type="hidden" name="id" value="<?php  echo $editdesignation->id;?>">
+                                                <input type="text" name="location_name" id="location_name" value="<?php  echo $editlocation->location_name;?>" class="form-control" placeholder="">
+                                                <input type="hidden" name="id" value="<?php  echo $editlocation->id;?>">
                                             </div>
                                         </div>
                                         <!--/span-->
@@ -56,9 +56,9 @@
                         <h4 class="m-b-0 text-white">Add Location</h4>
                     </div>
                     
-                    <?php echo validation_errors(); ?>
-                    <?php echo $this->upload->display_errors(); ?>
-                    <?php echo $this->session->flashdata('feedback'); ?>
+                    <?php //echo validation_errors(); ?>
+                    <?php //echo $this->upload->display_errors(); ?>
+                    <?php //echo $this->session->flashdata('feedback'); ?>
                     
 
                     <div class="card-body">
@@ -90,7 +90,7 @@
                 <div class="card-header">
                     <h4 class="m-b-0 text-white"> Location List</h4>
                 </div>
-                <div><?php echo $this->session->flashdata('delsuccess');?></div>
+                <div><?php //echo $this->session->flashdata('delsuccess');?></div>
                 <div class="card-body">
                     <div class="table-responsive ">
                         <table class="display nowrap table table-hover table-striped table-bordered" cellspacing="0" width="100%">
@@ -111,8 +111,8 @@
                                 <tr>
                                     <td><?php echo $value->location_name;?></td>
                                     <td class="jsgrid-align-center ">
-                                        <a href="<?php echo base_url();?>organization/Edit_des/<?php echo $value->id?>" title="Edit" class="btn btn-sm btn-info waves-effect waves-light"><i class="fa fa-pencil-square-o"></i></a>
-                                        <a onclick="return confirm('Are you sure to delete this data?')"  href="<?php echo base_url();?>organization/des_delete/<?php echo $value->id;?>" title="Delete" class="btn btn-sm btn-info waves-effect waves-light"><i class="fa fa-trash-o"></i></a>
+                                        <a href="<?php echo base_url();?>Settings/Edit_location/<?php echo $value->id?>" title="Edit" class="btn btn-sm btn-info waves-effect waves-light"><i class="fa fa-pencil-square-o"></i></a>
+                                        <a onclick="return confirm('Are you sure to delete this location?')"  href="<?php echo base_url();?>Settings/location_delete/<?php echo $value->id;?>" title="Delete" class="btn btn-sm btn-info waves-effect waves-light"><i class="fa fa-trash-o"></i></a>
                                     </td>
                                 </tr>
                                 <?php }?>

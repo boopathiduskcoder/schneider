@@ -180,6 +180,18 @@ icons: {
             'copy', 'csv', 'excel', 'pdf', 'print'
         ]
     });
+    $('#example12').DataTable({
+        dom: 'Bfrtip',
+        buttons: [
+            'copy', 'csv', 'excel', 'pdf', 'print'
+        ]
+    });
+    $('#example13').DataTable({
+        dom: 'Bfrtip',
+        buttons: [
+            'copy', 'csv', 'excel', 'pdf', 'print'
+        ]
+    });
     $('#single-input').clockpicker({
         placement: 'bottom',
         align: 'left',
