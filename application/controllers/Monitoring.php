@@ -199,9 +199,12 @@ class Monitoring extends CI_Controller {
 	}        
     }
     public function Add_electricity(){
-        if($this->session->userdata('user_login_access') != False) 
-        {
-                                  
+        try {
+            if($this->session->userdata('user_login_access') == False) 
+            {
+                throw new Exception("Session expired", 1);                
+            }     
+        $id= $this->input->post('aid') ;                       
         $date = $this->input->post('date');       
         $am_6  = $this->input->post('am_6');     
         $pm_2  = $this->input->post('pm_2');     
@@ -215,18 +218,22 @@ class Monitoring extends CI_Controller {
        
         if ($this->form_validation->run() == FALSE) {
             echo validation_errors();
-        }else{
+        }
             $data = array();
             $data = array('date' => $date,'am_6' => $am_6,'pm_2' => $pm_2,'pm_10' => $pm_10);
-            print_r($data);
-            $success = $this->electricity_model->Add_Electricity($data);
-            $this->session->set_flashdata('addsuccess', 'Successfully Added');
-            redirect('monitoring/electricity');
-        }
-        }
-    else{
-        redirect(base_url() , 'refresh');
-    }       
+            if(empty($id)){
+                $success = $this->electricity_model->Add_Electricity($data);  
+                $message="Successfully added";         
+            } 
+            $response['status']=TRUE;
+            $response['message']=$message;  
+    
+
+   }   catch (Exception $e) {
+        $response['status']=FALSE;
+        $response['message']=$e->getMessage();
+    } 
+    echo json_encode($response);   
 }
 public function edit_electricity($elec){
     if($this->session->userdata('user_login_access') != False) { 
@@ -240,7 +247,11 @@ else{
 }
 public function Update_electricity(){
 
-    if($this->session->userdata('user_login_access') != False) {
+    try {
+        if($this->session->userdata('user_login_access') == False) 
+        {
+            throw new Exception("Session expired", 1);                
+        } 
     $id = $this->input->post('id');
     $date = $this->input->post('date');       
         $am_6  = $this->input->post('am_6');     
@@ -255,23 +266,27 @@ public function Update_electricity(){
        
         if ($this->form_validation->run() == FALSE) {
             echo validation_errors();
-        }else{
+        }
             $data = array();
             $data = array('date' => $date,'am_6' => $am_6,'pm_2' => $pm_2,'pm_10' => $pm_10);
-        
-    $this->electricity_model->Update_Electricity($id, $data);
-    $this->session->set_flashdata('updatesuccess', 'Successfully Updated');
-     
-    }
-}
-else{
-    redirect(base_url() , 'refresh');
-}        
+            if(!empty($id)){
+                $success =  $this->electricity_model->Update_Electricity($id, $data);  
+                $message="Successfully Updated";         
+            } 
+            $response['status']=TRUE;
+            $response['message']=$message;  
+    
+
+   }   catch (Exception $e) {
+        $response['status']=FALSE;
+        $response['message']=$e->getMessage();
+    } 
+    echo json_encode($response);   
 }
 public function electricity_delete($id){
     if($this->session->userdata('user_login_access') != False) {
     $this->electricity_model->electricity_delete($id);
-    $this->session->set_flashdata('delsuccess', 'Successfully Deleted');
+   // $this->session->set_flashdata('delsuccess', 'Successfully Deleted');
     redirect('monitoring/electricity');
     }
 else{
@@ -281,7 +296,11 @@ else{
 
 
 public function Save_temp(){
-    if($this->session->userdata('user_login_access') != False) { 
+    try {
+        if($this->session->userdata('user_login_access') == False) 
+        {
+            throw new Exception("Session expired", 1);                
+        }   
        $date = $this->input->post('date');
        $location = $this->input->post('location');
        $reading = $this->input->post('reading');
@@ -293,16 +312,22 @@ public function Save_temp(){
 
        if ($this->form_validation->run() == FALSE) {
            echo validation_errors();
-       }else{
+       }
         $data = array();
         $data = array('date' => $date,'location' => $location,'reading' => $reading);
-        $success = $this->temperature_model->Add_Temperature($data);
-        $this->session->set_flashdata('addsuccess','Successfully Added');
-       }
-        }
-    else{
-		redirect(base_url() , 'refresh');
-	}        
+        if(empty($id)){
+            $success = $this->temperature_model->Add_Temperature($data);  
+            $message="Successfully added";         
+        } 
+        $response['status']=TRUE;
+        $response['message']=$message;  
+
+
+}   catch (Exception $e) {
+    $response['status']=FALSE;
+    $response['message']=$e->getMessage();
+} 
+echo json_encode($response);  
     }
     public function edit_temp($temp){
         if($this->session->userdata('user_login_access') != False) { 
@@ -317,7 +342,11 @@ public function Save_temp(){
     }
     public function Update_temp(){
 
-        if($this->session->userdata('user_login_access') != False) {
+        try {
+            if($this->session->userdata('user_login_access') == False) 
+            {
+                throw new Exception("Session expired", 1);                
+            } 
         $id = $this->input->post('id');
         $date = $this->input->post('date');
         $location = $this->input->post('location');
@@ -330,22 +359,29 @@ public function Save_temp(){
  
         if ($this->form_validation->run() == FALSE) {
             echo validation_errors();
-        }else{
+        }
          $data = array();
          $data = array('date' => $date,'location' => $location,'reading' => $reading);
-        $this->temperature_model->Update_Temperature($id, $data);
-        $this->session->set_flashdata('updatesuccess', 'Successfully Updated');
+        if(!empty($id)){
+            $success =  $this->temperature_model->Update_Temperature($id, $data);  
+            $message="Successfully Updated";         
+        } 
+        $response['status']=TRUE;
+        $response['message']=$message;  
+
+
+}   catch (Exception $e) {
+    $response['status']=FALSE;
+    $response['message']=$e->getMessage();
+} 
+echo json_encode($response); 
          
-        }
-    }
-    else{
-        redirect(base_url() , 'refresh');
-    }        
+        
     }
     public function Delete_temp($id){
         if($this->session->userdata('user_login_access') != False) {
         $this->temperature_model->temperature_delete($id);
-        $this->session->set_flashdata('delsuccess', 'Successfully Deleted');
+        //$this->session->set_flashdata('delsuccess', 'Successfully Deleted');
         redirect('monitoring/temperature');
         }
     else{

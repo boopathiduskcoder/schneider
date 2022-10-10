@@ -27,23 +27,44 @@
                         <li class="nav-devider"></li>
                         <li> <a href="<?php echo base_url(); ?>" ><i class="mdi mdi-gauge"></i><span class="hide-menu">Dashboard </span></a></li>
                         <?php if($this->session->userdata('user_type')=='EMPLOYEE'){ ?>
-                        <li> <a class="has-arrow waves-effect waves-dark" href="<?php echo base_url(); ?>employee/view?I=<?php echo base64_encode($basicinfo->em_id); ?>" aria-expanded="false"><i class="mdi mdi-account-multiple"></i><span class="hide-menu">Employees </span></a>
+                            <li> <a class="has-arrow waves-effect waves-dark" href="#" aria-expanded="false"><i class="mdi mdi-rocket"></i><span class="hide-menu">Assets </span></a>
+                            <ul aria-expanded="false" class="collapse">
+                                <li><a href="<?php echo base_url(); ?>equipment/plant_equipment">Plant Equipments</a></li>
+                                <li><a href="<?php echo base_url(); ?>equipment/office_equipment">Office Equipments</a></li>
+                                <li><a href="<?php echo base_url(); ?>equipment/tools_equipment">Tools/Others</a></li>
+                                <li><a href="<?php echo base_url(); ?>equipment/ac_equipment">Ac Equipments</a></li>
+                                <li><a href="#">Audit</a></li>
+                            </ul>
                         </li>
-                        <li> <a class="has-arrow waves-effect waves-dark" href="#" aria-expanded="false"><i class="mdi mdi-rocket"></i><span class="hide-menu">Leave </span></a>
+                        <li> <a class="has-arrow waves-effect waves-dark" href="#" aria-expanded="false"><i class="mdi mdi-briefcase-check"></i><span class="hide-menu">Maintenance </span></a>
                             <ul aria-expanded="false" class="collapse">
-                                <li><a href="<?php echo base_url(); ?>leave/Holidays"> Holiday </a></li>
-                                <li><a href="<?php echo base_url(); ?>leave/EmApplication"> Leave Application </a></li>
-                                <li><a href="<?php echo base_url(); ?>leave/EmLeavesheet"> Leave Sheet </a></li>
+                                <li><a href="<?php echo base_url(); ?>maintenance/preventive">Preventive Maintenance </a></li>
+                                <li><a href="<?php echo base_url(); ?>maintenance/breakdown"> Breakdown</a></li>
+                                <li><a href="<?php echo base_url(); ?>maintenance/complaints"> Complaints</a></li>
                             </ul>
-                        </li> 
-                        <li> <a class="has-arrow waves-effect waves-dark" href="#" aria-expanded="false"><i class="mdi mdi-briefcase-check"></i><span class="hide-menu">Projects </span></a>
+                        </li>
+                        <li> <a class="has-arrow waves-effect waves-dark" href="#" aria-expanded="false"><i class="fa fa-building-o"></i><span class="hide-menu">Monitoring </span></a>
                             <ul aria-expanded="false" class="collapse">
-                                <li><a href="<?php echo base_url(); ?>Projects/All_Projects">Projects </a></li>
-                                <li><a href="<?php echo base_url(); ?>Projects/All_Tasks"> Task List </a></li>
-                                <!--<li><a href="<?php #echo base_url(); ?>Projects/All_Tasks"> Field Visit</a></li>-->
+                                <li><a href="<?php echo base_url();?>monitoring/electricity">ED [Electricity Consuming] </a></li>
+                                <li><a href="<?php echo base_url();?>monitoring/temperature">Temperature & Humidity</a></li>
+                                <li><a href="<?php echo base_url();?>monitoring/oil_consumption">Oil Consumption</a></li>
+                                <li><a href="<?php echo base_url();?>monitoring/fire_ext">Fire Extinuguishers</a></li>
+                                <li><a href="<?php echo base_url();?>monitoring/pf">PF</a></li>
                             </ul>
-                        </li>                                                                       
-                        <?php } else { ?>
+                        </li>
+                        <li> <a class="has-arrow waves-effect waves-dark" href="#" aria-expanded="false"><i class="mdi mdi-account-multiple"></i><span class="hide-menu">Vendor Management </span></a>
+                            <ul aria-expanded="false" class="collapse">
+                                <li><a href="<?php echo base_url(); ?>vendor/vendors">Vendor </a></li>
+                                <li><a href="<?php echo base_url(); ?>vendor/stock">Stock </a></li>
+                            </ul>
+                        </li>
+                        <li> <a class="has-arrow waves-effect waves-dark" href="#" aria-expanded="false"><i class="mdi mdi-account-multiple"></i><span class="hide-menu">Technicians</span></a>
+                            <ul aria-expanded="false" class="collapse">
+                                <li><a href="<?php echo base_url(); ?>technician/technicians">Technicians </a></li>
+                                <!-- <li><a href="<?php echo base_url(); ?>worker/in_active_worker">In-active Workers</a></li> -->
+                            </ul>
+                        </li>                                                          
+                        <?php } else if($this->session->userdata('user_type')=='SUPER ADMIN') { ?>
                         <li> <a class="has-arrow waves-effect waves-dark" href="#" aria-expanded="false"><i class="mdi mdi-rocket"></i><span class="hide-menu">Assets </span></a>
                             <ul aria-expanded="false" class="collapse">
                                 <li><a href="<?php echo base_url(); ?>equipment/plant_equipment">Plant Equipments</a></li>
@@ -79,6 +100,13 @@
                             <ul aria-expanded="false" class="collapse">
                                 <li><a href="<?php echo base_url(); ?>technician/technicians">Technicians </a></li>
                                 <!-- <li><a href="<?php echo base_url(); ?>worker/in_active_worker">In-active Workers</a></li> -->
+                            </ul>
+                        </li>
+                        <li> <a class="has-arrow waves-effect waves-dark" href="#" aria-expanded="false"><i class="fa fa-building-o"></i><span class="hide-menu">Settings</span></a>
+                            <ul aria-expanded="false" class="collapse">
+                                <li><a href="<?php echo base_url();?>settings/Settings">Site Settings</a></li>
+                                <li><a href="<?php echo base_url();?>settings/location">Locations</a></li>
+                                <li><a href="<?php echo base_url();?>settings/department">Departments</a></li>
                             </ul>
                         </li>
                         <!-- <li> <a class="has-arrow waves-effect waves-dark" href="#" aria-expanded="false"><i class="mdi mdi-clipboard-text"></i><span class="hide-menu">Attendance </span></a>
@@ -120,6 +148,16 @@
                                 <li><a href="<?php echo base_url();?>settings/department">Departments</a></li>
                             </ul>
                         </li>
+                        <?php } 
+                        else { ?>
+                        
+                        <li> <a class="has-arrow waves-effect waves-dark" href="#" aria-expanded="false"><i class="mdi mdi-briefcase-check"></i><span class="hide-menu">Complaints </span></a>
+                            <ul aria-expanded="false" class="collapse">
+                                
+                                <li><a href="<?php echo base_url(); ?>maintenance/complaintslist"> Complaints</a></li>
+                            </ul>
+                        </li>
+                       
                         <?php } ?>
                     </ul>
                 </nav>

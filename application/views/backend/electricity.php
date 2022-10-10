@@ -55,6 +55,7 @@
                                             <!--/row-->
                                         </div>
                                         <div class="form-actions">
+                                            <input type="hidden" name="aid" value="">
                                             <button type="submit" class="btn btn-info"> <i class="fa fa-check"></i> Save</button>
                                             <button type="button" class="btn btn-info">Cancel</button>
                                         </div>

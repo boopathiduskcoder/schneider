@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: 127.0.0.1
--- Generation Time: Oct 07, 2022 at 04:12 PM
+-- Generation Time: Oct 10, 2022 at 03:27 PM
 -- Server version: 10.4.19-MariaDB
 -- PHP Version: 8.0.7
 
@@ -220,13 +220,11 @@ CREATE TABLE `breakdown` (
 --
 
 INSERT INTO `breakdown` (`id`, `equipment_id`, `department_id`, `breakdown_id`, `technician_id`, `date_and_time`, `details`, `completeddate`, `actiontaken`, `status`, `type`) VALUES
-(1, 1, 2, 1, 1, '2022-10-07 07:09:55', 'sdfghjkdfghjk', '2022-10-07', '', '', 1),
-(3, 4, 5, 2, 6, '2022-10-07 07:11:21', 'testsdfgsghsdhghd', '2022-10-07', '', '', 1),
-(4, 1, 2, 3, 2, '2022-10-07 11:55:30', 'asdfghjxcfvghjk', '2022-10-20', 'sdfghdfghsdfghjdfg', 'Completed', 1),
-(5, 1, 4, 2, 2, '2022-10-07 07:10:08', 'asdfghjsdfghsdfghj', '2022-10-07', '', '', 1),
-(6, 2, 3, 1, 2, '2022-10-07 06:59:50', 'xcvbnasdzxfghj', '2022-10-07', '', '', 1),
-(7, 5, 2, 1, 2, '2022-10-07 08:19:02', 'asdfghjzdxfcgvhbgsdfg', '2022-10-07', '', '', 2),
-(8, 1, 3, 1, 6, '2022-10-06 20:19:56', 'sadfghjkasdfghj', '2022-10-07', '', '', 2);
+(13, 1, 2, 1, 45, '2022-10-10 13:22:50', 'dfghghsdfghjzxcvbnhm', '2022-10-10', 'asdfghjklghjk', 'Completed', 1),
+(14, 2, 3, 3, 41, '2022-10-10 10:52:54', 'dsfghsdfghjm,zxcvbnm', '0000-00-00', '', '', 2),
+(15, 2, 2, 1, 49, '2022-10-10 13:25:02', 'asdfghjkfghj', '2022-10-10', 'asdfghjkdfghjk', 'Completed', 1),
+(16, 3, 3, 2, 45, '2022-10-10 13:24:15', 'sadfghjsdfghj', '2022-10-10', 'sdfghjkldfghjk', 'Completed', 1),
+(17, 4, 3, 3, 49, '2022-10-10 13:25:38', 'sdfghjsdfghjk', '2022-10-10', 'aSdfghjklfghj', 'Pending', 2);
 
 -- --------------------------------------------------------
 
@@ -389,8 +387,8 @@ CREATE TABLE `electricity_consuming` (
 INSERT INTO `electricity_consuming` (`id`, `date`, `am_6`, `pm_2`, `pm_10`, `created_at`) VALUES
 (4, '2022-09-30', '1234', '4352', '2344', '2022-09-30 10:00:53'),
 (6, '2022-09-28', '1236', '4356', '2356', '2022-09-30 10:12:08'),
-(7, '2022-09-28', '1234', '2456', '2345', '2022-09-30 10:14:11'),
-(8, '2022-09-12', '12345', '4356', '23454', '2022-09-30 10:16:54');
+(8, '2022-09-12', '12345', '4356', '23454', '2022-09-30 10:16:54'),
+(11, '2022-10-10', '1234', '4352', '2345', '2022-10-10 05:10:36');
 
 -- --------------------------------------------------------
 
@@ -408,7 +406,7 @@ CREATE TABLE `employee` (
   `last_name` varchar(128) DEFAULT NULL,
   `em_email` varchar(64) DEFAULT NULL,
   `em_password` varchar(512) NOT NULL,
-  `em_role` enum('ADMIN','EMPLOYEE','SUPER ADMIN') NOT NULL DEFAULT 'EMPLOYEE',
+  `em_role` enum('ADMIN','EMPLOYEE','SUPER ADMIN','TECHNICIAN') NOT NULL DEFAULT 'EMPLOYEE',
   `em_address` varchar(512) DEFAULT NULL,
   `status` enum('ACTIVE','INACTIVE') NOT NULL DEFAULT 'ACTIVE',
   `em_gender` enum('Male','Female') NOT NULL DEFAULT 'Male',
@@ -428,7 +426,13 @@ CREATE TABLE `employee` (
 INSERT INTO `employee` (`id`, `em_id`, `em_code`, `des_id`, `dep_id`, `first_name`, `last_name`, `em_email`, `em_password`, `em_role`, `em_address`, `status`, `em_gender`, `em_phone`, `em_birthday`, `em_blood_group`, `em_joining_date`, `em_contact_end`, `em_image`, `em_nid`) VALUES
 (10, 'Soy1332', '99', 2, 2, 'Boo', 'Khan', 'super@gmail.com', '7c4a8d09ca3762af61e59520943dc26494f8941b ', 'SUPER ADMIN', NULL, 'ACTIVE', 'Male', '01723177901', '1995-02-19', 'O+', '2018-01-06', '2018-01-06', 'Soy1332.jpg', '132154566556'),
 (36, 'Doe1753', '123456', 12, 2, 'Jhon', 'Doe', 'admin@gmail.com', '7c4a8d09ca3762af61e59520943dc26494f8941b ', 'ADMIN', NULL, 'ACTIVE', 'Male', 'admin123456', '2019-02-13', 'O+', '2019-02-15', '2019-02-22', 'Doe1753.jpg', '01253568955555'),
-(37, 'Doe1754', '123444', 12, 2, 'Jhon', 'Doe', 'employee@gmail.com', '7c4a8d09ca3762af61e59520943dc26494f8941b ', 'EMPLOYEE', NULL, 'ACTIVE', 'Male', 'abc123456', '2019-02-13', 'O+', '2019-02-15', '2019-02-22', 'Doe1753.jpg', '01253568955555');
+(37, 'Doe1754', '123444', 12, 2, 'Jhon', 'Doe', 'employee@gmail.com', '7c4a8d09ca3762af61e59520943dc26494f8941b ', 'EMPLOYEE', NULL, 'ACTIVE', 'Male', 'abc123456', '2019-02-13', 'O+', '2019-02-15', '2019-02-22', 'Doe1753.jpg', '01253568955555'),
+(40, NULL, NULL, NULL, NULL, 'test', 't', 'test@gmail.com', '7c4a8d09ca3762af61e59520943dc26494f8941b', 'TECHNICIAN', NULL, 'ACTIVE', 'Male', '123456', NULL, NULL, NULL, NULL, NULL, NULL),
+(41, NULL, NULL, NULL, NULL, 'dsfg', 'xcdfvbn', 'test1@gmail.com', '7c4a8d09ca3762af61e59520943dc26494f8941b', 'TECHNICIAN', NULL, 'ACTIVE', 'Male', '123345', NULL, NULL, NULL, NULL, NULL, NULL),
+(43, NULL, NULL, NULL, NULL, 'cvbn', 'cxvbn', 'dsfvgh@df.df', '7c4a8d09ca3762af61e59520943dc26494f8941b', 'TECHNICIAN', NULL, 'ACTIVE', 'Male', '123456', NULL, NULL, NULL, NULL, NULL, NULL),
+(45, 'ezhil12', NULL, 12, 2, 'ezhil', 'e', 'ezhil@gmail.com', '7c4a8d09ca3762af61e59520943dc26494f8941b', 'TECHNICIAN', NULL, 'ACTIVE', 'Male', '123456345', NULL, NULL, NULL, NULL, 'Doe1753.jpg', NULL),
+(47, NULL, NULL, NULL, NULL, 'hello', 'h', 'hello@gmail.com', '2d3d3550e09ca2f0aa81b9f83da376a18fdadc8f', 'TECHNICIAN', NULL, 'ACTIVE', 'Male', '1234567', NULL, NULL, NULL, NULL, NULL, NULL),
+(49, 'santhiya644', NULL, 2, 2, 'santhiya', 's', 'santhiya@gmail.com', '7c4a8d09ca3762af61e59520943dc26494f8941b', 'TECHNICIAN', NULL, 'ACTIVE', 'Male', '123456', NULL, NULL, NULL, NULL, NULL, NULL);
 
 -- --------------------------------------------------------
 
@@ -584,7 +588,7 @@ CREATE TABLE `equipments` (
 
 INSERT INTO `equipments` (`id`, `name`, `type`, `tag_no`, `model`, `type1`, `installation_date`, `manufacturer`, `slno`, `parts_included`, `location_id`, `warrenty`, `power`, `status`, `specification`, `image`, `attachment`, `created_at`, `created_by`) VALUES
 (1, 'scooty', 1, 'ABC/EQP/2022/0004', 'zest', '', '2022-08-24', 'TVS', 12, 'TYRE', 1, '10 YEARS', '125CC', 'active', 'SELFSTART\r\nHORN\r\n', 'fb6da1013369110e9d9cad972487f70d.jpg', '', '2022-08-20 07:45:35', 0),
-(2, 'Tools', 3, 'TOOL/TAG/01', 'MOF001', '', '2022-08-03', 'Honda', 13, 'light,holder', 3, '2 years', '10KV', 'active', 'sfsdklf skfjsdkfjdsk sakfsaflk', '', '', '2022-08-22 16:17:11', 0),
+(2, 'Tools', 3, 'TOOL/TAG/01', 'MOF001', '23', '2022-08-03', 'Honda', 13, 'light,holder,wrtgt', 3, '2 years', '10KV', 'in-active', 'sfsdklf skfjsdkfjdsk sakfsaflk', '', '694f601d88df015134c7dbaf6337b2e5.docx', '2022-08-22 16:17:11', 0),
 (3, 'fan', 2, 'TOOL/TAG/02', 'celing fan', '', '2022-08-10', 'usha', 14, 'three wings ', 2, '2 years', '230v', 'active', 'good condition', '', '', '2022-08-27 05:29:14', 0),
 (4, 'TV', 2, 'TOOL/TAG/03', 'LED', '', '2022-08-11', 'HAEIR', 15, '', 2, '2 years', '230v', 'active', 'good condition', '', '', '2022-08-27 05:35:05', 0),
 (5, 'frige', 1, 'TOOL/TAG/03', 'single door', '', '2022-08-01', 'croma', 16, '', 1, '3 years', '440v', 'active', 'good condition', '', '', '2022-08-27 05:38:30', 0),
@@ -599,7 +603,9 @@ INSERT INTO `equipments` (`id`, `name`, `type`, `tag_no`, `model`, `type1`, `ins
 (21, 'test', 2, 'ABC/EQP/2022/0013', 'sdfghj', '22', '2022-10-04', 'ssdfghj', 1234, 'sdfghjk', 1, '2', '234', 'active', 'sdsfadfghjasdfghj', '515d3973c18d6c61bcc25053573dbb0d.jpg', 'Santhosh4.docx', '2022-10-03 09:28:33', 0),
 (22, 'aserdtfy', 2, 'ABC/EQP/2022/0014', 'sdfgmk', '45', '2022-10-04', 'dfgh', 45, 'sdfghjk', 1, '3', '2456', 'active', 'sdfghjklxcvbnmdfgh', '9fa520d1060bd45ff515f32d3081e861.jpg', '', '2022-10-03 10:12:33', 0),
 (23, 'santhiya', 2, 'ABC/EQP/2022/0015', 'sdftyg', '23', '2022-10-04', 'ssdfghj', 23, 'sdfghjk', 1, '2', '234', 'in-active', 'dsfghjsadfghjsdfgh', '', '37e08dfc7ad220173084d082c1e7915f.pdf', '2022-10-03 10:14:46', 0),
-(24, 'asfdfa', 4, 'ABC/EQP/2022/0016', 'sdfghj', '25', '2022-10-04', 'ssdfghj', 232, 'sdffghj', 1, '3', '234', 'active', 'dsfghjdfghjksdfgh', 'bfdac48943c05542fb57af1d3793e387.jpg', '3d817bce382e23e508cd51ae5cd574d2.docx', '2022-10-03 10:46:14', 0);
+(24, 'asfdfa', 4, 'ABC/EQP/2022/0016', 'sdfghj', '25', '2022-10-04', 'ssdfghj', 232, 'sdffghjcdsfghsdfg', 1, '3', '234', 'in-active', 'dsfghjdfghjksdfgh', 'bfdac48943c05542fb57af1d3793e387.jpg', '3d817bce382e23e508cd51ae5cd574d2.docx', '2022-10-03 10:46:14', 0),
+(25, 'Speaker', 1, 'ABC/EQP/2022/0017', 'sdfghxcvb', '23', '2022-10-08', 'wdfgh', 12, 'asdfghasdfghxcvb', 1, '3', '1234', 'in-active', 'sdfsadfghxsdcfvgbh', 'f4da539fd21de8878bad83e5531cad7a.jpg', 'b77221c581386146f67b3267697f334c.docx', '2022-10-08 11:13:22', 0),
+(26, 'Speaker', 2, 'ABC/EQP/2022/0018', 'sdxfcgvbhnjm', '234', '2022-10-08', 'dsfg', 234, 'dsfghsdfghjdfgh', 1, '2', '1243', 'in-active', 'sdfgbdsffgnhdfgdfg', 'f6edcb9bba97bbb28f763771c42cf766.jpg', '8a27d3a532442bbf28615f550bec26ed.pdf', '2022-10-08 11:15:37', 0);
 
 -- --------------------------------------------------------
 
@@ -754,7 +760,8 @@ INSERT INTO `location` (`id`, `location_name`, `status`) VALUES
 (4, 'Hall D', 1),
 (5, 'Hall E', 1),
 (28, 'sdff', 1),
-(29, 'DSF', 1);
+(29, 'DSF', 1),
+(31, 'test', 1);
 
 -- --------------------------------------------------------
 
@@ -885,7 +892,8 @@ CREATE TABLE `preventives` (
 
 INSERT INTO `preventives` (`id`, `equipment_id`, `location_id`, `interval_id`, `last_date`, `next_date`, `status`) VALUES
 (3, 1, 1, 2, '2022-10-27', '2022-11-17', 'Active'),
-(4, 2, 1, 1, '2022-10-19', '2022-11-16', 'Active');
+(4, 2, 1, 1, '2022-10-19', '2022-11-16', 'Active'),
+(5, 2, 2, 1, '2022-10-08', '2022-10-28', 'Active');
 
 -- --------------------------------------------------------
 
@@ -1185,8 +1193,11 @@ CREATE TABLE `vendor_list` (
 
 INSERT INTO `vendor_list` (`vid`, `vendor_name`, `contact_person`, `email_id`, `contact_number`, `nature_of_work`, `status`, `created_at`, `updated_at`) VALUES
 (5, 'anusuya gunasekaran', 'Anusuya Gunasekaran', 'vsanushyavel@gmail.com', 2147483647, 'test', 'ACTIVE', '2022-09-29 10:37:56', '2022-09-10 02:48:35'),
-(6, 'anusha', 'Anusuya Gunasekaran', 'vsanushyavel@gmail.com', 2147483647, 'testing', 'ACTIVE', '2022-09-29 10:38:03', '2022-09-10 02:49:10'),
-(7, 'test', 'Anusuya Gunasekaran', 'vsanushyavel@gmail.com', 2147483647, 'design', 'ACTIVE', '2022-09-29 10:38:07', '2022-09-10 02:51:38');
+(6, 'anusha', 'Anusuya Gunasekaran', 'vsanushyavel1@gmail.com', 2147483647, 'testing', 'ACTIVE', '2022-10-08 12:20:00', '2022-09-10 02:49:10'),
+(7, 'test', 'Anusuya Gunasekaran', 'vsanushyavel2@gmail.com', 2147483647, 'design', 'ACTIVE', '2022-10-08 12:20:06', '2022-09-10 02:51:38'),
+(8, 'sdfghj', 'sdfghjk', 'sdfgasd@sdf.df', 2147483647, 'awedrtyu', 'ACTIVE', '2022-10-08 12:28:29', '2022-10-08 06:28:29'),
+(9, 'test', 'tests', 'test1@gmail.com', 123453, 'dfghdsfghdfg', 'ACTIVE', '2022-10-08 12:39:51', '2022-10-08 06:39:51'),
+(10, 'asdfg', 'asdfghn', 'sadfg@sdfg.sdfg', 123456, 'sadfghjk', 'ACTIVE', '2022-10-08 11:48:37', '2022-10-08 05:48:37');
 
 --
 -- Indexes for dumped tables
@@ -1560,7 +1571,7 @@ ALTER TABLE `bank_info`
 -- AUTO_INCREMENT for table `breakdown`
 --
 ALTER TABLE `breakdown`
-  MODIFY `id` int(10) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=11;
+  MODIFY `id` int(10) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=18;
 
 --
 -- AUTO_INCREMENT for table `breakdowntypes`
@@ -1578,7 +1589,7 @@ ALTER TABLE `deduction`
 -- AUTO_INCREMENT for table `department`
 --
 ALTER TABLE `department`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=7;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=8;
 
 --
 -- AUTO_INCREMENT for table `desciplinary`
@@ -1608,13 +1619,13 @@ ALTER TABLE `education`
 -- AUTO_INCREMENT for table `electricity_consuming`
 --
 ALTER TABLE `electricity_consuming`
-  MODIFY `id` int(10) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=9;
+  MODIFY `id` int(10) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=13;
 
 --
 -- AUTO_INCREMENT for table `employee`
 --
 ALTER TABLE `employee`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=38;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=50;
 
 --
 -- AUTO_INCREMENT for table `employee_file`
@@ -1662,7 +1673,7 @@ ALTER TABLE `eqiuipment_type`
 -- AUTO_INCREMENT for table `equipments`
 --
 ALTER TABLE `equipments`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=25;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=27;
 
 --
 -- AUTO_INCREMENT for table `field_visit`
@@ -1698,7 +1709,7 @@ ALTER TABLE `loan_installment`
 -- AUTO_INCREMENT for table `location`
 --
 ALTER TABLE `location`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=30;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=32;
 
 --
 -- AUTO_INCREMENT for table `logistic_asset`
@@ -1728,7 +1739,7 @@ ALTER TABLE `pay_salary`
 -- AUTO_INCREMENT for table `preventives`
 --
 ALTER TABLE `preventives`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=5;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=6;
 
 --
 -- AUTO_INCREMENT for table `project`
@@ -1794,7 +1805,7 @@ ALTER TABLE `social_media`
 -- AUTO_INCREMENT for table `stock`
 --
 ALTER TABLE `stock`
-  MODIFY `id` int(10) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=5;
+  MODIFY `id` int(10) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=6;
 
 --
 -- AUTO_INCREMENT for table `technicians`
@@ -1806,7 +1817,7 @@ ALTER TABLE `technicians`
 -- AUTO_INCREMENT for table `temperature`
 --
 ALTER TABLE `temperature`
-  MODIFY `id` int(10) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=5;
+  MODIFY `id` int(10) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=6;
 
 --
 -- AUTO_INCREMENT for table `to-do_list`
@@ -1818,7 +1829,7 @@ ALTER TABLE `to-do_list`
 -- AUTO_INCREMENT for table `vendor_list`
 --
 ALTER TABLE `vendor_list`
-  MODIFY `vid` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=8;
+  MODIFY `vid` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=11;
 COMMIT;
 
 /*!40101 SET CHARACTER_SET_CLIENT=@OLD_CHARACTER_SET_CLIENT */;

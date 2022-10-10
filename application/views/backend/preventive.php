@@ -17,11 +17,9 @@
 
                 <div class="row m-b-10"> 
                     <div class="col-12">
-                        <?php if($this->session->userdata('user_type')=='EMPLOYEE'){ ?>
-                        
-                        <?php } else { ?>                        
+                                               
                         <button type="button" class="btn btn-info"><i class="fa fa-plus"></i><a data-toggle="modal" data-target="#preventivemodel" data-whatever="@getbootstrap" class="text-white"><i class="" aria-hidden="true"></i> Add Maintenance </a></button>
-                        <?php } ?>
+                     
                     </div>
                 </div>
                 <div class="row">

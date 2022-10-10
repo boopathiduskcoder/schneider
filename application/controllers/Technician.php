@@ -62,39 +62,55 @@ class Technician extends CI_Controller {
             if($this->session->userdata('user_login_access') == False) 
             {
                 throw new Exception("Session expired", 1);                
-            }        
+            } 
+                
             $id     = $this->input->post('aid');    
             $firstname   = $this->input->post('firstname');    
             $lastname   = $this->input->post('lastname');
             $email = $this->input->post('email');
-            $password = md5($this->input->post('password'));
+            $password = sha1($this->input->post('password'));
             $contact  = $this->input->post('contact'); 
-            $status  = $this->input->post('status');        
-           
+            $status  = $this->input->post('status');  
+            $role  = 'TECHNICIAN';    
+            $dep_id  = '2'; 
+            $des_id  = '2'; 
+            $number = mt_rand(10,1000);   
+            $em_id=$firstname.''.$number;
             $this->load->library('form_validation');
             $this->form_validation->set_error_delimiters();
             $this->form_validation->set_rules('firstname', 'First Name','trim|required|min_length[2]|max_length[2024]|xss_clean');
             $this->form_validation->set_rules('lastname', 'Last Name','trim|required');
-            $this->form_validation->set_rules('email', 'Email','trim|required|xss_clean|is_unique[technicians.email]',array('is_unique' => 'This %s already exists.'));
+            $this->form_validation->set_rules('email', 'Email','trim|required|xss_clean');
             $this->form_validation->set_rules('password', 'Password','trim|required|min_length[2]|max_length[2024]|xss_clean');
             $this->form_validation->set_rules('contact', 'Contact','trim|required|min_length[2]|max_length[2024]|xss_clean');
             $this->form_validation->set_rules('status', 'status','trim|required|xss_clean');
             if ($this->form_validation->run() == FALSE) 
             {
                 throw new Exception(validation_errors(), 1);             
-            } 
+            }  
             
-            
-            $data['firstname']=$firstname;
-            $data['lastname']=$lastname;
-            $data['email']=$email;
-            $data['password']=$password;
-            $data['contact']=$contact;
+            $data['first_name']=$firstname;
+            $data['last_name']=$lastname;
+            $data['em_email']=$email;
+            $data['em_password']=$password;
+            $data['em_role']=$role;
+            $data['em_phone']=$contact;
             $data['status']=$status;
+            $data['dep_id']=$dep_id;
+            $data['des_id']=$des_id;
+            $data['em_id']=$em_id;
             if(empty($id)){
+                if($this->technician_model->Does_email_exists($email)){
+                    $message= "Email already Exists"; 
+                    $response['status']=FALSE;
+                    $response['message']=$message;  
+                    
+                }
+                 else {  
                 $success = $this->technician_model->Add_technician($data); 
                 $message="Successfully added";      
             } 
+        }
             else {
                 $success = $this->technician_model->Update_technician($id,$data); 
                 $message= "Successfully updated"; 
@@ -103,11 +119,12 @@ class Technician extends CI_Controller {
             $response['status']=TRUE;
             $response['message']=$message;  
         
-        }   catch (Exception $e) {
+    }
+      catch (Exception $e) {
             $response['status']=FALSE;
             $response['message']=$e->getMessage();
         }    
-        echo json_encode($response);
+       echo json_encode($response);
     }
     
     public function EditTechnician(){
@@ -148,8 +165,8 @@ class Technician extends CI_Controller {
                 throw new Exception("Session expired", 1);                
             } 
             $id     = $this->input->post('aid');    
-            $password = md5($this->input->post('password'));
-            $confirmpassword = md5($this->input->post('confirmpassword'));
+            $password = sha1($this->input->post('password'));
+            $confirmpassword = sha1($this->input->post('confirmpassword'));
             $this->load->library('form_validation');
             $this->form_validation->set_error_delimiters();
             $this->form_validation->set_rules('password', 'Password','trim|required');
@@ -161,7 +178,7 @@ class Technician extends CI_Controller {
             } 
             
             
-            $data['password']=$password;
+            $data['em_password']=$password;
             if(!empty($id)){
                 $success = $this->technician_model->Update_technicianpassword($id,$data); 
                 $message= "Successfully Changed Password"; 
