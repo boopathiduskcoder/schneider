@@ -16,10 +16,16 @@
     public function Add_technician($data){
         $this->db->insert('employee',$data);
     }
-    public function Does_email_exists($email) {
+    public function Does_email_exists($email,$id) {
 		$user = $this->db->dbprefix('employee');
         $sql = "SELECT `em_email` FROM $user
 		WHERE `em_email`='$email'";
+        //print_r($sql);
+        if($id){
+            $sql = $sql."And `id`!='$id'";
+        }
+       // $str = $this->db->last_query();
+        //print_r($str);exit;
 		$result=$this->db->query($sql);
         if ($result->row()) {
             return $result->row();

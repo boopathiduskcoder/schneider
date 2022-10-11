@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: 127.0.0.1
--- Generation Time: Oct 10, 2022 at 03:27 PM
+-- Generation Time: Oct 11, 2022 at 04:14 PM
 -- Server version: 10.4.19-MariaDB
 -- PHP Version: 8.0.7
 
@@ -224,7 +224,7 @@ INSERT INTO `breakdown` (`id`, `equipment_id`, `department_id`, `breakdown_id`, 
 (14, 2, 3, 3, 41, '2022-10-10 10:52:54', 'dsfghsdfghjm,zxcvbnm', '0000-00-00', '', '', 2),
 (15, 2, 2, 1, 49, '2022-10-10 13:25:02', 'asdfghjkfghj', '2022-10-10', 'asdfghjkdfghjk', 'Completed', 1),
 (16, 3, 3, 2, 45, '2022-10-10 13:24:15', 'sadfghjsdfghj', '2022-10-10', 'sdfghjkldfghjk', 'Completed', 1),
-(17, 4, 3, 3, 49, '2022-10-10 13:25:38', 'sdfghjsdfghjk', '2022-10-10', 'aSdfghjklfghj', 'Pending', 2);
+(17, 4, 3, 3, 49, '2022-10-10 13:32:09', 'sdfghjsdfghjk', '2022-10-10', 'asdfghjkldfghjk', 'Inprogress', 2);
 
 -- --------------------------------------------------------
 
@@ -429,10 +429,12 @@ INSERT INTO `employee` (`id`, `em_id`, `em_code`, `des_id`, `dep_id`, `first_nam
 (37, 'Doe1754', '123444', 12, 2, 'Jhon', 'Doe', 'employee@gmail.com', '7c4a8d09ca3762af61e59520943dc26494f8941b ', 'EMPLOYEE', NULL, 'ACTIVE', 'Male', 'abc123456', '2019-02-13', 'O+', '2019-02-15', '2019-02-22', 'Doe1753.jpg', '01253568955555'),
 (40, NULL, NULL, NULL, NULL, 'test', 't', 'test@gmail.com', '7c4a8d09ca3762af61e59520943dc26494f8941b', 'TECHNICIAN', NULL, 'ACTIVE', 'Male', '123456', NULL, NULL, NULL, NULL, NULL, NULL),
 (41, NULL, NULL, NULL, NULL, 'dsfg', 'xcdfvbn', 'test1@gmail.com', '7c4a8d09ca3762af61e59520943dc26494f8941b', 'TECHNICIAN', NULL, 'ACTIVE', 'Male', '123345', NULL, NULL, NULL, NULL, NULL, NULL),
-(43, NULL, NULL, NULL, NULL, 'cvbn', 'cxvbn', 'dsfvgh@df.df', '7c4a8d09ca3762af61e59520943dc26494f8941b', 'TECHNICIAN', NULL, 'ACTIVE', 'Male', '123456', NULL, NULL, NULL, NULL, NULL, NULL),
+(43, 'cvbn396', NULL, 2, 2, 'cvbn', 'cxvbn', 'dsfvgh@df.df', '69c5fcebaa65b560eaf06c3fbeb481ae44b8d618', 'TECHNICIAN', NULL, 'INACTIVE', 'Male', '123456', NULL, NULL, NULL, NULL, NULL, NULL),
 (45, 'ezhil12', NULL, 12, 2, 'ezhil', 'e', 'ezhil@gmail.com', '7c4a8d09ca3762af61e59520943dc26494f8941b', 'TECHNICIAN', NULL, 'ACTIVE', 'Male', '123456345', NULL, NULL, NULL, NULL, 'Doe1753.jpg', NULL),
 (47, NULL, NULL, NULL, NULL, 'hello', 'h', 'hello@gmail.com', '2d3d3550e09ca2f0aa81b9f83da376a18fdadc8f', 'TECHNICIAN', NULL, 'ACTIVE', 'Male', '1234567', NULL, NULL, NULL, NULL, NULL, NULL),
-(49, 'santhiya644', NULL, 2, 2, 'santhiya', 's', 'santhiya@gmail.com', '7c4a8d09ca3762af61e59520943dc26494f8941b', 'TECHNICIAN', NULL, 'ACTIVE', 'Male', '123456', NULL, NULL, NULL, NULL, NULL, NULL);
+(49, 'santhiya644', NULL, 2, 2, 'santhiya', 's', 'santhiya@gmail.com', '7c4a8d09ca3762af61e59520943dc26494f8941b', 'TECHNICIAN', NULL, 'ACTIVE', 'Male', '123456', NULL, NULL, NULL, NULL, NULL, NULL),
+(50, 'dfgh369', NULL, 2, 2, 'dfgh', 'dsfghj', 'test23@gmail.com', '7c4a8d09ca3762af61e59520943dc26494f8941b', 'TECHNICIAN', NULL, 'ACTIVE', 'Male', '1234567', NULL, NULL, NULL, NULL, NULL, NULL),
+(51, 'fdgyhuj508', NULL, 2, 2, 'fdgyhuj', 'xcvbnm,', 'test12@gmail.com', '7c4a8d09ca3762af61e59520943dc26494f8941b', 'TECHNICIAN', NULL, 'ACTIVE', 'Male', '234565', NULL, NULL, NULL, NULL, NULL, NULL);
 
 -- --------------------------------------------------------
 
@@ -626,6 +628,51 @@ CREATE TABLE `field_visit` (
   `status` enum('Approved','Not Approve','Rejected') NOT NULL DEFAULT 'Not Approve',
   `attendance_updated` varchar(11) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+
+-- --------------------------------------------------------
+
+--
+-- Table structure for table `fireext_details`
+--
+
+CREATE TABLE `fireext_details` (
+  `id` int(10) NOT NULL,
+  `fireext_id` int(10) NOT NULL,
+  `last_refill` date NOT NULL,
+  `next_refill` date NOT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
+
+--
+-- Dumping data for table `fireext_details`
+--
+
+INSERT INTO `fireext_details` (`id`, `fireext_id`, `last_refill`, `next_refill`) VALUES
+(1, 2, '2022-10-10', '2022-10-20'),
+(2, 1, '2022-10-11', '2022-10-22'),
+(4, 2, '2022-10-22', '2022-10-30'),
+(7, 1, '2022-10-21', '2022-10-28');
+
+-- --------------------------------------------------------
+
+--
+-- Table structure for table `fire_extinguisher`
+--
+
+CREATE TABLE `fire_extinguisher` (
+  `id` int(10) NOT NULL,
+  `ext_id` varchar(255) NOT NULL,
+  `location` varchar(255) NOT NULL,
+  `capacity` int(10) NOT NULL,
+  `cylinder_no` int(10) NOT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
+
+--
+-- Dumping data for table `fire_extinguisher`
+--
+
+INSERT INTO `fire_extinguisher` (`id`, `ext_id`, `location`, `capacity`, `cylinder_no`) VALUES
+(1, 'FIREXT0000', 'Hall B', 1234, 353536),
+(2, 'FIREXT0001', 'Hall A', 2343, 234);
 
 -- --------------------------------------------------------
 
@@ -1195,8 +1242,8 @@ INSERT INTO `vendor_list` (`vid`, `vendor_name`, `contact_person`, `email_id`, `
 (5, 'anusuya gunasekaran', 'Anusuya Gunasekaran', 'vsanushyavel@gmail.com', 2147483647, 'test', 'ACTIVE', '2022-09-29 10:37:56', '2022-09-10 02:48:35'),
 (6, 'anusha', 'Anusuya Gunasekaran', 'vsanushyavel1@gmail.com', 2147483647, 'testing', 'ACTIVE', '2022-10-08 12:20:00', '2022-09-10 02:49:10'),
 (7, 'test', 'Anusuya Gunasekaran', 'vsanushyavel2@gmail.com', 2147483647, 'design', 'ACTIVE', '2022-10-08 12:20:06', '2022-09-10 02:51:38'),
-(8, 'sdfghj', 'sdfghjk', 'sdfgasd@sdf.df', 2147483647, 'awedrtyu', 'ACTIVE', '2022-10-08 12:28:29', '2022-10-08 06:28:29'),
-(9, 'test', 'tests', 'test1@gmail.com', 123453, 'dfghdsfghdfg', 'ACTIVE', '2022-10-08 12:39:51', '2022-10-08 06:39:51'),
+(8, 'sdfghj', 'sdfghjk', 'test2@gmail.com', 2345678, 'awedrtyu', 'ACTIVE', '2022-10-11 06:03:08', '2022-10-11 12:03:08'),
+(9, 'test', 'tests', 'test1@gmail.com', 1234534356, 'dfghdsfghdfg', 'ACTIVE', '2022-10-11 06:02:14', '2022-10-11 12:02:14'),
 (10, 'asdfg', 'asdfghn', 'sadfg@sdfg.sdfg', 123456, 'sadfghjk', 'ACTIVE', '2022-10-08 11:48:37', '2022-10-08 05:48:37');
 
 --
@@ -1363,6 +1410,18 @@ ALTER TABLE `equipments`
 -- Indexes for table `field_visit`
 --
 ALTER TABLE `field_visit`
+  ADD PRIMARY KEY (`id`);
+
+--
+-- Indexes for table `fireext_details`
+--
+ALTER TABLE `fireext_details`
+  ADD PRIMARY KEY (`id`);
+
+--
+-- Indexes for table `fire_extinguisher`
+--
+ALTER TABLE `fire_extinguisher`
   ADD PRIMARY KEY (`id`);
 
 --
@@ -1625,7 +1684,7 @@ ALTER TABLE `electricity_consuming`
 -- AUTO_INCREMENT for table `employee`
 --
 ALTER TABLE `employee`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=50;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=52;
 
 --
 -- AUTO_INCREMENT for table `employee_file`
@@ -1680,6 +1739,18 @@ ALTER TABLE `equipments`
 --
 ALTER TABLE `field_visit`
   MODIFY `id` int(14) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=24;
+
+--
+-- AUTO_INCREMENT for table `fireext_details`
+--
+ALTER TABLE `fireext_details`
+  MODIFY `id` int(10) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=8;
+
+--
+-- AUTO_INCREMENT for table `fire_extinguisher`
+--
+ALTER TABLE `fire_extinguisher`
+  MODIFY `id` int(10) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=3;
 
 --
 -- AUTO_INCREMENT for table `holiday`

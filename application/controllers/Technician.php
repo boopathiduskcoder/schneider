@@ -89,6 +89,12 @@ class Technician extends CI_Controller {
                 throw new Exception(validation_errors(), 1);             
             }  
             
+            if($this->technician_model->Does_email_exists($email,$id)){
+                $message= "Email already Exists"; 
+                $response['status']=FALSE;
+                $response['message']=$message;  
+                
+            }else{
             $data['first_name']=$firstname;
             $data['last_name']=$lastname;
             $data['em_email']=$email;
@@ -100,16 +106,11 @@ class Technician extends CI_Controller {
             $data['des_id']=$des_id;
             $data['em_id']=$em_id;
             if(empty($id)){
-                if($this->technician_model->Does_email_exists($email)){
-                    $message= "Email already Exists"; 
-                    $response['status']=FALSE;
-                    $response['message']=$message;  
-                    
-                }
-                 else {  
+                
+                 //else {  
                 $success = $this->technician_model->Add_technician($data); 
                 $message="Successfully added";      
-            } 
+           // } 
         }
             else {
                 $success = $this->technician_model->Update_technician($id,$data); 
@@ -120,6 +121,7 @@ class Technician extends CI_Controller {
             $response['message']=$message;  
         
     }
+}
       catch (Exception $e) {
             $response['status']=FALSE;
             $response['message']=$e->getMessage();

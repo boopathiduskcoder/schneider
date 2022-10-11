@@ -1139,14 +1139,19 @@ class Vendor extends CI_Controller {
             $this->form_validation->set_error_delimiters();
             $this->form_validation->set_rules('vendor_name', 'Vendor','trim|required|min_length[2]|max_length[2024]|xss_clean');
             $this->form_validation->set_rules('contact_person', 'Contact Person','trim|required');
-            $this->form_validation->set_rules('email_id', 'Email','trim|required|min_length[2]|max_length[2024]|xss_clean|is_unique[vendor_list.email_id.vid'.$id.']',array('is_unique' => 'This %s already exists.'));
+            $this->form_validation->set_rules('email_id', 'Email','trim|required');
             $this->form_validation->set_rules('contact_number', 'Contact Number', 'trim|required');
             $this->form_validation->set_rules('nature_of_work', 'Nature of Work', 'trim|required');
             
             if ($this->form_validation->run() == FALSE) {
                 throw new Exception(validation_errors(), 1);    
                 } 
-               
+                if($this->vendor_model->Does_email_exists($email_id,$id)){
+                    $message= "Email already Exists"; 
+                    $response['status']=FALSE;
+                    $response['message']=$message;  
+                    
+                }else{
                         $time = date("Y-m-d h:i:sa");
                         $data['vendor_name']=$vendor_name;
                         $data['email_id']=$email_id;
@@ -1168,7 +1173,7 @@ class Vendor extends CI_Controller {
                 $response['status']=TRUE;
             $response['message']=$message;  
         
-    
+            }
        }   catch (Exception $e) {
             $response['status']=FALSE;
             $response['message']=$e->getMessage();

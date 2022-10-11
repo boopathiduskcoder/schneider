@@ -17,12 +17,15 @@
     public function Add_vendor($data){
         $this->db->insert('vendor_list',$data);
     }
-    public function Does_email_exists($email) {
+    public function Does_email_exists($email_id, $id) {
         $sql = "SELECT `email_id` FROM vendor_list
-        WHERE `email_id`='$email'";
+        WHERE `email_id`='$email_id'";
+        if($id){
+            $sql = $sql."And `vid`!='$id'";
+        }
+    
         $result=$this->db->query($sql);
-       
-
+        
         if ($result->row()) {
             return $result->row();
         } else {
