@@ -82,7 +82,7 @@
                 </div>
                 <!-- sample modal content -->
 <div class="modal fade" id="vendormodel" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel1">
-    <div class="modal-dialog modal-lg" role="document">
+    <div class="modal-dialog" role="document">
         <div class="modal-content ">
             <div class="modal-header">
                 <h4 class="modal-title" id="exampleModalLabel1">Add Vendor </h4>
@@ -106,15 +106,15 @@
                             </div>
                             <div class="form-group">
                                 <label class="control-label">Contact Number</label>
-                                <input type="text" name="contact_number" value="" class="form-control" id="contact_number"  placeholder="+8801231456" minlength="10" maxlength="12" required>
+                                <input type="text" name="contact_number" value="" class="form-control" id="contact_number"  placeholder="" required>
                             </div>
                             <div class="form-group">
                                 <label class="control-label">Nature of Work</label>
-                                <input type="text" name="nature_of_work" value="" class="form-control" id="nature_of_work"  placeholder="" minlength="10" maxlength="12" required>
+                                <input type="text" name="nature_of_work" value="" class="form-control" id="nature_of_work"  placeholder="" required>
                             </div>
-                            <?php echo validation_errors(); ?>
-                            <?php echo $this->upload->display_errors(); ?>
-                            <?php echo $this->session->flashdata('formdata'); ?>    
+                            <?php //echo validation_errors(); ?>
+                            <?php //echo $this->upload->display_errors(); ?>
+                            <?php //echo $this->session->flashdata('formdata'); ?>    
                         </div>
                         
                     </div>
@@ -135,7 +135,6 @@
 // Get the record's ID via attribute  
 var iid = $(this).attr('data-id');
 
-
 $('#btnSubmit').trigger("reset");
 $('#vendormodel').modal('show');
 $.ajax({
@@ -144,15 +143,14 @@ $.ajax({
     data: '',
     dataType: 'json',
 }).done(function (response) {
-    alert(response);
     console.log(response);
 // Populate the form fields with the data returned from server
-$('#btnSubmit').find('[name="aid"]').val(response.VendorByID.id).end();
-$('#btnSubmit').find('[name="vendor_name"]').val(response.VendorByID.vendor_name).end();
-$('#btnSubmit').find('[name="contact_person"]').val(response.VendorByID.contact_person).end();
-$('#btnSubmit').find('[name="email_id"]').val(response.VendorByID.email_id).end();
-$('#btnSubmit').find('[name="contact_number"]').val(response.VendorByID.contact_number).end();   
-$('#btnSubmit').find('[name="nature_of_work"]').val(response.VendorByID.nature_of_work).end();                                                  
+$('#btnSubmit').find('[name="aid"]').val(response.vendorByid.vid).end();
+$('#btnSubmit').find('[name="vendor_name"]').val(response.vendorByid.vendor_name).end();
+$('#btnSubmit').find('[name="contact_person"]').val(response.vendorByid.contact_person).end();
+$('#btnSubmit').find('[name="email_id"]').val(response.vendorByid.email_id).end();
+$('#btnSubmit').find('[name="contact_number"]').val(response.vendorByid.contact_number).end();   
+$('#btnSubmit').find('[name="nature_of_work"]').val(response.vendorByid.nature_of_work).end();                                                  
                                         
 });
 });

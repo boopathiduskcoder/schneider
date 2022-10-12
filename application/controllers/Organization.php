@@ -36,6 +36,7 @@ class Organization extends CI_Controller {
     public function Save_dep(){
     if($this->session->userdata('user_login_access') != False) { 
        $dep = $this->input->post('department');
+       print_r($dep);exit;
        $this->load->library('form_validation');
        $this->form_validation->set_error_delimiters('<div class="error">', '</div>');
        $this->form_validation->set_rules('department','department','trim|required|xss_clean');

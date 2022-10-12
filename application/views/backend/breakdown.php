@@ -17,11 +17,9 @@
 
                 <div class="row m-b-10"> 
                     <div class="col-12">
-                        <?php if($this->session->userdata('user_type')=='EMPLOYEE'){ ?>
-                        
-                        <?php } else { ?>                        
+                                              
                         <button type="button" class="btn btn-info"><i class="fa fa-plus"></i><a data-toggle="modal" data-target="#exampleModal" data-whatever="@getbootstrap" class="text-white"><i class="" aria-hidden="true"></i> Create </a></button>
-                        <?php } ?>
+                       
                     </div>
                 </div>
                 <div class="row">
@@ -63,15 +61,13 @@
                                                 <td><?php echo $value->equipmentname;?></td>
                                                 <td><?php echo $value->dep_name;?></td>
                                                 <td><?php echo $value->breakdown_name;?></td>
-                                                <td><?php echo $value->firstname.' '.$value->lastname;?></td>
+                                                <td><?php echo $value->first_name.' '.$value->last_name;?></td>
                                                 <td><?php $date= strtotime($value->date_and_time);
                                                           echo date("d-F-y, H:i:s", $date);?></td>
                                                 <td><?php echo $value->details;?></td>
                                                 <td class="jsgrid-align-center ">
                                                     <a href="#" title="Edit" class="btn btn-sm btn-info waves-effect waves-light breakdown" data-id="<?php echo $value->id ?>"><i class="fa fa-pencil-square-o"></i></a>
                                                     <a href="delete_breakdown?id=<?php echo $value->id; ?>" onclick="return confirm('Are you sure want to delete this data?')" title="Delete" class="btn btn-sm btn-danger waves-effect waves-light"><i class="fa fa-trash-o"></i></a>
-                                                    <a href="<?php echo base_url(); ?>maintenance/viewbreakdown?id=<?php echo base64_encode($value->id); ?>" title="Edit" class="btn btn-sm btn-success waves-effect waves-light"><i class="fa fa-eye"></i></a>
-
                                                 </td>
                                             </tr>
                                             <?php }?>
@@ -130,7 +126,7 @@
                                                 <select class="select2 form-control custom-select" data-placeholder="Select Breakdown" style="width:100%" tabindex="1" name="technicianid">
                                                 <option>Select Technician</option> 
                                                 <?php foreach($technicians as $value): ?>
-                                                    <option value="<?php echo $value->id; ?>"><?php echo $value->firstname.' '.$value->lastname; ?></option>
+                                                    <option value="<?php echo $value->id; ?>"><?php echo $value->first_name.' '.$value->last_name; ?></option>
                                                     <?php endforeach; ?>
                                                 </select>
                                             </div>                                                                          

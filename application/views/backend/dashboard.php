@@ -112,8 +112,12 @@
                             <div class="box bg-info text-center">
                                 <h1 class="font-light text-white">
                                     <?php 
-                                        $this->db->where('status','INACTIVE');
-                                        $this->db->from("employee");
+                                        $id = $this->session->userdata('user_login_id');
+                                        $this->db->select('b.*');
+                                        $this->db->from('breakdown b');
+                                        $this->db->join('employee te','te.id=b.technician_id');
+                                        $this->db->where('te.em_id',$id);
+                                        $this->db->where('b.status','completed');
                                         echo $this->db->count_all_results();
                                     ?>
                                 </h1>
@@ -127,8 +131,12 @@
                             <div class="box text-center">
                                 <h1 class="font-light text-white">
                                              <?php 
-                                                    $this->db->where('leave_status','Approve');
-                                                    $this->db->from("emp_leave");
+                                                    $id = $this->session->userdata('user_login_id');
+                                                    $this->db->select('b.*');
+                                                    $this->db->from('breakdown b');
+                                                    $this->db->join('employee te','te.id=b.technician_id');
+                                                    $this->db->where('te.em_id',$id);
+                                                    $this->db->where('b.status','pending');
                                                     echo $this->db->count_all_results();
                                                 ?> 
                                 </h1>
@@ -142,12 +150,16 @@
                             <div class="box text-center">
                                 <h1 class="font-light text-white">
                                      <?php 
-                                            $this->db->where('pro_status','upcoming');
-                                            $this->db->from("project");
+                                            $id = $this->session->userdata('user_login_id');
+                                            $this->db->select('b.*');
+                                            $this->db->from('breakdown b');
+                                            $this->db->join('employee te','te.id=b.technician_id');
+                                            $this->db->where('te.em_id',$id);
+                                            $this->db->where('b.status','inprogress');
                                             echo $this->db->count_all_results();
                                         ?> 
                                 </h1>
-                                <h6 class="text-white">Upcomming Services</h6>
+                                <h6 class="text-white">Inprogress Services</h6>
                             </div>
                         </div>
                     </div>

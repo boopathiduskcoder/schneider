@@ -8,7 +8,7 @@
 	public function GetVendorByID($id){
         $this->db->select('v.*');
         $this->db->from('vendor_list v');
-        $this->db->where('v.id',$id);
+        $this->db->where('v.vid',$id);
         $query=$this->db->get();
         $result = $query->row();
         
@@ -17,12 +17,15 @@
     public function Add_vendor($data){
         $this->db->insert('vendor_list',$data);
     }
-    public function Does_email_exists($email) {
+    public function Does_email_exists($email_id, $id) {
         $sql = "SELECT `email_id` FROM vendor_list
-        WHERE `email_id`='$email'";
+        WHERE `email_id`='$email_id'";
+        if($id){
+            $sql = $sql."And `vid`!='$id'";
+        }
+    
         $result=$this->db->query($sql);
-       
-
+        
         if ($result->row()) {
             return $result->row();
         } else {
@@ -30,7 +33,7 @@
         }
     }
     public function Update_vendor($id,$data){
-        $this->db->where('id',$id);
+        $this->db->where('vid',$id);
         $this->db->update('vendor_list',$data);
     }
     public function vendor_list(){

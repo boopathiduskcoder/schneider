@@ -55,10 +55,10 @@
                                         <tbody>
                                            <?php foreach($technicians as $value): ?>
                                             <tr>
-                                                <td><?php echo $value->firstname;?></td>
-                                                <td><?php echo $value->lastname;?></td>
-                                                <td><?php echo $value->email; ?></td> 
-                                                <td><?php echo $value->contact; ?></td>
+                                                <td><?php echo $value->first_name;?></td>
+                                                <td><?php echo $value->last_name;?></td>
+                                                <td><?php echo $value->em_email; ?></td> 
+                                                <td><?php echo $value->em_phone; ?></td>
                                                 <td><?php echo $value->status; ?></td>
                                                 <td class="jsgrid-align-center ">
                                                     <a href="#" title="Edit" class="btn btn-sm btn-info waves-effect waves-light technicians" data-id="<?php echo $value->id ?>"><i class="fa fa-pencil-square-o"></i></a>
@@ -83,7 +83,6 @@
 				<h4 class="modal-title" id="exampleModalLabel1">Add Technician </h4>
 				<button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
 			</div>
-
 			<form method="post" action="Add_Technicians" id="btnSubmit" enctype="multipart/form-data">
 				<div class="modal-body">
                    <div class="row">
@@ -99,6 +98,7 @@
 							<div class="form-group">
 								<label class="control-label">Email</label>
 								<input type="email" name="email" value="" class="form-control"  autocomplete="off">
+                                
 							</div>
                         </div>
                     
@@ -115,8 +115,8 @@
 								<label class="control-label">Status</label>
 								<select name="status" class="select2 form-control custom-select" style="width: 100%" required>
 									<option>Select</option>
-									<option value="active">Active</option>
-									<option value="in-active">In-active</option>
+									<option value="ACTIVE">Active</option>
+									<option value="INACTIVE">In-active</option>
 								</select>
 							</div> 
                          </div>
@@ -179,11 +179,11 @@ $.ajax({
     //alert(JSON.stringify(response));
 // Populate the form fields with the data returned from server
 $('#btnSubmit').find('[name="aid"]').val(response.technicianbyid.id).end();
-$('#btnSubmit').find('[name="firstname"]').val(response.technicianbyid.firstname).end();
-$('#btnSubmit').find('[name="lastname"]').val(response.technicianbyid.lastname).end();
-$('#btnSubmit').find('[name="email"]').val(response.technicianbyid.email).end();
-$('#btnSubmit').find('[name="password"]').val(response.technicianbyid.password).end();
-$('#btnSubmit').find('[name="contact"]').val(response.technicianbyid.contact).end();  
+$('#btnSubmit').find('[name="firstname"]').val(response.technicianbyid.first_name).end();
+$('#btnSubmit').find('[name="lastname"]').val(response.technicianbyid.last_name).end();
+$('#btnSubmit').find('[name="email"]').val(response.technicianbyid.em_email).end();
+$('#btnSubmit').find('[name="password"]').val(response.technicianbyid.em_password).end();
+$('#btnSubmit').find('[name="contact"]').val(response.technicianbyid.em_phone).end();  
 $('#btnSubmit').find('[name="status"]').val(response.technicianbyid.status).end();
 /*var status =  $('#btnSubmit').find('[name="status"]').val(response.technicianbyid.status);
 alert(status);

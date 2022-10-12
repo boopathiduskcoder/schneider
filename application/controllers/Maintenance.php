@@ -1142,6 +1142,19 @@ public function Update_status(){
 	}    
 	echo json_encode($response);
 }
-
+public function complaintslist()
+	{
+		if ($this->session->userdata('user_login_access') != False) {
+			$id = $this->session->userdata('user_login_id');
+			$data['equipments'] = $this->preventive_model->Getallequipmentslist();
+			$data['departments'] = $this->preventive_model->Getalldepartments();
+			$data['breakdowntypes'] = $this->preventive_model->GetAllBreakdowntypes();
+			$data['technicians'] = $this->preventive_model->GetAlltechnicians();
+			$data['complaints'] = $this->preventive_model->GetAllcomplaints($id);
+			$this->load->view('backend/complaintslist', $data);
+		} else {
+			redirect(base_url(), 'refresh');
+		}
+	}
 }
 ?>

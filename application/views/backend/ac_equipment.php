@@ -17,7 +17,11 @@
 	<div class="container-fluid">
 		<div class="row m-b-10"> 
 			<div class="col-12">
+			<?php if($this->session->userdata('user_type')=='EMPLOYEE'){ ?>
+                        
+                        <?php } else { ?>  
 				<button type="button" class="btn btn-info"><i class="fa fa-plus"></i><a data-toggle="modal" data-target="#assetsmodel" data-whatever="@getbootstrap" class="text-white"><i class="" aria-hidden="true"></i> Add Ac Equipment </a></button>
+				<?php } ?>
 			</div>
 		</div>
 		<div class="row">
@@ -69,8 +73,11 @@
 		<td><?php echo $value->manufacturer; ?></td>
 		<td><?php echo ucfirst($value->status); ?></td>
 		<td class="jsgrid-align-center ">
+			<?php if($this->session->userdata('user_type')=='EMPLOYEE'){ ?>
+                        
+                        <?php } else { ?>  
 			<a href="#" title="Edit" class="btn btn-sm btn-info waves-effect waves-light assets" data-id="<?php echo $value->id ?>"><i class="fa fa-pencil-square-o"></i></a>
-
+			<?php } ?>
   			<a href="<?php echo base_url(); ?>equipment/ViewPlants?equipment_id=<?php echo base64_encode($value->id); ?>" title="Edit" class="btn btn-sm btn-info waves-effect waves-light"><i class="fa fa-eye"></i></a>
 
 

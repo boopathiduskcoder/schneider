@@ -53,7 +53,7 @@
                                         <h6 class="mb-0">Technician name</h6>
                  
                                         <div class="col-sm-9 text-secondary">
-                                        <?php echo $breakdown->firstname.' '.$breakdown->lastname; ?>
+                                        <?php echo $breakdown->first_name.' '.$breakdown->last_name; ?>
                                         </div>
                                         <hr>    
                                         <h6 class="mb-0">Reported date&time</h6>

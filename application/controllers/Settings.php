@@ -12,6 +12,8 @@ class Settings extends CI_Controller {
         $this->load->model('project_model'); 
         $this->load->model('settings_model'); 
         $this->load->model('leave_model'); 
+        $this->load->model('organization_model'); 
+        $this->load->model('location_model'); 
     }
     public function index(){
 		#Redirect to Admin dashboard after authentication
@@ -158,15 +160,28 @@ class Settings extends CI_Controller {
         redirect(base_url() , 'refresh');
     }            
     }
-    public function Edit_location($des){
+    public function Edit_location($id){
         if($this->session->userdata('user_login_access') != False) {
-        $data['designation'] = $this->organization_model->desselect();
-        $data['editdesignation']=$this->organization_model->designation_edit($des);
-        $this->load->view('backend/designation', $data);
+        //$data['designation'] = $this->location_model->desselect();
+        $data['editlocation']=$this->location_model->location_edit($id);
+        $data['location'] = $this->settings_model->getlocation();
+        $this->load->view('backend/location', $data);
         }
     else{
         redirect(base_url() , 'refresh');
     }            
+    }
+    public function Update_location(){
+        if($this->session->userdata('user_login_access') != False) {
+        $id = $this->input->post('id');
+        $location_name = $this->input->post('location_name');
+        $data =  array('location_name' => $location_name );
+        $this->location_model->Update_location($id, $data);
+        echo "Successfully Updated";
+        }
+    else{
+        redirect(base_url() , 'refresh');
+    }        
     }
     public function Update_des(){
         if($this->session->userdata('user_login_access') != False) {
@@ -180,6 +195,37 @@ class Settings extends CI_Controller {
         redirect(base_url() , 'refresh');
     }        
     }
+    public function location_delete($id){
+        if($this->session->userdata('user_login_access') != False) {
+        $this->location_model->location_delete($id);
+        $this->session->set_flashdata('delsuccess', 'Successfully Deleted');
+        redirect('Settings/location');
+        }
+    else{
+		redirect(base_url() , 'refresh');
+	}        
+    }
+    public function Save_department(){
+        if($this->session->userdata('user_login_access') != False) { 
+           $dep = $this->input->post('department');
+           $this->load->library('form_validation');
+           $this->form_validation->set_error_delimiters('<div class="error">', '</div>');
+           $this->form_validation->set_rules('department','department','trim|required|xss_clean');
+    
+           if ($this->form_validation->run() == FALSE) {
+               echo validation_errors();
+           }else{
+            $data = array();
+            $data = array('dep_name' => $dep);
+            $success = $this->organization_model->Add_Department($data);
+            $this->session->set_flashdata('feedback','Successfully Added');
+               echo "Successfully Added";
+           }
+            }
+        else{
+            redirect(base_url() , 'refresh');
+        }        
+        }
     public function department(){
         if($this->session->userdata('user_login_access') != False) { 
         $data['department'] = $this->settings_model->getdepartment();

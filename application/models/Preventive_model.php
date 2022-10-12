@@ -28,17 +28,20 @@
     return $result;
   }
   public function GetAlltechnicians(){
-    $query = $this->db->get('technicians');
+    $this->db->select('e.*');
+    $this->db->from('employee e');
+    $this->db->where('e.em_role','TECHNICIAN');
+    $query=$this->db->get();
     $result = $query->result();
-    return $result;
+        return $result;         
   }
   public function GetAllBreakdown($type){
-    $this->db->select('b.*, e.name as equipmentname,d.dep_name,t.name as breakdown_name,te.firstname,te.lastname');
+    $this->db->select('b.*, e.name as equipmentname,d.dep_name,t.name as breakdown_name,te.first_name,te.last_name');
     $this->db->from('breakdown b');
     $this->db->join('equipments e', 'e.id = b.equipment_id');
     $this->db->join('department d','d.id = b.department_id');
     $this->db->join('breakdowntypes t','t.id=b.breakdown_id');
-    $this->db->join('technicians te','te.id=b.technician_id');
+    $this->db->join('employee te','te.id=b.technician_id');
     $this->db->where('b.type',$type);
     $query=$this->db->get();
     $result = $query->result();
@@ -94,12 +97,12 @@ public function complaint_delete($id){
   $this->db->delete('breakdown',array('id'=> $id));
 }
 public function Getbreakdownview($id){
-  $this->db->select('b.*, e.name as equipmentname,d.dep_name,t.name as breakdown_name,te.firstname,te.lastname');
+  $this->db->select('b.*, e.name as equipmentname,d.dep_name,t.name as breakdown_name,te.first_name,te.last_name');
   $this->db->from('breakdown b');
   $this->db->join('equipments e', 'e.id = b.equipment_id');
   $this->db->join('department d','d.id = b.department_id');
   $this->db->join('breakdowntypes t','t.id=b.breakdown_id');
-   $this->db->join('technicians te','te.id=b.technician_id');
+   $this->db->join('employee te','te.id=b.technician_id');
   $this->db->where('b.id',$id);
   $query=$this->db->get();
   $result = $query->row();
@@ -108,5 +111,17 @@ public function Getbreakdownview($id){
 public function Update_breakdownstatus($id, $data){
   $this->db->where('id',$id);
   $this->db->update('breakdown',$data);
+}
+public function GetAllcomplaints($id){
+  $this->db->select('b.*, e.name as equipmentname,d.dep_name,t.name as breakdown_name,te.first_name,te.last_name');
+  $this->db->from('breakdown b');
+  $this->db->join('equipments e', 'e.id = b.equipment_id');
+  $this->db->join('department d','d.id = b.department_id');
+  $this->db->join('breakdowntypes t','t.id=b.breakdown_id');
+  $this->db->join('employee te','te.id=b.technician_id');
+  $this->db->where('te.em_id',$id);
+  $query=$this->db->get();
+  $result = $query->result();
+  return $result; 
 }
     }
