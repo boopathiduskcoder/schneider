@@ -1156,5 +1156,31 @@ public function complaintslist()
 			redirect(base_url(), 'refresh');
 		}
 	}
+	public function viewpreventive()
+{
+if($this->session->userdata('user_login_access') != False) 
+{
+    $id = base64_decode($this->input->get('id'));
+    $data['preventive']= $this->preventive_model->Getpreventiveview($id);
+    $this->load->view('backend/preventive_view',$data);  
+}
+else
+{
+    redirect(base_url() , 'refresh');
+}
+}
+public function View_complaint()
+{
+if($this->session->userdata('user_login_access') != False) 
+{
+	//$id = base64_decode($this->input->get('id'));
+	//$data['fireextingu']= $this->temperature_model->Getfireextingview($id);
+	$this->load->view('backend/complaint_view');  
+}
+else
+{
+	redirect(base_url() , 'refresh');
+}
+}
 }
 ?>

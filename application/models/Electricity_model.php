@@ -12,6 +12,11 @@
     $result = $query->result();
     return $result;
   }
+  public function GetLocation(){
+    $query = $this->db->get('location');
+    $result = $query->result();
+    return $result;
+  }
     public function Add_Electricity($data){
        $this->db->insert('electricity_consuming',$data);
       }    
@@ -28,4 +33,5 @@
       public function electricity_delete($id){
         $this->db->delete('electricity_consuming',array('id'=> $id));
     }
+    
     }

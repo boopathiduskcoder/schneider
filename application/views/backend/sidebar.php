@@ -7,12 +7,16 @@
                         $basicinfo = $this->employee_model->GetBasic($id); 
                         ?>                
                 <div class="user-profile">
-                    <!-- User profile image -->
+                    <!-- User profile image --><?php if(empty($basicinfo->em_image)){ ?>
+                         <div class="profile-img"> <img src="<?php echo base_url(); ?>assets/images/users/avatar.png ?>" alt="user" />
+                         <!-- this is blinking heartbit-->
+                         <div class="notify setpos"> <span class="heartbit"></span> <span class="point"></span> </div>
+                    <?php }else{ ?>
                     <div class="profile-img"> <img src="<?php echo base_url(); ?>assets/images/users/<?php echo $basicinfo->em_image ?>" alt="user" />
                         <!-- this is blinking heartbit-->
                         <div class="notify setpos"> <span class="heartbit"></span> <span class="point"></span> </div>
                     </div>
-
+                    <?php } ?>
                     <!-- User profile text-->
                     <div class="profile-text">
                         <h5><?php echo $basicinfo->first_name.' '.$basicinfo->last_name; ?></h5>
@@ -49,7 +53,7 @@
                                 <li><a href="<?php echo base_url();?>monitoring/temperature">Temperature & Humidity</a></li>
                                 <li><a href="<?php echo base_url();?>monitoring/oil_consumption">Oil Consumption</a></li>
                                 <li><a href="<?php echo base_url();?>monitoring/fire_ext">Fire Extinuguishers</a></li>
-                                <li><a href="<?php echo base_url();?>monitoring/pf">PF</a></li>
+                                <!--<li><a href="<?php //echo base_url();?>monitoring/pf">PF</a></li>-->
                             </ul>
                         </li>
                         <li> <a class="has-arrow waves-effect waves-dark" href="#" aria-expanded="false"><i class="mdi mdi-account-multiple"></i><span class="hide-menu">Vendor Management </span></a>
@@ -58,19 +62,7 @@
                                 <li><a href="<?php echo base_url(); ?>vendor/stock">Stock </a></li>
                             </ul>
                         </li>
-                        <li> <a class="has-arrow waves-effect waves-dark" href="#" aria-expanded="false"><i class="mdi mdi-account-multiple"></i><span class="hide-menu">Technicians</span></a>
-                            <ul aria-expanded="false" class="collapse">
-                                <li><a href="<?php echo base_url(); ?>technician/technicians">Technicians </a></li>
-                                <!-- <li><a href="<?php echo base_url(); ?>worker/in_active_worker">In-active Workers</a></li> -->
-                            </ul>
-                        </li>
-                        <li> <a class="has-arrow waves-effect waves-dark" href="#" aria-expanded="false"><i class="fa fa-building-o"></i><span class="hide-menu">Settings</span></a>
-                            <ul aria-expanded="false" class="collapse">
-                                <li><a href="<?php echo base_url();?>settings/Settings">Site Settings</a></li>
-                                <li><a href="<?php echo base_url();?>settings/location">Locations</a></li>
-                                <li><a href="<?php echo base_url();?>settings/department">Departments</a></li>
-                            </ul>
-                        </li>                                                          
+                                                                   
                         <?php } else if($this->session->userdata('user_type')=='SUPER ADMIN') { ?>
                         <li> <a class="has-arrow waves-effect waves-dark" href="#" aria-expanded="false"><i class="mdi mdi-rocket"></i><span class="hide-menu">Assets </span></a>
                             <ul aria-expanded="false" class="collapse">
@@ -94,7 +86,7 @@
                                 <li><a href="<?php echo base_url();?>monitoring/temperature">Temperature & Humidity</a></li>
                                 <li><a href="<?php echo base_url();?>monitoring/oil_consumption">Oil Consumption</a></li>
                                 <li><a href="<?php echo base_url();?>monitoring/fire_ext">Fire Extinuguishers</a></li>
-                                <li><a href="<?php echo base_url();?>monitoring/pf">PF</a></li>
+                                <!--<li><a href="<?php //echo base_url();?>monitoring/pf">PF</a></li>-->
                             </ul>
                         </li>
                         <li> <a class="has-arrow waves-effect waves-dark" href="#" aria-expanded="false"><i class="mdi mdi-account-multiple"></i><span class="hide-menu">Vendor Management </span></a>

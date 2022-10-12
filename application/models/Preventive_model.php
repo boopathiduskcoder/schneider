@@ -124,4 +124,15 @@ public function GetAllcomplaints($id){
   $result = $query->result();
   return $result; 
 }
+public function Getpreventiveview($id){
+  $this->db->select('p.*,e.name as equipmentname,l.location_name as location,s.name as servicename');
+  $this->db->from('preventives p');
+  $this->db->join('equipments e', 'e.id = p.equipment_id');
+  $this->db->join('location l', 'l.id = p.location_id');
+  $this->db->join('service_interval s', 's.id = p.interval_id');
+  $this->db->where('p.id',$id);
+  $query=$this->db->get();
+  $result = $query->row();
+  return $result;        
+}
     }
