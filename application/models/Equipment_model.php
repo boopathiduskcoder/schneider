@@ -441,6 +441,26 @@ public function GetAssetByIdcomplaints($id,$type){
         $this->db->where('id',$id);
         $this->db->update('equipments',$data);
     }
+    
+    public function importData($data) {
+  
+      $res = $this->db->insert_batch('equipments',$data);
+      if($res){
+          return TRUE;
+      }else{
+          return FALSE;
+      }
 
+  }
+  public function location($location){
+    $this->db->select('l.*');
+    $this->db->from('location l');
+    $this->db->where('l.location_name',$location);
+    $query=$this->db->get();
+    $result = $query->result();
+    $result = $result[0]->id;
+    // print_r($result[0]->id);
+    return $result;
+}
     }
 ?>

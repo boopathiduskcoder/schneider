@@ -135,4 +135,18 @@ public function Getpreventiveview($id){
   $result = $query->row();
   return $result;        
 }
+public function download_invoice($from_date,$to_date,$type){
+  $this->db->select('b.*, e.name as equipmentname,d.dep_name,t.name as breakdown_name,te.first_name,te.last_name');
+  $this->db->from('breakdown b');
+  $this->db->join('equipments e', 'e.id = b.equipment_id');
+  $this->db->join('department d','d.id = b.department_id');
+  $this->db->join('breakdowntypes t','t.id=b.breakdown_id');
+  $this->db->join('employee te','te.id=b.technician_id');
+  $this->db->where('date_and_time LIKE "'. DATE('Y-m-d', strtotime($from_date)). '" and "'. DATE('Y-m-d', strtotime($to_date)).'"');
+  $query=$this->db->get();
+  $str=$this->db->last_query();
+  print_r($str);exit;
+  $result = $query->result();
+  return $result; 
+}
     }

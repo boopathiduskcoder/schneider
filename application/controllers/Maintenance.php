@@ -1,6 +1,7 @@
 <?php
 	defined('BASEPATH') OR exit('No direct script access allowed');
-
+	use PhpOffice\PhpSpreadsheet\Spreadsheet;
+	use PhpOffice\PhpSpreadsheet\Writer\Xlsx;
 class Maintenance extends CI_Controller
 {
 
@@ -604,6 +605,19 @@ class Maintenance extends CI_Controller
 			redirect(base_url(), 'refresh');
 		}
 	}
+	public function report()
+	{
+		if ($this->session->userdata('user_login_access') != False) {
+			/*$data['equipments'] = $this->preventive_model->Getallequipmentslist();
+			$data['departments'] = $this->preventive_model->Getalldepartments();
+			$data['breakdowntypes'] = $this->preventive_model->GetAllBreakdowntypes();
+			$data['technicians'] = $this->preventive_model->GetAlltechnicians();
+			$data['breakdowns'] = $this->preventive_model->GetAllBreakdown(2);*/
+			$this->load->view('backend/report');
+		} else {
+			redirect(base_url(), 'refresh');
+		}
+	}
 
 	public function LogisTicById()
 	{
@@ -1182,5 +1196,45 @@ else
 	redirect(base_url() , 'refresh');
 }
 }
+public function download_invoice(){
+
+    $spreadsheet = new Spreadsheet();
+    $sheet = $spreadsheet->getActiveSheet();
+	$date = date('Y-m-d');
+    $from_date = $this->input->post('from_date');
+	$to_date =$this->input->post('to_date');
+    $type ='2';
+    /*set column names*/
+    $table_columns = array("Equipment Name", "Department", "Breakdown", "Assigned To", "Reported Date & time",  "Details");
+    $column = 1;
+    foreach ($table_columns as $field) {
+        $sheet->setCellValueByColumnAndRow($column, 1, $field);
+        $column++;
+    }
+    /*end set column names*/
+
+    $invoice_data = $this->preventive_model->download_invoice($from_date,$to_date,$type); //get your data from model
+    print_r($invoice_data);exit;
+    $excel_row = 2; //now from row 2
+
+    foreach ($invoice_data as $row) {
+              $sheet->setCellValueByColumnAndRow(1, $excel_row, $row->equipmentname);
+              $sheet->setCellValueByColumnAndRow(2, $excel_row, $row->depname);
+              $sheet->setCellValueByColumnAndRow(3, $excel_row, $row->breakdown_name);
+              $sheet->setCellValueByColumnAndRow(4, $excel_row, $row->first_name.' '.$row->last_name);
+              $sheet->setCellValueByColumnAndRow(5, $excel_row, $row->date_and_time);
+              $sheet->setCellValueByColumnAndRow(6, $excel_row, $row->details);
+
+              $excel_row++;
+            }
+
+    $invoice_name = 'Invoice-'.$date.'.xls';
+    $object_writer = new Xlsx($spreadsheet);
+    header('Content-Type: application/vnd.ms-excel');
+    header('Content-Disposition: attachment;filename="'.$invoice_name.'"');
+    $object_writer->save('php://output');
+
+
+    } 
 }
 ?>

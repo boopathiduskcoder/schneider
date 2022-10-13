@@ -463,5 +463,85 @@ class Equipment extends CI_Controller {
             redirect(base_url() , 'refresh');
         }
     }
+    public function importFile(){
+  
+        if ($this->input->post('submit')) {
+                  $path = 'assets/attachments/';
+                  require_once APPPATH . "/third_party/PHPExcel.php";
+                  $config['upload_path'] = $path;
+                  $config['allowed_types'] = 'xlsx|xls|csv';
+                  $config['remove_spaces'] = TRUE;
+                  $this->load->library('upload', $config);
+                  $this->upload->initialize($config);            
+                  if (!$this->upload->do_upload('uploadFile')) {
+                      $error = array('error' => $this->upload->display_errors());
+                  } else {
+                      $data = array('upload_data' => $this->upload->data());
+                  }
+                  if(empty($error)){
+                    if (!empty($data['upload_data']['file_name'])) {
+                      $import_xls_file = $data['upload_data']['file_name'];
+                  } else {
+                      $import_xls_file = 0;
+                  }
+                  $inputFileName = $path . $import_xls_file;
+                   
+                  try {
+                      $inputFileType = PHPExcel_IOFactory::identify($inputFileName);
+                      $objReader = PHPExcel_IOFactory::createReader($inputFileType);
+                      $objPHPExcel = $objReader->load($inputFileName);
+                      $allDataInSheet = $objPHPExcel->getActiveSheet()->toArray(null, true, true, true);
+                      $flag = true;
+                      $i=0;
+                      foreach ($allDataInSheet as $value) {
+                        if($flag){
+                          $flag =false;
+                          continue;
+                        }
+                        $inserdata[$i]['name'] = $value['A'];
+                        $inserdata[$i]['type'] = $value['B'];
+                        $inserdata[$i]['tag_no'] = $value['C'];
+                        $inserdata[$i]['model'] = $value['D'];
+                        $inserdata[$i]['type1'] = $value['E'];
+                        //$date =$value['F'];
+                        $inserdata[$i]['installation_date'] =$value['F'];
+                        $inserdata[$i]['manufacturer'] = $value['G'];
+                        $inserdata[$i]['slno'] = $value['H'];
+                        $inserdata[$i]['parts_included'] = $value['I'];
+                        $location=$value['J'];
+                        $data= $this->equipment_model->location($location); 
+                        $inserdata[$i]['location_id'] = $data;
+                        $inserdata[$i]['warrenty'] = $value['K'];
+                        $inserdata[$i]['power'] = $value['L'];
+                        $inserdata[$i]['status'] = $value['M'];
+                        $inserdata[$i]['specification'] = $value['N'];
+                        /*$inserdata[$i]['service'] = $value['O'];
+                        $inserdata[$i]['last_date'] = $value['P'];
+                        $inserdata[$i]['next_date'] = $value['Q'];*/
+                        $i++;
+                      }               
+                      $result = $this->equipment_model->importData($inserdata);   
+                      if($result){
+                        $message="Successfully Imported";  
+                      $response['status']=TRUE;
+                      $response['message']=$message;     
+                      }else{
+                        echo "ERROR !";
+                      }             
+        
+                } catch (Exception $e) {
+                     die('Error loading file "' . pathinfo($inputFileName, PATHINFO_BASENAME)
+                              . '": ' .$e->getMessage());
+                  }
+                  echo json_encode($response);
+                }else{
+                    echo $error['error'];
+                  }
+                   
+                   
+          }
+          //$this->load->view('ac_equipment');
+      }
+   
 }
 ?>

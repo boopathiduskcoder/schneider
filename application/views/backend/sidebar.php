@@ -78,6 +78,8 @@
                                 <li><a href="<?php echo base_url(); ?>maintenance/preventive">Preventive Maintenance </a></li>
                                 <li><a href="<?php echo base_url(); ?>maintenance/breakdown"> Breakdown</a></li>
                                 <li><a href="<?php echo base_url(); ?>maintenance/complaints"> Complaints</a></li>
+                                <li><a href="<?php echo base_url(); ?>maintenance/report"> Reports</a></li>
+
                             </ul>
                         </li>
                         <li> <a class="has-arrow waves-effect waves-dark" href="#" aria-expanded="false"><i class="fa fa-building-o"></i><span class="hide-menu">Monitoring </span></a>
