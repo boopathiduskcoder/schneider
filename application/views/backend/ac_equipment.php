@@ -34,9 +34,11 @@
 					<div class="modal-body">                            
     <input type="file" name="uploadFile" value="" />
     <input type="submit" name="submit" class="btn btn-info" value="Upload" />
-						
+	<a href="<?php echo base_url(); ?>equipment/download_acequipment" title="Edit" class="btn btn-info waves-effect waves-light">Export</a>
+	
 						</div>
 </form>
+
 					<div class="card-body">
 						<div class="table-responsive ">
 							<table id="example23" class="display nowrap table table-hover table-striped table-bordered" cellspacing="0" width="100%">

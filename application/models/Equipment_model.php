@@ -462,5 +462,16 @@ public function GetAssetByIdcomplaints($id,$type){
     // print_r($result[0]->id);
     return $result;
 }
+public function download_plantequipment($type){
+  $this->db->select('e.*,l.location_name,t.name as type_name');
+  $this->db->from('equipments e');
+  $this->db->join('location l','e.location_id=l.id');
+  $this->db->join('eqiuipment_type t','e.type=t.id');
+  $this->db->where('e.type', $type);
+    $query=$this->db->get();
+  //$str=$this->db->last_query();
+  $result = $query->result();
+  return $result; 
+}
     }
 ?>
