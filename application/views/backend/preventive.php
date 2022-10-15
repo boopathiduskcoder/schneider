@@ -68,9 +68,9 @@
                                                           $sdata = $this->db->get_where('service_interval',array('id '=>$sid))->row();
                                                           echo  $sdata->name; ?></td>
                                                 <td><?php $date= strtotime($value->last_date);
-                                                          echo date("d-F-y", $date);;?></td>
+                                                          echo date("d-F-y", $date);?></td>
                                                 <td><?php $date= strtotime($value->next_date);
-                                                          echo date("d-F-y", $date);;?>
+                                                          echo date("d-F-y", $date);?>
                                                 <br><span class="badge badge-success">
                                                      <?php
                                                          $date1= $value->next_date;

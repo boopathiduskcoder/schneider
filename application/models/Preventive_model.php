@@ -165,4 +165,15 @@ public function download_complaint($month,$type){
   $result = $query->result();
   return $result; 
 }
+public function Getinprogresslist(){
+  $this->db->select('b.*, e.name as equipmentname, l.location_name');
+ $this->db->from('breakdown b');
+ $this->db->join('equipments e', 'e.id = b.equipment_id');
+ $this->db->join('location l', 'l.id = e.location_id');
+  $this->db->where('b.status', 'Inprogress');
+  $query=$this->db->get();
+  //$str=$this->db->last_query();
+  $result = $query->result();
+  return $result; 
+}
     }

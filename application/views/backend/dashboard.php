@@ -20,6 +20,7 @@
                 <!-- Row -->
                 <div class="row">
                     <!-- Column -->
+                    <?php if($this->session->userdata('user_type') !='TECHNICIAN') { ?>
                     <div class="col-lg-3 col-md-6">
                         <div class="card">
                             <div class="card-body">
@@ -27,16 +28,19 @@
                                     <div class="round align-self-center round-success"><i class="ti-wallet"></i></div>
                                     <div class="m-l-10 align-self-center">
                                         <h3 class="m-b-0">
+                                            
                                     <?php 
-                                        $this->db->where('status','ACTIVE');
-                                        $this->db->from("employee");
+                                        $this->db->where('type','2');
+                                        $this->db->from("breakdown");
                                         echo $this->db->count_all_results();
                                     ?>  Complaints</h3>
-                                        <a href="<?php echo base_url(); ?>employee/Employees" class="text-muted m-b-0">View Complaint</a></div>
+                                        <a href="<?php echo base_url(); ?>maintenance/complaints" class="text-muted m-b-0">View Complaint</a></div>
+                                   
                                 </div>
                             </div>
                         </div>
                     </div>
+                    
                     <!-- Column -->
                     <!-- Column -->
                     <div class="col-lg-3 col-md-6">
@@ -47,12 +51,12 @@
                                     <div class="m-l-10 align-self-center">
                                         <h3 class="m-b-0">
                                              <?php 
-                                                    $this->db->where('leave_status','Approve');
-                                                    $this->db->from("emp_leave");
+                                                    //$this->db->where('status','active');
+                                                    $this->db->from("technicians");
                                                     echo $this->db->count_all_results();
-                                                ?> Workers
+                                                ?> Technicians
                                         </h3>
-                                        <a href="<?php echo base_url(); ?>leave/Application" class="text-muted m-b-0">View Worker</a>
+                                        <a href="<?php echo base_url(); ?>technician/technicians" class="text-muted m-b-0">View Technician</a>
                                         </div>
                                 </div>
                             </div>
@@ -68,12 +72,12 @@
                                     <div class="m-l-10 align-self-center">
                                         <h3 class="m-b-0"> 
                                          <?php 
-                                                $this->db->where('pro_status','running');
-                                                $this->db->from("project");
+                                                $this->db->where('type','1');
+                                                $this->db->from("breakdown");
                                                 echo $this->db->count_all_results();
                                             ?> Breakdowns
                                         </h3>
-                                        <a href="<?php echo base_url(); ?>Projects/All_Projects" class="text-muted m-b-0">View Detail</a>
+                                        <a href="<?php echo base_url(); ?>maintenance/breakdown" class="text-muted m-b-0">View Detail</a>
                                     </div>
                                 </div>
                             </div>
@@ -89,17 +93,18 @@
                                     <div class="m-l-10 align-self-center">
                                         <h3 class="m-b-0">
                                          <?php 
-                                                $this->db->where('status','Granted');
-                                                $this->db->from("loan");
+                                                //$this->db->where('status','Granted');
+                                                $this->db->from("equipments");
                                                 echo $this->db->count_all_results();
                                             ?> Assets 
                                         </h3>
-                                        <a href="<?php echo base_url(); ?>Loan/View" class="text-muted m-b-0">View Asset</a>
+                                        <a href="<?php echo base_url(); ?>equipment/plant_equipment" class="text-muted m-b-0">View Asset</a>
                                     </div>
                                 </div>
                             </div>
                         </div>
                     </div>
+                    <?php } else {} ?>
                     <!-- Column -->
                 </div>
                 <!-- Row -->
@@ -111,7 +116,15 @@
                         <div class="card card-inverse card-info">
                             <div class="box bg-info text-center">
                                 <h1 class="font-light text-white">
-                                    <?php 
+                                    <?php if($this->session->userdata('user_type') !='TECHNICIAN') { 
+                                             $this->db->select('b.*');
+                                             $this->db->from('breakdown b');
+                                             $this->db->join('employee te','te.id=b.technician_id');
+                                             $this->db->where('b.status','completed');
+                                             echo $this->db->count_all_results();
+
+
+                                    }else{
                                         $id = $this->session->userdata('user_login_id');
                                         $this->db->select('b.*');
                                         $this->db->from('breakdown b');
@@ -119,6 +132,7 @@
                                         $this->db->where('te.em_id',$id);
                                         $this->db->where('b.status','completed');
                                         echo $this->db->count_all_results();
+                                    } 
                                     ?>
                                 </h1>
                                 <h6 class="text-white">Completed Complaints</h6>
@@ -130,7 +144,15 @@
                         <div class="card card-success card-inverse">
                             <div class="box text-center">
                                 <h1 class="font-light text-white">
-                                             <?php 
+                                             <?php if($this->session->userdata('user_type') !='TECHNICIAN') { 
+                                             $this->db->select('b.*');
+                                             $this->db->from('breakdown b');
+                                             $this->db->join('employee te','te.id=b.technician_id');
+                                             $this->db->where('b.status','pending');
+                                             echo $this->db->count_all_results();
+
+
+                                    }else{
                                                     $id = $this->session->userdata('user_login_id');
                                                     $this->db->select('b.*');
                                                     $this->db->from('breakdown b');
@@ -138,7 +160,7 @@
                                                     $this->db->where('te.em_id',$id);
                                                     $this->db->where('b.status','pending');
                                                     echo $this->db->count_all_results();
-                                                ?> 
+                                     } ?> 
                                 </h1>
                                 <h6 class="text-white">Pending Complaints</h6>
                             </div>
@@ -149,17 +171,25 @@
                         <div class="card card-inverse card-danger">
                             <div class="box text-center">
                                 <h1 class="font-light text-white">
-                                     <?php 
+                                     <?php if($this->session->userdata('user_type') !='TECHNICIAN') { 
+                                             $this->db->select('b.*');
+                                             $this->db->from('breakdown b');
+                                             $this->db->join('employee te','te.id=b.technician_id');
+                                             $this->db->where('b.status','');
+                                             echo $this->db->count_all_results();
+
+
+                                    }else{
                                             $id = $this->session->userdata('user_login_id');
                                             $this->db->select('b.*');
                                             $this->db->from('breakdown b');
                                             $this->db->join('employee te','te.id=b.technician_id');
                                             $this->db->where('te.em_id',$id);
-                                            $this->db->where('b.status','inprogress');
+                                            $this->db->where('b.status','');
                                             echo $this->db->count_all_results();
-                                        ?> 
+                                     } ?> 
                                 </h1>
-                                <h6 class="text-white">Inprogress Services</h6>
+                                <h6 class="text-white">Upcoming Services</h6>
                             </div>
                         </div>
                     </div>
@@ -168,13 +198,25 @@
                         <div class="card card-inverse card-dark">
                             <div class="box text-center">
                                 <h1 class="font-light text-white">
-                                         <?php 
-                                                $this->db->where('status','Granted');
-                                                $this->db->from("loan");
+                                         <?php if($this->session->userdata('user_type') !='TECHNICIAN') { 
+                                             $this->db->select('b.*');
+                                             $this->db->from('breakdown b');
+                                             $this->db->join('employee te','te.id=b.technician_id');
+                                             $this->db->where('b.status','inprogress');
+                                             echo $this->db->count_all_results();
+
+
+                                    }else{
+                                                 $id = $this->session->userdata('user_login_id');
+                                                 $this->db->select('b.*');
+                                                 $this->db->from('breakdown b');
+                                                 $this->db->join('employee te','te.id=b.technician_id');
+                                                 $this->db->where('te.em_id',$id);
+                                                 $this->db->where('b.status','inprogress');
                                                 echo $this->db->count_all_results();
-                                            ?> 
+                                     } ?> 
                                 </h1>
-                                <h6 class="text-white">Pending Service</h6>
+                                <h6 class="text-white">Inprogress Service</h6>
                             </div>
                         </div>
                     </div>
@@ -189,10 +231,11 @@
                 $todolist = $this->dashboard_model->GettodoInfo($userid);                 
                 $holiday = $this->dashboard_model->GetHolidayInfo();                 
                 ?>
-                <!-- Row -->
+                <!-- Row --><?php if($this->session->userdata('user_type') !='TECHNICIAN') { ?>
                 <div class="row">
                     <div class="col-lg-8">
                         <div class="card">
+                        
                             <div class="card-body">
                                 <h4 class="card-title">Preventive Maintanence List</h4>
                             </div>
@@ -208,21 +251,63 @@
                                             </tr>
                                         </thead>
                                         <tbody>
-                                           <?php foreach($notice AS $value): ?>
+                                           <?php
+                                           $i=1;
+                                            foreach ($preventive as $value){?>
                                             <tr class="scrollbar" style="vertical-align:top">
-                                                <td></td>
-                                                <td><?php echo $value->title ?></td>
-                                                <td><mark><a href="<?php echo base_url(); ?>assets/images/notice/<?php echo $value->file_url ?>" target="_blank"><?php echo $value->file_url ?></a></mark>
+                                                <td><?php echo $i; ?></td>
+                                                <td><?php $aid =  $value->equipment_id;
+                                                          $adata = $this->db->get_where('equipments',array('id '=>$aid))->row();
+                                                          echo  $adata->name; ?></td>
+                                                <td><?php $date= strtotime($value->next_date);
+                                                          echo date("d-F-y", $date);?></mark>
                                                 </td>
-                                                <td style="width:100px"><?php echo $value->date ?></td>
+                                                <td style="width:100px"><a href="<?php echo base_url(); ?>maintenance/viewpreventive?id=<?php echo base64_encode($value->id); ?>" title="Edit" class="btn btn-sm btn-success waves-effect waves-light"><i class="fa fa-eye"></i></a></td>
                                             </tr>
-                                            <?php endforeach; ?>
+                                            <?php $i++;} ?>
                                         </tbody>
                                     </table>
                                 </div>
                             </div>
                         </div>
                     </div>
+                    <?php } else{?>
+                        <div class="row">
+                    <div class="col-lg-8">
+                        <div class="card">
+                        
+                            <div class="card-body">
+                                <h4 class="card-title">Preventive Maintanence List</h4>
+                            </div>
+                            <div class="card-body">
+                                <div class="table-responsive slimScrollDiv"  style="height: 400px">
+                                <link rel="stylesheet" href="https://www.amcharts.com/lib/3/plugins/export/export.css" type="text/css" media="all" />
+                                <script src="https://www.amcharts.com/lib/3/amcharts.js"></script>
+ <script src="https://www.amcharts.com/lib/3/pie.js"></script>
+ <script src="https://www.amcharts.com/lib/3/plugins/export/export.min.js"></script>
+ 
+ <script>
+     var chartData = JSON.parse(`<?php echo $chart_data; ?>`);
+ var chart = AmCharts.makeChart( "chartdiv", {
+   "type": "pie",
+   "theme": "none",
+   "dataProvider": chartData,
+   "valueField": "count",
+   "titleField": "status",
+    "balloon":{
+    "fixedPosition":true
+   },
+   "export": {
+ "enabled": true
+   }
+ } );
+ </script>
+ <div id="chartdiv" style="width: 600px; height: 400px;"></div> 
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <?php } ?>
                     <!-- Column -->
                     <div class="col-lg-4">
                         <div class="card">
@@ -231,35 +316,30 @@
                                 <h6 class="card-subtitle">List of your next task to complete</h6>
                                 <div class="to-do-widget m-t-20" style="height:550px;overflow-y:scroll">
                                             <ul class="list-task todo-list list-group m-b-0" data-role="tasklist">
-                                               <?php foreach($todolist as $value): ?>
-                                                <li class="list-group-item" data-role="task">
-                                                   <?php if($value->value == '1'){ ?>
-                                                    <div class="checkbox checkbox-info">
-                                                        <input class="to-do" data-id="<?php echo $value->id?>" data-value="0" type="checkbox" id="<?php echo $value->id?>" >
-                                                        <label for="<?php echo $value->id?>"><span><?php echo $value->to_dodata; ?></span></label>
-                                                    </div>
-                                                    <?php } else { ?>
-                                                    <div class="checkbox checkbox-info">
-                                                        <input class="to-do" data-id="<?php echo $value->id?>" data-value="1" type="checkbox" id="<?php echo $value->id?>" checked>
-                                                        <label class="task-done" for="<?php echo $value->id?>"><span><?php echo $value->to_dodata; ?></span></label>
-                                                    </div> 
-                                                    <?php } ?>                                                   
-                                                </li>
-
-                                                <?php endforeach; ?>
+                                            <table class="table table-hover earning-box ">
+                                        <thead>
+                                            <tr>
+                                                <th>Slno</th>
+                                                <th>Asset Name</th>
+                                                <th>Location</th>
+                                            </tr>
+                                        </thead>
+                                        <tbody>
+                                           <?php
+                                           $i=1;
+                                            foreach ($inprogress as $value){?>
+                                            <tr class="scrollbar" style="vertical-align:top">
+                                                <td><?php echo $i; ?></td>
+                                                <td><?php echo $value->equipmentname; ?></td>
+                                                <td><?php echo $value->location_name; ?>
+                                                </td>
+                                            </tr>
+                                            <?php $i++;} ?>
+                                        </tbody>
+                                    </table>
                                             </ul>                                    
                                 </div>
-                                <div class="new-todo">
-                                   <form method="post" action="add_todo" enctype="multipart/form-data" id="add_todo" >
-                                    <div class="input-group">
-                                        <input type="text" name="todo_data" class="form-control" style="border: 1px solid #fff !IMPORTANT;" placeholder="Add new complaint">
-                                        <span class="input-group-btn">
-                                        <input type="hidden" name="userid" value="<?php echo $this->session->userdata('user_login_id'); ?>">
-                                        <button type="submit" class="btn btn-success todo-submit"><i class="fa fa-plus"></i></button>
-                                        </span> 
-                                    </div>
-                                    </form>
-                                </div>                                
+                                                       
                             </div>
                         </div>
                     </div>
