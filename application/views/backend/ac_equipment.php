@@ -30,6 +30,14 @@
 					<div class="card-header">
 						<h4 class="m-b-0 text-white"> Ac Equipment List</h4>
 					</div>
+					<form action="importFile" method="post" enctype="multipart/form-data">
+					<div class="modal-body">                            
+    <input type="file" name="uploadFile" value="" />
+    <input type="submit" name="submit" class="btn btn-info" value="Upload" />
+	<a href="<?php echo base_url(); ?>equipment/download_acequipment" title="Edit" class="btn btn-info waves-effect waves-light">Export</a>
+	
+						</div>
+</form>
 
 					<div class="card-body">
 						<div class="table-responsive ">

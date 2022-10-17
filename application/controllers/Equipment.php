@@ -1,6 +1,7 @@
  <?php
 defined('BASEPATH') OR exit('No direct script access allowed');
-
+use PhpOffice\PhpSpreadsheet\Spreadsheet;
+	use PhpOffice\PhpSpreadsheet\Writer\Xlsx;
 class Equipment extends CI_Controller {
 
 	    function __construct() {
@@ -463,5 +464,289 @@ class Equipment extends CI_Controller {
             redirect(base_url() , 'refresh');
         }
     }
+    public function importFile(){
+  
+        if ($this->input->post('submit')) {
+                  $path = 'assets/attachments/';
+                  require_once APPPATH . "/third_party/PHPExcel.php";
+                  $config['upload_path'] = $path;
+                  $config['allowed_types'] = 'xlsx|xls|csv';
+                  $config['remove_spaces'] = TRUE;
+                  $this->load->library('upload', $config);
+                  $this->upload->initialize($config);            
+                  if (!$this->upload->do_upload('uploadFile')) {
+                      $error = array('error' => $this->upload->display_errors());
+                  } else {
+                      $data = array('upload_data' => $this->upload->data());
+                  }
+                  if(empty($error)){
+                    if (!empty($data['upload_data']['file_name'])) {
+                      $import_xls_file = $data['upload_data']['file_name'];
+                  } else {
+                      $import_xls_file = 0;
+                  }
+                  $inputFileName = $path . $import_xls_file;
+                   
+                  try {
+                      $inputFileType = PHPExcel_IOFactory::identify($inputFileName);
+                      $objReader = PHPExcel_IOFactory::createReader($inputFileType);
+                      $objPHPExcel = $objReader->load($inputFileName);
+                      $allDataInSheet = $objPHPExcel->getActiveSheet()->toArray(null, true, true, true);
+                      $flag = true;
+                      $i=0;
+                      foreach ($allDataInSheet as $value) {
+                        if($flag){
+                          $flag =false;
+                          continue;
+                        }
+                        $inserdata[$i]['name'] = $value['A'];
+                        $inserdata[$i]['type'] = $value['B'];
+                        $inserdata[$i]['tag_no'] = $value['C'];
+                        $inserdata[$i]['model'] = $value['D'];
+                        $inserdata[$i]['type1'] = $value['E'];
+                        //$date =$value['F'];
+                        $inserdata[$i]['installation_date'] =$value['F'];
+                        $inserdata[$i]['manufacturer'] = $value['G'];
+                        $inserdata[$i]['slno'] = $value['H'];
+                        $inserdata[$i]['parts_included'] = $value['I'];
+                        $location=$value['J'];
+                        $data= $this->equipment_model->location($location); 
+                        $inserdata[$i]['location_id'] = $data;
+                        $inserdata[$i]['warrenty'] = $value['K'];
+                        $inserdata[$i]['power'] = $value['L'];
+                        $inserdata[$i]['status'] = $value['M'];
+                        $inserdata[$i]['specification'] = $value['N'];
+                        /*$inserdata[$i]['service'] = $value['O'];
+                        $inserdata[$i]['last_date'] = $value['P'];
+                        $inserdata[$i]['next_date'] = $value['Q'];*/
+                        $i++;
+                      }               
+                      $result = $this->equipment_model->importData($inserdata);   
+                      if($result){
+                        $message="Successfully Imported";  
+                      $response['status']=TRUE;
+                      $response['message']=$message;     
+                      }else{
+                        echo "ERROR !";
+                      }             
+        
+                } catch (Exception $e) {
+                     die('Error loading file "' . pathinfo($inputFileName, PATHINFO_BASENAME)
+                              . '": ' .$e->getMessage());
+                  }
+                  echo json_encode($response);
+                }else{
+                    echo $error['error'];
+                  }
+                   
+                   
+          }
+          //$this->load->view('ac_equipment');
+      }
+      public function download_plantequipment(){
+
+        $type =1;
+        $date = date('Y-m-d'); 
+        $Data = $this->equipment_model->download_plantequipment($type);
+        $spreadsheet = new Spreadsheet();
+        $sheet = $spreadsheet->getActiveSheet();
+        $sheet->setCellValue('A1', 'Name');
+        $sheet->setCellValue('B1', 'Type');
+        $sheet->setCellValue('C1', 'Tag No');
+        $sheet->setCellValue('D1', 'Model');
+        $sheet->setCellValue('E1', 'Type1');
+        $sheet->setCellValue('F1', 'Installation Date');  
+        $sheet->setCellValue('G1', 'Manufacturer');      
+        $sheet->setCellValue('H1', 'SlNo'); 
+        $sheet->setCellValue('I1', 'Location'); 
+        $sheet->setCellValue('J1', 'Warrenty'); 
+        $sheet->setCellValue('K1', 'Power'); 
+        $sheet->setCellValue('L1', 'Status'); 
+        $sheet->setCellValue('M1', 'Specification'); 
+        $rows = 2;
+        foreach ($Data as $val){
+            $sheet->setCellValue('A' . $rows, $val->name);
+            $sheet->setCellValue('B' . $rows, $val->type_name);
+            $sheet->setCellValue('C' . $rows, $val->tag_no);
+            $sheet->setCellValue('D' . $rows, $val->model);
+            $sheet->setCellValue('E' . $rows, $val->type1);
+            $sheet->setCellValue('F' . $rows, $val->installation_date);
+            $sheet->setCellValue('G' . $rows, $val->manufacturer);
+            $sheet->setCellValue('H' . $rows, $val->slno);
+            $sheet->setCellValue('I' . $rows, $val->location_name);
+            $sheet->setCellValue('J' . $rows, $val->warrenty);
+            $sheet->setCellValue('K' . $rows, $val->power);
+            $sheet->setCellValue('L' . $rows, $val->status);
+            $sheet->setCellValue('M' . $rows, $val->specification);
+            $rows++;
+        } 
+        $writer = new Xlsx($spreadsheet);
+        $filename = 'plantequipment_report-'.$date; // set filename for excel file to be exported
+        ob_clean();
+        header("Content-Type: application/vnd.ms-excel; charset=UTF-8"); 
+    header("Pragma: public"); 
+    header("Expires: 0"); 
+    header("Cache-Control: must-revalidate, post-check=0, pre-check=0"); 
+    header("Content-Type: application/force-download"); 
+    header("Content-Type: application/octet-stream"); 
+    header("Content-Type: application/download"); 
+    header("Content-Disposition: attachment;filename={$filename}.xls "); 
+        $writer->save('php://output');	// download file 
+                
+    }    
+    public function download_officeequipment(){
+
+        $type =2;
+        $date = date('Y-m-d'); 
+        $Data = $this->equipment_model->download_plantequipment($type);
+        $spreadsheet = new Spreadsheet();
+        $sheet = $spreadsheet->getActiveSheet();
+        $sheet->setCellValue('A1', 'Name');
+        $sheet->setCellValue('B1', 'Type');
+        $sheet->setCellValue('C1', 'Tag No');
+        $sheet->setCellValue('D1', 'Model');
+        $sheet->setCellValue('E1', 'Type1');
+        $sheet->setCellValue('F1', 'Installation Date');  
+        $sheet->setCellValue('G1', 'Manufacturer');      
+        $sheet->setCellValue('H1', 'SlNo'); 
+        $sheet->setCellValue('I1', 'Location'); 
+        $sheet->setCellValue('J1', 'Warrenty'); 
+        $sheet->setCellValue('K1', 'Power'); 
+        $sheet->setCellValue('L1', 'Status'); 
+        $sheet->setCellValue('M1', 'Specification'); 
+        $rows = 2;
+        foreach ($Data as $val){
+            $sheet->setCellValue('A' . $rows, $val->name);
+            $sheet->setCellValue('B' . $rows, $val->type_name);
+            $sheet->setCellValue('C' . $rows, $val->tag_no);
+            $sheet->setCellValue('D' . $rows, $val->model);
+            $sheet->setCellValue('E' . $rows, $val->type1);
+            $sheet->setCellValue('F' . $rows, $val->installation_date);
+            $sheet->setCellValue('G' . $rows, $val->manufacturer);
+            $sheet->setCellValue('H' . $rows, $val->slno);
+            $sheet->setCellValue('I' . $rows, $val->location_name);
+            $sheet->setCellValue('J' . $rows, $val->warrenty);
+            $sheet->setCellValue('K' . $rows, $val->power);
+            $sheet->setCellValue('L' . $rows, $val->status);
+            $sheet->setCellValue('M' . $rows, $val->specification);
+            $rows++;
+        } 
+        $writer = new Xlsx($spreadsheet);
+        $filename = 'officeequipment_report-'.$date; // set filename for excel file to be exported
+        ob_clean();
+        header("Content-Type: application/vnd.ms-excel; charset=UTF-8"); 
+    header("Pragma: public"); 
+    header("Expires: 0"); 
+    header("Cache-Control: must-revalidate, post-check=0, pre-check=0"); 
+    header("Content-Type: application/force-download"); 
+    header("Content-Type: application/octet-stream"); 
+    header("Content-Type: application/download"); 
+    header("Content-Disposition: attachment;filename={$filename}.xls "); 
+        $writer->save('php://output');	// download file 
+                
+    }    
+    public function download_tools(){
+
+        $type =3;
+        $date = date('Y-m-d'); 
+        $Data = $this->equipment_model->download_plantequipment($type);
+        $spreadsheet = new Spreadsheet();
+        $sheet = $spreadsheet->getActiveSheet();
+        $sheet->setCellValue('A1', 'Name');
+        $sheet->setCellValue('B1', 'Type');
+        $sheet->setCellValue('C1', 'Tag No');
+        $sheet->setCellValue('D1', 'Model');
+        $sheet->setCellValue('E1', 'Type1');
+        $sheet->setCellValue('F1', 'Installation Date');  
+        $sheet->setCellValue('G1', 'Manufacturer');      
+        $sheet->setCellValue('H1', 'SlNo'); 
+        $sheet->setCellValue('I1', 'Location'); 
+        $sheet->setCellValue('J1', 'Warrenty'); 
+        $sheet->setCellValue('K1', 'Power'); 
+        $sheet->setCellValue('L1', 'Status'); 
+        $sheet->setCellValue('M1', 'Specification'); 
+        $rows = 2;
+        foreach ($Data as $val){
+            $sheet->setCellValue('A' . $rows, $val->name);
+            $sheet->setCellValue('B' . $rows, $val->type_name);
+            $sheet->setCellValue('C' . $rows, $val->tag_no);
+            $sheet->setCellValue('D' . $rows, $val->model);
+            $sheet->setCellValue('E' . $rows, $val->type1);
+            $sheet->setCellValue('F' . $rows, $val->installation_date);
+            $sheet->setCellValue('G' . $rows, $val->manufacturer);
+            $sheet->setCellValue('H' . $rows, $val->slno);
+            $sheet->setCellValue('I' . $rows, $val->location_name);
+            $sheet->setCellValue('J' . $rows, $val->warrenty);
+            $sheet->setCellValue('K' . $rows, $val->power);
+            $sheet->setCellValue('L' . $rows, $val->status);
+            $sheet->setCellValue('M' . $rows, $val->specification);
+            $rows++;
+        } 
+        $writer = new Xlsx($spreadsheet);
+        $filename = 'tools_report-'.$date; // set filename for excel file to be exported
+        ob_clean();
+        header("Content-Type: application/vnd.ms-excel; charset=UTF-8"); 
+    header("Pragma: public"); 
+    header("Expires: 0"); 
+    header("Cache-Control: must-revalidate, post-check=0, pre-check=0"); 
+    header("Content-Type: application/force-download"); 
+    header("Content-Type: application/octet-stream"); 
+    header("Content-Type: application/download"); 
+    header("Content-Disposition: attachment;filename={$filename}.xls "); 
+        $writer->save('php://output');	// download file 
+                
+    }    
+    public function download_acequipment(){
+
+        $type =4;
+        $date = date('Y-m-d'); 
+        $Data = $this->equipment_model->download_plantequipment($type);
+        $spreadsheet = new Spreadsheet();
+        $sheet = $spreadsheet->getActiveSheet();
+        $sheet->setCellValue('A1', 'Name');
+        $sheet->setCellValue('B1', 'Type');
+        $sheet->setCellValue('C1', 'Tag No');
+        $sheet->setCellValue('D1', 'Model');
+        $sheet->setCellValue('E1', 'Type1');
+        $sheet->setCellValue('F1', 'Installation Date');  
+        $sheet->setCellValue('G1', 'Manufacturer');      
+        $sheet->setCellValue('H1', 'SlNo'); 
+        $sheet->setCellValue('I1', 'Location'); 
+        $sheet->setCellValue('J1', 'Warrenty'); 
+        $sheet->setCellValue('K1', 'Power'); 
+        $sheet->setCellValue('L1', 'Status'); 
+        $sheet->setCellValue('M1', 'Specification'); 
+        $rows = 2;
+        foreach ($Data as $val){
+            $sheet->setCellValue('A' . $rows, $val->name);
+            $sheet->setCellValue('B' . $rows, $val->type_name);
+            $sheet->setCellValue('C' . $rows, $val->tag_no);
+            $sheet->setCellValue('D' . $rows, $val->model);
+            $sheet->setCellValue('E' . $rows, $val->type1);
+            $sheet->setCellValue('F' . $rows, $val->installation_date);
+            $sheet->setCellValue('G' . $rows, $val->manufacturer);
+            $sheet->setCellValue('H' . $rows, $val->slno);
+            $sheet->setCellValue('I' . $rows, $val->location_name);
+            $sheet->setCellValue('J' . $rows, $val->warrenty);
+            $sheet->setCellValue('K' . $rows, $val->power);
+            $sheet->setCellValue('L' . $rows, $val->status);
+            $sheet->setCellValue('M' . $rows, $val->specification);
+            $rows++;
+        } 
+        $writer = new Xlsx($spreadsheet);
+        $filename = 'acequipment_report-'.$date; // set filename for excel file to be exported
+        ob_clean();
+        header("Content-Type: application/vnd.ms-excel; charset=UTF-8"); 
+    header("Pragma: public"); 
+    header("Expires: 0"); 
+    header("Cache-Control: must-revalidate, post-check=0, pre-check=0"); 
+    header("Content-Type: application/force-download"); 
+    header("Content-Type: application/octet-stream"); 
+    header("Content-Type: application/download"); 
+    header("Content-Disposition: attachment;filename={$filename}.xls "); 
+        $writer->save('php://output');	// download file 
+                
+    }    
+   
 }
 ?>

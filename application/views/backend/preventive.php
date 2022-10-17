@@ -68,9 +68,9 @@
                                                           $sdata = $this->db->get_where('service_interval',array('id '=>$sid))->row();
                                                           echo  $sdata->name; ?></td>
                                                 <td><?php $date= strtotime($value->last_date);
-                                                          echo date("d-F-y", $date);;?></td>
+                                                          echo date("d-F-y", $date);?></td>
                                                 <td><?php $date= strtotime($value->next_date);
-                                                          echo date("d-F-y", $date);;?>
+                                                          echo date("d-F-y", $date);?>
                                                 <br><span class="badge badge-success">
                                                      <?php
                                                          $date1= $value->next_date;
@@ -84,6 +84,7 @@
                                                 <td class="jsgrid-align-center ">
                                                     <a href="#" title="Edit" class="btn btn-sm btn-info waves-effect waves-light preventive" data-id="<?php echo $value->id ?>"><i class="fa fa-pencil-square-o"></i></a>
                                                     <a href="delete_preventive?id=<?php echo $value->id; ?>" onclick="return confirm('Are you sure want to delete this data?')" title="Delete" class="btn btn-sm btn-danger waves-effect waves-light"><i class="fa fa-trash-o"></i></a>
+                                                    <a href="<?php echo base_url(); ?>maintenance/viewpreventive?id=<?php echo base64_encode($value->id); ?>" title="Edit" class="btn btn-sm btn-success waves-effect waves-light"><i class="fa fa-eye"></i></a>         
                                                 </td>
                                             </tr>
                                             <?php }?>

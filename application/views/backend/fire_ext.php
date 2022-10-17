@@ -139,6 +139,7 @@
                                                 <th>Location</th>
                                                 <th>Capacity  Kg./Lbs.</th>
                                                 <th>Cylinder No</th>
+                                                <th>Left Days For Refilling </th>
                                                 <th>Action</th>
                                             </tr>
                                         </thead>
@@ -160,8 +161,15 @@
                                                 <td><?php echo $value->location;?></td>
                                                 <td><?php echo $value->capacity;?></td>
                                                 <td><?php echo $value->cylinder_no;?></td>
+                                                <td><?php
+                                                         $date1= $value->last_refill;
+                                                         $date2 =$value->next_refill;
+                                                         $date1 = strtotime($date1);
+                                                         $date2 = strtotime($date2);
+                                                         $datediff = $date2 - $date1;
+                                                         $no_of_days =  floor($datediff / (60 * 60 * 24));
+                                                         echo $no_of_days.' ' .'days left'; ?></td>
                                                 <td class="jsgrid-align-center ">
-                                                    <a href="<?php echo base_url();?>monitoring/fireexting_edit/<?php echo $value->id;?>" title="Edit" class="btn btn-sm btn-info waves-effect waves-light"><i class="fa fa-pencil-square-o"></i></a>
                                                     <a href="<?php echo base_url(); ?>monitoring/viewfire_exiting?id=<?php echo base64_encode($value->id); ?>" title="Edit" class="btn btn-sm btn-success waves-effect waves-light"><i class="fa fa-eye"></i></a>
                                                 </td>
                                             </tr>

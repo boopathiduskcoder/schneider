@@ -66,11 +66,12 @@
                                     </h6> <small class="text-muted p-t-30 db">Model</small>
                                     <h6>                                           <?php echo $plant_data->model ?>
 
-                                </h6> 
+                                </h6> <?php if(empty($plant_data->attachment)){ ?>
+                                    <?php } else{ ?>
                                 <small class="text-muted p-t-30 db">Attachment</small>
                                     <h6><?php echo $plant_data->attachment ?><a href="<?= base_url('assets/attachments/equipments/' . $plant_data->attachment); ?>"> <i class="fa fa-download" aria-hidden="true"></i> </a>
                                 </h6> 
-                                
+                                <?php } ?>
                             </div>
                         </div>                                                    
                     </div>

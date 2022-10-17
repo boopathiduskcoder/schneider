@@ -40,7 +40,7 @@
                                                     <div class="form-group">
                                                         <label class="control-label">Location</label>
 								                          <select name="location" class="select2 form-control custom-select" style="width: 100%" required >
-									                           <option>Select Location</option>
+									                           <option value="">Select Location</option>
 									                           <?php foreach($locations as $locate): ?>
                                                                 <option <?php if($locate->location_name == $edittemperature->location ){ echo 'selected="selected"'; } ?> value="<?php echo $locate->location_name ?>"><?php echo $locate->location_name ?> </option
 										                       <!--<option value="<?php //echo $locate->location_name?>"><?php// echo $edittemperature->location ?></option>-->
@@ -49,7 +49,7 @@
                                                     </div>
                                                     <div class="form-group">
                                                         <label class="control-label">Reading</label>
-                                                        <input type="text" name="reading" id="reading" value="<?php  echo $edittemperature->reading;?>" class="form-control" placeholder="" minlength="3" required>
+                                                        <input type="number" name="reading" id="reading" value="<?php  echo $edittemperature->reading;?>" class="form-control" placeholder="" minlength="3" required>
                                                     </div>
                                                     
                                                 </div>
@@ -88,7 +88,7 @@
                                                     <div class="form-group">
                                                         <label class="control-label">Location</label>
 								                          <select name="location" class="select2 form-control custom-select" style="width: 100%" required >
-									                           <option>Select Location</option>
+									                           <option value="">Select Location</option>
 									                           <?php foreach($locations as $locate): ?>
 										                       <option value="<?php echo $locate->location_name ?>"><?php echo $locate->location_name ?></option>
 									                          <?php endforeach; ?>
@@ -96,7 +96,7 @@
                                                     </div>
                                                     <div class="form-group">
                                                         <label class="control-label">Reading</label>
-                                                        <input type="text" name="reading" id="reading" value="" class="form-control" placeholder="" minlength="3" required>
+                                                        <input type="number" name="reading" id="reading" value="" class="form-control" placeholder="" minlength="3" required>
                                                     </div>
                                                     <!-- <div class="form-group">
                                                         <label class="control-label">10 PM</label>

@@ -70,6 +70,23 @@ class Temperature_model extends CI_Model{
       $query  = $this->db->query($sql);
       $result = $query->result();
       return $result;
+    }  
+    public function Add_Fireservicedetails($data){
+      $this->db->insert('fireext_service',$data);
+    } 
+    public function Getservicelist($id){
+      $sql    = "SELECT * FROM `fireext_service` WHERE `fireext_id`='$id'";
+      $query  = $this->db->query($sql);
+      $result = $query->result();
+      return $result;
     }     
+    public function Update_Fireextingdetails($id, $data1){
+      $this->db->where('id',$id);
+      $this->db->update('fire_extinguisher',$data1);
+    }  
+    public function Update_Fireservicedetails($id, $data1){
+      $this->db->where('id',$id);
+      $this->db->update('fire_extinguisher',$data1);
+    }   
 }
 ?>

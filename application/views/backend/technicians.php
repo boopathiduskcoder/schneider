@@ -103,7 +103,7 @@
                         </div>
                     
                         <div class="col-md-6">
-							<div class="form-group">
+							<div class="form-group" id="pass_hide">
 								<label class="control-label">Password</label>
 								<input type="password" name="password" value="" class="form-control"  autocomplete="off">
 							</div> 
@@ -183,6 +183,7 @@ $('#btnSubmit').find('[name="firstname"]').val(response.technicianbyid.first_nam
 $('#btnSubmit').find('[name="lastname"]').val(response.technicianbyid.last_name).end();
 $('#btnSubmit').find('[name="email"]').val(response.technicianbyid.em_email).end();
 $('#btnSubmit').find('[name="password"]').val(response.technicianbyid.em_password).end();
+$('#pass_hide').hide();
 $('#btnSubmit').find('[name="contact"]').val(response.technicianbyid.em_phone).end();  
 $('#btnSubmit').find('[name="status"]').val(response.technicianbyid.status).end();
 /*var status =  $('#btnSubmit').find('[name="status"]').val(response.technicianbyid.status);

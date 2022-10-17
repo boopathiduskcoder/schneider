@@ -1,6 +1,7 @@
 <?php
 	defined('BASEPATH') OR exit('No direct script access allowed');
-
+	use PhpOffice\PhpSpreadsheet\Spreadsheet;
+	use PhpOffice\PhpSpreadsheet\Writer\Xlsx;
 class Maintenance extends CI_Controller
 {
 
@@ -604,6 +605,19 @@ class Maintenance extends CI_Controller
 			redirect(base_url(), 'refresh');
 		}
 	}
+	public function report()
+	{
+		if ($this->session->userdata('user_login_access') != False) {
+			/*$data['equipments'] = $this->preventive_model->Getallequipmentslist();
+			$data['departments'] = $this->preventive_model->Getalldepartments();
+			$data['breakdowntypes'] = $this->preventive_model->GetAllBreakdowntypes();
+			$data['technicians'] = $this->preventive_model->GetAlltechnicians();
+			$data['breakdowns'] = $this->preventive_model->GetAllBreakdown(2);*/
+			$this->load->view('backend/report');
+		} else {
+			redirect(base_url(), 'refresh');
+		}
+	}
 
 	public function LogisTicById()
 	{
@@ -1156,5 +1170,146 @@ public function complaintslist()
 			redirect(base_url(), 'refresh');
 		}
 	}
+	public function viewpreventive()
+{
+if($this->session->userdata('user_login_access') != False) 
+{
+    $id = base64_decode($this->input->get('id'));
+    $data['preventive']= $this->preventive_model->Getpreventiveview($id);
+    $this->load->view('backend/preventive_view',$data);  
+}
+else
+{
+    redirect(base_url() , 'refresh');
+}
+}
+public function View_complaint()
+{
+if($this->session->userdata('user_login_access') != False) 
+{
+	//$id = base64_decode($this->input->get('id'));
+	//$data['fireextingu']= $this->temperature_model->Getfireextingview($id);
+	$this->load->view('backend/complaint_view');  
+}
+else
+{
+	redirect(base_url() , 'refresh');
+}
+}
+public function download_preventive(){
+
+	$month=date('Y-m', strtotime($this->input->post('month')));
+	$date = date('Y-m-d');
+	$employeeData = $this->preventive_model->download_preventive($month);
+	$spreadsheet = new Spreadsheet();
+	$sheet = $spreadsheet->getActiveSheet();
+	$sheet->setCellValue('A1', 'Equipment Name');
+	$sheet->setCellValue('B1', 'Location');
+	$sheet->setCellValue('C1', 'Service');
+	$sheet->setCellValue('D1', 'Last Date');
+    $sheet->setCellValue('E1', 'Next Date');
+	$sheet->setCellValue('F1', 'Status');       
+	$rows = 2;
+	foreach ($employeeData as $val){
+		$sheet->setCellValue('A' . $rows, $val->equipmentname);
+		$sheet->setCellValue('B' . $rows, $val->location);
+		$sheet->setCellValue('C' . $rows, $val->servicename);
+		$sheet->setCellValue('D' . $rows, $val->last_date);
+	    $sheet->setCellValue('E' . $rows, $val->next_date);
+		$sheet->setCellValue('F' . $rows, $val->status);
+		$rows++;
+	} 
+	$writer = new Xlsx($spreadsheet);
+	$filename = 'preventivereport-'.$date; // set filename for excel file to be exported
+    ob_clean();
+	header("Content-Type: application/vnd.ms-excel; charset=UTF-8"); 
+header("Pragma: public"); 
+header("Expires: 0"); 
+header("Cache-Control: must-revalidate, post-check=0, pre-check=0"); 
+header("Content-Type: application/force-download"); 
+header("Content-Type: application/octet-stream"); 
+header("Content-Type: application/download"); 
+header("Content-Disposition: attachment;filename={$filename}.xls "); 
+	$writer->save('php://output');	// download file 
+            
+}    
+public function download_breakdown(){
+
+	$month=date('Y-m', strtotime($this->input->post('month')));
+	$type =1;
+	$date = date('Y-m-d');
+	$employeeData = $this->preventive_model->download_complaint($month,$type);
+	$spreadsheet = new Spreadsheet();
+	$sheet = $spreadsheet->getActiveSheet();
+	$sheet->setCellValue('A1', 'Equipment Name');
+	$sheet->setCellValue('B1', 'Department');
+	$sheet->setCellValue('C1', 'Breakdown');
+	$sheet->setCellValue('D1', 'Assigned To');
+    $sheet->setCellValue('E1', 'Reported Date & Time');
+	$sheet->setCellValue('F1', 'Details');       
+	$rows = 2;
+	foreach ($employeeData as $val){
+		$sheet->setCellValue('A' . $rows, $val->equipmentname);
+		$sheet->setCellValue('B' . $rows, $val->dep_name);
+		$sheet->setCellValue('C' . $rows, $val->breakdown_name);
+		$sheet->setCellValue('D' . $rows, $val->first_name);
+	    $sheet->setCellValue('E' . $rows, $val->date_and_time);
+		$sheet->setCellValue('F' . $rows, $val->details);
+		$rows++;
+	} 
+	$writer = new Xlsx($spreadsheet);
+	$filename = 'breakdownreport-'.$date; // set filename for excel file to be exported
+    ob_clean();
+	header("Content-Type: application/vnd.ms-excel; charset=UTF-8"); 
+header("Pragma: public"); 
+header("Expires: 0"); 
+header("Cache-Control: must-revalidate, post-check=0, pre-check=0"); 
+header("Content-Type: application/force-download"); 
+header("Content-Type: application/octet-stream"); 
+header("Content-Type: application/download"); 
+header("Content-Disposition: attachment;filename={$filename}.xls "); 
+	$writer->save('php://output');	// download file 
+            
+}    
+public function download_complaint(){
+
+	$month=date('Y-m', strtotime($this->input->post('month')));
+	$type =2;
+	$date = date('Y-m-d');
+	$employeeData = $this->preventive_model->download_complaint($month,$type);
+	$spreadsheet = new Spreadsheet();
+	$sheet = $spreadsheet->getActiveSheet();
+	$sheet->setCellValue('A1', 'Equipment Name');
+	$sheet->setCellValue('B1', 'Department');
+	$sheet->setCellValue('C1', 'Breakdown');
+	$sheet->setCellValue('D1', 'Assigned To');
+    $sheet->setCellValue('E1', 'Reported Date & Time');
+	$sheet->setCellValue('F1', 'Details');       
+	$rows = 2;
+	foreach ($employeeData as $val){
+		$sheet->setCellValue('A' . $rows, $val->equipmentname);
+		$sheet->setCellValue('B' . $rows, $val->dep_name);
+		$sheet->setCellValue('C' . $rows, $val->breakdown_name);
+		$sheet->setCellValue('D' . $rows, $val->first_name);
+	    $sheet->setCellValue('E' . $rows, $val->date_and_time);
+		$sheet->setCellValue('F' . $rows, $val->details);
+		$rows++;
+	} 
+	$writer = new Xlsx($spreadsheet);
+	$filename = 'complaintreport-'.$date; // set filename for excel file to be exported
+    ob_clean();
+	header("Content-Type: application/vnd.ms-excel; charset=UTF-8"); 
+header("Pragma: public"); 
+header("Expires: 0"); 
+header("Cache-Control: must-revalidate, post-check=0, pre-check=0"); 
+header("Content-Type: application/force-download"); 
+header("Content-Type: application/octet-stream"); 
+header("Content-Type: application/download"); 
+header("Content-Disposition: attachment;filename={$filename}.xls "); 
+	$writer->save('php://output');	// download file 
+            
+}    
+
+
 }
 ?>

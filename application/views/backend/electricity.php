@@ -33,21 +33,31 @@
                                             <div class="row ">
                                                 <div class="col-md-12">
                                                 <div class="form-group">
+                                                        <label class="control-label">Location</label>
+								                          <select name="location" class="select2 form-control custom-select" style="width: 100%" required >
+									                           <option value="">Select Location</option>
+									                           <?php foreach($locations as $locate): ?>
+                                                                <option <?php if($locate->location_name == $editelectricity->location ){ echo 'selected="selected"'; } ?> value="<?php echo $locate->location_name ?>"><?php echo $locate->location_name ?> </option
+										                       <!--<option value="<?php //echo $locate->location_name?>"><?php// echo $edittemperature->location ?></option>-->
+									                          <?php endforeach; ?>
+								                          </select>
+                                                    </div>
+                                                <div class="form-group">
 								                         <label class="control-label">Date</label>
 								                           <input type="text" name="date" value="<?php  echo $editelectricity->date;?>" class="form-control mydatepicker"  autocomplete="off">
                                                            <input type="hidden" name="id" value="<?php  echo $editelectricity->id;?>">
 							                    </div>
                                                     <div class="form-group">
                                                         <label class="control-label">6 AM</label>
-                                                        <input type="text" name="am_6" id="am_6" value="<?php  echo $editelectricity->am_6;?>" class="form-control" placeholder="" minlength="3" required>
+                                                        <input type="number" name="am_6" id="am_6" value="<?php  echo $editelectricity->am_6;?>" class="form-control" placeholder="" minlength="3" required>
                                                     </div>
                                                     <div class="form-group">
                                                         <label class="control-label">2 PM</label>
-                                                        <input type="text" name="pm_2" id="pm_2" value="<?php  echo $editelectricity->pm_2;?>" class="form-control" placeholder="" minlength="3" required>
+                                                        <input type="number" name="pm_2" id="pm_2" value="<?php  echo $editelectricity->pm_2;?>" class="form-control" placeholder="" minlength="3" required>
                                                     </div>
                                                     <div class="form-group">
                                                         <label class="control-label">10 PM</label>
-                                                        <input type="text" name="pm_10" id="pm_10" value="<?php  echo $editelectricity->pm_10;?>" class="form-control" placeholder="" minlength="3" required>
+                                                        <input type="number" name="pm_10" id="pm_10" value="<?php  echo $editelectricity->pm_10;?>" class="form-control" placeholder="" minlength="3" required>
                                                     </div>
                                                 </div>
                                                 <!--/span-->
@@ -80,20 +90,29 @@
                                             <div class="row ">
                                                 <div class="col-md-12">
                                                 <div class="form-group">
+                                                <label class="control-label">Location</label>
+                                                <select  name="location" class="select2 form-control custom-select" style="width: 100%" required>
+                                                <option value="">Select Location</option>
+                                                <?php foreach($location as $locate): ?>
+                                                    <option value="<?php echo $locate->location_name; ?>"><?php echo $locate->location_name; ?></option>
+                                                   <?php endforeach; ?>
+                                                </select>
+                                                </div>
+                                                <div class="form-group">
 								                         <label class="control-label">Date</label>
-								                           <input type="text" name="date" value="" class="form-control mydatepicker"  autocomplete="off">
+								                           <input type="date" name="date" value="" class="form-control mydatepicker"  autocomplete="off">
 							                    </div>
                                                     <div class="form-group">
                                                         <label class="control-label">6 AM</label>
-                                                        <input type="text" name="am_6" id="am_6" value="" class="form-control" placeholder="" minlength="3" required>
+                                                        <input type="number" name="am_6" id="am_6" value="" class="form-control" placeholder="" minlength="3" required>
                                                     </div>
                                                     <div class="form-group">
                                                         <label class="control-label">2 PM</label>
-                                                        <input type="text" name="pm_2" id="pm_2" value="" class="form-control" placeholder="" minlength="3" required>
+                                                        <input type="number" name="pm_2" id="pm_2" value="" class="form-control" placeholder="" minlength="3" required>
                                                     </div>
                                                     <div class="form-group">
                                                         <label class="control-label">10 PM</label>
-                                                        <input type="text" name="pm_10" id="pm_10" value="" class="form-control" placeholder="" minlength="3" required>
+                                                        <input type="number" name="pm_10" id="pm_10" value="" class="form-control" placeholder="" minlength="3" required>
                                                     </div>
                                                 </div>
                                                 <!--/span-->
@@ -122,6 +141,7 @@
                                         <thead>
                                             <tr>
                                                 <th>Date</th>
+                                                <th>Location</th>
                                                 <th>6AM <br>(A)</th>
                                                 <th>2PM <br>(B)</th>
                                                 <th>10PM <br>(C)</th>
@@ -144,6 +164,7 @@
                                         <?php foreach ($electricity as $value) {?>
                                 <tr>
                                     <td><?php echo $value->date;?></td>
+                                    <td><?php echo $value->location;?></td>
                                     <td><?php echo $value->am_6;?></td>
                                     <td><?php  echo $value->pm_2;?></td>
                                     <td><?php echo $value->pm_10;?></td>

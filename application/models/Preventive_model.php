@@ -124,4 +124,80 @@ public function GetAllcomplaints($id){
   $result = $query->result();
   return $result; 
 }
+public function Getpreventiveview($id){
+  $this->db->select('p.*,e.name as equipmentname,l.location_name as location,s.name as servicename');
+  $this->db->from('preventives p');
+  $this->db->join('equipments e', 'e.id = p.equipment_id');
+  $this->db->join('location l', 'l.id = p.location_id');
+  $this->db->join('service_interval s', 's.id = p.interval_id');
+  $this->db->where('p.id',$id);
+  $query=$this->db->get();
+  $result = $query->row();
+  return $result;        
+}
+public function download_preventive($month){
+  $this->db->select('p.*,e.name as equipmentname,l.location_name as location,s.name as servicename');
+  $this->db->from('preventives p');
+  $this->db->join('equipments e', 'e.id = p.equipment_id');
+  $this->db->join('location l', 'l.id = p.location_id');
+  $this->db->join('service_interval s', 's.id = p.interval_id');
+  $this->db->like('p.last_date',$month);
+  
+ // $this->db->where('date_and_time LIKE "'. DATE('Y-m-d', strtotime($from_date)). '" and "'. DATE('Y-m-d', strtotime($to_date)).'"');
+  $query=$this->db->get();
+  //$str=$this->db->last_query();
+  $result = $query->result();
+  return $result; 
+}
+public function download_complaint($month,$type){
+  $this->db->select('b.*, e.name as equipmentname,d.dep_name,t.name as breakdown_name,te.first_name,te.last_name');
+  $this->db->from('breakdown b');
+  $this->db->join('equipments e', 'e.id = b.equipment_id');
+  $this->db->join('department d','d.id = b.department_id');
+  $this->db->join('breakdowntypes t','t.id=b.breakdown_id');
+  $this->db->join('employee te','te.id=b.technician_id');
+  $this->db->like('b.date_and_time', $month);
+  $this->db->where('b.type', $type);
+  
+ // $this->db->where('date_and_time LIKE "'. DATE('Y-m-d', strtotime($from_date)). '" and "'. DATE('Y-m-d', strtotime($to_date)).'"');
+  $query=$this->db->get();
+  //$str=$this->db->last_query();
+  $result = $query->result();
+  return $result; 
+}
+public function Getinprogresslist(){
+  $this->db->select('b.*, e.name as equipmentname, l.location_name');
+ $this->db->from('breakdown b');
+ $this->db->join('equipments e', 'e.id = b.equipment_id');
+ $this->db->join('location l', 'l.id = e.location_id');
+  $this->db->where('b.status', 'Inprogress');
+  $this->db->or_where('b.status', 'Pending');
+  $query=$this->db->get();
+  //$str=$this->db->last_query();
+  $result = $query->result();
+  return $result; 
+}
+public function Gettechinprogresslist($id){
+  $this->db->select('b.*, e.name as equipmentname, l.location_name');
+ $this->db->from('breakdown b');
+ $this->db->join('equipments e', 'e.id = b.equipment_id');
+ $this->db->join('location l', 'l.id = e.location_id');
+ $this->db->join('employee te', 'te.id = b.technician_id');
+ $where =" te.em_id ='$id' and b.status != 'Completed' ";
+ $this->db->where($where);
+  $query=$this->db->get();
+  //print_r($this->db->last_query());
+  $result = $query->result();
+  return $result; 
+}
+public function Getcalendarlist(){
+  $this->db->select('b.*, e.name as equipmentname, l.location_name');
+ $this->db->from('breakdown b');
+ $this->db->join('equipments e', 'e.id = b.equipment_id');
+ $this->db->join('location l', 'l.id = e.location_id');
+  $query=$this->db->get();
+  //$str=$this->db->last_query();
+  $result = $query->result();
+  return $result; 
+}
     }
