@@ -298,7 +298,7 @@
     "fixedPosition":true
    },
    "export": {
- "enabled": true
+ "enabled": false
    }
  } );
  </script>
@@ -314,27 +314,47 @@
                             <div class="card-body">
                                 <h4 class="card-title">Complaints List</h4>
                                 <h6 class="card-subtitle">List of your next task to complete</h6>
-                                <div class="to-do-widget m-t-20" style="height:550px;overflow-y:scroll">
+                                <div class="to-do-widget m-t-20" style="height:400px;overflow-y:scroll">
                                             <ul class="list-task todo-list list-group m-b-0" data-role="tasklist">
                                             <table class="table table-hover earning-box ">
                                         <thead>
                                             <tr>
-                                                <th>Slno</th>
+                                               
                                                 <th>Asset Name</th>
                                                 <th>Location</th>
+                                                <th>Status</th>
                                             </tr>
                                         </thead>
                                         <tbody>
+                                        <?php if($this->session->userdata('user_type') !='TECHNICIAN') { ?>
                                            <?php
-                                           $i=1;
                                             foreach ($inprogress as $value){?>
                                             <tr class="scrollbar" style="vertical-align:top">
-                                                <td><?php echo $i; ?></td>
+                                                
                                                 <td><?php echo $value->equipmentname; ?></td>
-                                                <td><?php echo $value->location_name; ?>
-                                                </td>
+                                                <td><?php echo $value->location_name; ?></td>
+                                                <?php if($value->status=='Inprogress'){ ?>
+                                                    <td><span class="badge badge-primary"><?php echo $value->status; ?><span></td>
+                                                    <?php } else{?>
+                                                    <td><span class="badge badge-warning"><?php echo $value->status; ?><span></td>
+                                                    <?php } ?>
                                             </tr>
-                                            <?php $i++;} ?>
+                                            <?php } ?>
+                                            <?php }else { ?>
+                                                <?php
+                                            foreach ($techniciantask as $value){?>
+                                            <tr class="scrollbar" style="vertical-align:top">
+                                                
+                                                <td><?php echo $value->equipmentname; ?></td>
+                                                <td><?php echo $value->location_name; ?></td>
+                                                <?php if($value->status=='Inprogress'){ ?>
+                                                    <td><span class="badge badge-primary"><?php echo $value->status; ?><span></td>
+                                                    <?php } else{?>
+                                                    <td><span class="badge badge-warning"><?php echo $value->status; ?><span></td>
+                                                    <?php } ?>
+                                            </tr>
+                                                
+                                                <?php } }?>
                                         </tbody>
                                     </table>
                                             </ul>                                    
@@ -344,6 +364,89 @@
                         </div>
                     </div>
                 </div>
+                <!DOCTYPE html>
+<html>
+<head>
+    <title></title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/fullcalendar/3.9.0/fullcalendar.min.css" />
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/moment.js/2.22.2/moment.min.js"></script>
+    
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/fullcalendar/3.9.0/fullcalendar.min.js"></script>
+</head>
+<body>
+  
+<div class="container">
+    <div class="row" style="width:100%">
+       <div class="col-md-12">
+       <div class="card">
+                            <div class="card-body">
+           <div id="calendar"></div>
+           </div></div>
+       </div>
+    </div>
+</div>
+<!-- Edit Modal -->
+<div class="modal fade" id="calendar-show">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <!-- Modal Header -->
+            <div class="modal-header">
+                <h4 class="modal-title">Details</h4>
+                <button type="button" class="close" data-dismiss="modal">&times;</button>
+            </div>
+            <!-- Modal body -->
+            <div class="modal-body">
+                <form>
+                    <div class="form-group">
+                    
+                    <?php 
+                    $someJson = json_decode($json);
+                    foreach ($someJson as $data){
+    echo $data->title;
+} ?>
+                    </div>
+                </form>
+            </div>
+        
+        </div>
+    </div>
+</div>
+<script type="text/javascript">
+    var events = <?php echo $json ?>;
+     
+     var date = new Date()
+     var d    = date.getDate(),
+         m    = date.getMonth(),
+         y    = date.getFullYear()
+             
+     $('#calendar').fullCalendar({
+       header    : {
+         left  : 'prev,next today',
+         center: 'title',
+         right : 'month,agendaWeek,agendaDay'
+       },
+       buttonText: {
+         today: 'today',
+         month: 'month',
+         week : 'week',
+         day  : 'day'
+       },
+       events    : events,
+       eventClick: function(event) {
+                var modal = $("#calendar-show");
+                modal.modal();
+            },
+           
+     })
+</script>
+<style>
+    .fc-event {
+    border: 1px solid #ff6600;
+    background-color: #ff6600;
+}
+</style>
+</body>
+</html>
 <script>
   $(".to-do").on("click", function(){
       //console.log($(this).attr('data-value'));

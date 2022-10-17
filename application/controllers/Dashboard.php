@@ -29,7 +29,7 @@ class Dashboard extends CI_Controller {
     function Dashboard(){
         if($this->session->userdata('user_login_access') != False) {
             $id = $this->session->userdata('user_login_id');
-            $this->db->select('b.*,b.status, b.id');
+            $this->db->select('b.*');
             $this->db->from('breakdown b');
             $this->db->join('employee e', 'e.id = b.technician_id');
             $this->db->where('e.em_id', $id);
@@ -43,7 +43,26 @@ class Dashboard extends CI_Controller {
       $data['chart_data'] = json_encode($data);
          $data['preventive']    = $this->preventive_model->Getpreventivelist();
          $data['inprogress']    = $this->preventive_model->Getinprogresslist();
+         $data['techniciantask']    = $this->preventive_model->Gettechinprogresslist($id);
          
+        $query= $this->db->query("SELECT `b`.*, `e`.`name` as `equipmentname`, `l`.`location_name` FROM `breakdown` `b` JOIN `equipments` `e` ON `e`.`id` = `b`.`equipment_id` JOIN `location` `l` ON `l`.`id` = `e`.`location_id`");
+        
+         $jsonevents = array();
+
+    foreach($query->result() as $entry)
+    {
+        $jsonevents[] = array(
+            'title' => $entry->equipmentname,
+            'start' => date('Y-m-d', strtotime($entry->date_and_time)),
+            'id' => $entry->id,
+           'color'=>'#007bff'
+    
+            
+        );
+    }
+
+    $data['json'] = json_encode($jsonevents);
+           
         $this->load->view('backend/dashboard',$data);
         }
     else{

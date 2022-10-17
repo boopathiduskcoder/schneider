@@ -171,6 +171,30 @@ public function Getinprogresslist(){
  $this->db->join('equipments e', 'e.id = b.equipment_id');
  $this->db->join('location l', 'l.id = e.location_id');
   $this->db->where('b.status', 'Inprogress');
+  $this->db->or_where('b.status', 'Pending');
+  $query=$this->db->get();
+  //$str=$this->db->last_query();
+  $result = $query->result();
+  return $result; 
+}
+public function Gettechinprogresslist($id){
+  $this->db->select('b.*, e.name as equipmentname, l.location_name');
+ $this->db->from('breakdown b');
+ $this->db->join('equipments e', 'e.id = b.equipment_id');
+ $this->db->join('location l', 'l.id = e.location_id');
+ $this->db->join('employee te', 'te.id = b.technician_id');
+ $where =" te.em_id ='$id' and b.status != 'Completed' ";
+ $this->db->where($where);
+  $query=$this->db->get();
+  //print_r($this->db->last_query());
+  $result = $query->result();
+  return $result; 
+}
+public function Getcalendarlist(){
+  $this->db->select('b.*, e.name as equipmentname, l.location_name');
+ $this->db->from('breakdown b');
+ $this->db->join('equipments e', 'e.id = b.equipment_id');
+ $this->db->join('location l', 'l.id = e.location_id');
   $query=$this->db->get();
   //$str=$this->db->last_query();
   $result = $query->result();
