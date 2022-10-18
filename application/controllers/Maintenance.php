@@ -1116,6 +1116,7 @@ public function Viewbreakdown()
 	{
 		$id = base64_decode($this->input->get('id'));
 		$data['breakdown']= $this->preventive_model->Getbreakdownview($id);
+		$data['product'] = $this->preventive_model->GetAllproducts();
 		$this->load->view('backend/breakdown_view',$data);  
 	}
 	else
@@ -1131,19 +1132,37 @@ public function Update_status(){
 		} 
 	$id     = $this->input->post('id');                     
 	$date = $this->input->post('date');   
-	$action = $this->input->post('action');    
+	$action = $this->input->post('action');
+	$product = $this->input->post('product'); 
+	$quantity = $this->input->post('quantity');     
 	$status  = $this->input->post('status');     
 	$this->load->library('form_validation');
 	$this->form_validation->set_error_delimiters();
 	$this->form_validation->set_rules('date', 'date','trim|required');
 	$this->form_validation->set_rules('action', 'action','trim|required');
+	$this->form_validation->set_rules('product', 'product','trim|required');
+	$this->form_validation->set_rules('quantity', 'quantity','trim|required');
 	$this->form_validation->set_rules('status', 'status','trim|required');
    
 	if ($this->form_validation->run() == FALSE) {
 		echo validation_errors();
-	}
+	} 
+	$items = $this->preventive_model->GetAllstock($product);
+	$productstock=$items->stock_in_hand;
+	
+            $id=$items->id;
+            $stock=$productstock-$quantity;
+
+            $data = array(
+                    'stock_in_hand' => $stock
+            );
+
+        $this->db->where('id', $id);
+        $this->db->update('stock', $data);  
+
+     
 		$data = array();
-		$data = array('completeddate' => $date,'actiontaken' => $action,'status' => $status);
+		$data = array('completeddate' => $date,'actiontaken' => $action,'product' => $product,'quantity' => $quantity,'status' => $status);
 		if(!empty($id)){
 			$success = $this->preventive_model->Update_breakdownstatus($id,$data); 
 			$message= "Successfully updated"; 
@@ -1197,8 +1216,8 @@ else
 }
 }
 public function download_preventive(){
-
-	$month=date('Y-m', strtotime($this->input->post('month')));
+    
+	$month=date('Y-m', strtotime($this->input->get('month')));
 	$date = date('Y-m-d');
 	$employeeData = $this->preventive_model->download_preventive($month);
 	$spreadsheet = new Spreadsheet();

@@ -233,7 +233,7 @@ icons: {
   
     $(".select2").select2();
     </script>
-<!--<script type="text/javascript">
+<script type="text/javascript">
 $('form').each(function() {
     $(this).validate({
     submitHandler: function(form) {
@@ -274,7 +274,7 @@ $('form').each(function() {
 });
 });
 
-    </script>     -->
+    </script>   
 
     <script src="<?php echo base_url(); ?>assets/plugins/styleswitcher/jQuery.style.switcher.js"></script>
 </body>

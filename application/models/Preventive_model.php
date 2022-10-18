@@ -200,4 +200,17 @@ public function Getcalendarlist(){
   $result = $query->result();
   return $result; 
 }
+public function GetAllproducts(){
+  $query = $this->db->get('stock');
+  $result = $query->result();
+  return $result;
+}
+public function GetAllstock($product){
+  $this->db->select('s.*');
+      $this->db->from('stock s');
+      $this->db->where('s.id',$product);
+      $query=$this->db->get();
+      $result = $query->row();
+      return $result; 
+}     
     }

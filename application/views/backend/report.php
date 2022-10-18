@@ -46,7 +46,7 @@
                             
 
                             <div class="card-body">
-                                    <form method="post" action="download_preventive" enctype="multipart/form-data">
+                                    <form method="get" action="download_preventive" enctype="multipart/form-data">
                                         <div class="form-body">
                                             <div class="row ">
                                                 <div class="col-md-8">

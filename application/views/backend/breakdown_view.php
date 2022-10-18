@@ -70,7 +70,7 @@
                                         </div>
                                             
                                             </div>
-                                            <div class="col-md-6">  
+                                            <div class="col-md-4">  
                                                                                                                 
                                             <div class="form-group">
                                                 <label class="control-label">Completed Date</label>
@@ -79,7 +79,20 @@
                                             <div class="form-group">
                                                 <label for="message-text" class="control-label">Action Taken</label>
                                                 <textarea class="form-control" name="action" id="message-text1" minlength="10" maxlength="1400"></textarea>
-                                            </div>  
+                                            </div> 
+                                            <div class="form-group ">
+                                                <label class="control-label">Products Included</label>
+                                                <select class="select2 form-control custom-select" data-placeholder="Select Product" name="product" style="width:100%" tabindex="1" name="technicianid">
+                                                <option>Select Product</option> 
+                                                <?php foreach($product as $value): ?>
+                                                    <option value="<?php echo $value->id; ?>"><?php echo $value->productname.' '.$value->unit; ?></option>
+                                                    <?php endforeach; ?>
+                                                </select>
+                                            </div> 
+                                            <div class="form-group">
+                                                <label class="control-label">Used Quantity</label>
+                                                <input type="text" name="quantity" class="form-control" id="recipient-name1">
+                                            </div>     
                                             <div class="form-group ">
                                                 <label class="control-label">Status</label>
                                                 <select class="select2 form-control custom-select" data-placeholder="Select status" name="status" style="width:100%" tabindex="1" name="technicianid">

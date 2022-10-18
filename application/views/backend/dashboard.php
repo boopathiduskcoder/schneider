@@ -240,7 +240,7 @@
                                 <h4 class="card-title">Preventive Maintanence List</h4>
                             </div>
                             <div class="card-body">
-                                <div class="table-responsive slimScrollDiv" style="height:600px;overflow-y:scroll">
+                                <div class="table-responsive slimScrollDiv" style="height:400px;overflow-y:scroll">
                                     <table class="table table-hover earning-box ">
                                         <thead>
                                             <tr>
@@ -364,6 +364,7 @@
                         </div>
                     </div>
                 </div>
+                <?php if($this->session->userdata('user_type') !='TECHNICIAN') { ?>
                 <!DOCTYPE html>
 <html>
 <head>
@@ -375,7 +376,7 @@
 </head>
 <body>
   
-<div class="container">
+<!--<div class="container">
     <div class="row" style="width:100%">
        <div class="col-md-12">
        <div class="card">
@@ -384,33 +385,52 @@
            </div></div>
        </div>
     </div>
-</div>
-<!-- Edit Modal -->
-<div class="modal fade" id="calendar-show">
-    <div class="modal-dialog">
-        <div class="modal-content">
-            <!-- Modal Header -->
-            <div class="modal-header">
-                <h4 class="modal-title">Details</h4>
-                <button type="button" class="close" data-dismiss="modal">&times;</button>
-            </div>
-            <!-- Modal body -->
-            <div class="modal-body">
-                <form>
-                    <div class="form-group">
-                    
-                    <?php 
-                    $someJson = json_decode($json);
-                    foreach ($someJson as $data){
-    echo $data->title;
-} ?>
-                    </div>
-                </form>
-            </div>
+</div>--><div class='col-md-12'>
+    <div class="box box-success">
         
+    <div class="card">
+                            <div class="card-body">
+
+        <!-- Main content -->
+        <section class="content">
+            <div class="row">
+                <div class="col-md-3">
+                    <div class="box box-solid">
+                        
+                        
+                    </div><!-- /. box -->
+                    <div class="box box-solid">
+                        <div class="box-header with-border">
+                            <h3 class="box-title">Complaints Status</h3>
+                        </div>
+                        <div class="box-body">
+                            <div class="btn-group" style="width: 100%; margin-bottom: 10px;">
+                                <!--<button type="button" id="color-chooser-btn" class="btn btn-info btn-block dropdown-toggle" data-toggle="dropdown">Color <span class="caret"></span></button>-->
+                                 <ul class="fc-color-picker" id="color-chooser">
+                                    <li><i class="fa fa-square" style='color:green;'></i> <b>Completed</b></li>
+                                    <li><i class="fa fa-square" style='color:red;'></i> <b> Pending </b></li>
+                                    <li><i class="fa fa-square" style='color:orange;'></i><b> Inprogress </b></li>
+                                    <li><i class="fa fa-square" style='color:#ff00ac;'></i><b> New Complaint</b> </li>
+                               </ul>
+                            </div><!-- /btn-group -->
+                        </div>
+                    </div>
+                </div><!-- /.col -->
+                <div class="col-md-9">
+                    <div class="box box-primary">
+                        <div class="box-body no-padding">
+                            <!-- THE CALENDAR -->
+                            <div id="calendar"></div>
+                        </div><!-- /.box-body -->
+                    </div><!-- /. box -->
+                </div><!-- /.col -->
+            </div><!-- /.row -->
+        </section><!-- /.content -->
         </div>
+        </div> 
     </div>
-</div>
+</div><!-- /.content-wrapper -->
+
 <script type="text/javascript">
     var events = <?php echo $json ?>;
      
@@ -432,21 +452,163 @@
          day  : 'day'
        },
        events    : events,
-       eventClick: function(event) {
+       /*eventClick: function(event) {
                 var modal = $("#calendar-show");
                 modal.modal();
-            },
-           
+            },*/
+            eventRender: function(event, element) {
+        if (event.className == 'Completed') {
+            element.css({
+                'background-color': 'green',
+                'border-color': 'green'
+            });
+        }
+        else if (event.className == 'Pending') {
+            element.css({
+                'background-color': 'red',
+                'border-color': 'red'
+            });
+        }
+        else if (event.className == 'Inprogress') {
+            element.css({
+                'background-color': 'orange',
+                'border-color': 'orange'
+            });
+        }
+        
+        
+    },
+
+    
      })
 </script>
-<style>
-    .fc-event {
-    border: 1px solid #ff6600;
-    background-color: #ff6600;
-}
-</style>
+
 </body>
 </html>
+<?php }else{ ?>
+    <!DOCTYPE html>
+<html>
+<head>
+    <title></title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/fullcalendar/3.9.0/fullcalendar.min.css" />
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/moment.js/2.22.2/moment.min.js"></script>
+    
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/fullcalendar/3.9.0/fullcalendar.min.js"></script>
+</head>
+<body>
+  
+<!--<div class="container">
+    <div class="row" style="width:100%">
+       <div class="col-md-12">
+       <div class="card">
+                            <div class="card-body">
+           <div id="calendar"></div>
+           </div></div>
+       </div>
+    </div>
+</div>--><div class='col-md-12'>
+    <div class="box box-success">
+        
+    <div class="card">
+                            <div class="card-body">
+
+        <!-- Main content -->
+        <section class="content">
+            <div class="row">
+                <div class="col-md-3">
+                    <div class="box box-solid">
+                        
+                        
+                    </div><!-- /. box -->
+                    <div class="box box-solid">
+                        <div class="box-header with-border">
+                            <h3 class="box-title">Complaints Status</h3>
+                        </div>
+                        <div class="box-body">
+                            <div class="btn-group" style="width: 100%; margin-bottom: 10px;">
+                                <!--<button type="button" id="color-chooser-btn" class="btn btn-info btn-block dropdown-toggle" data-toggle="dropdown">Color <span class="caret"></span></button>-->
+                                <ul class="fc-color-picker" id="color-chooser">
+                                    <li><i class="fa fa-square" style='color:green;'></i> <b>Completed</b></li>
+                                    <li><i class="fa fa-square" style='color:red;'></i> <b> Pending </b></li>
+                                    <li><i class="fa fa-square" style='color:orange;'></i><b> Inprogress </b></li>
+                                    <li><i class="fa fa-square" style='color:#ff00ac;'></i><b> New Complaint</b> </li>
+                               </ul>   
+                            </div><!-- /btn-group -->
+                        </div>
+                    </div>
+                </div><!-- /.col -->
+                <div class="col-md-9">
+                    <div class="box box-primary">
+                        <div class="box-body no-padding">
+                            <!-- THE CALENDAR -->
+                            <div id="calendar"></div>
+                        </div><!-- /.box-body -->
+                    </div><!-- /. box -->
+                </div><!-- /.col -->
+            </div><!-- /.row -->
+        </section><!-- /.content -->
+        </div>
+        </div> 
+    </div>
+</div><!-- /.content-wrapper -->
+
+
+<script type="text/javascript">
+    var events = <?php echo $jsons ?>;
+     
+     var date = new Date()
+     var d    = date.getDate(),
+         m    = date.getMonth(),
+         y    = date.getFullYear()
+             
+     $('#calendar').fullCalendar({
+       header    : {
+         left  : 'prev,next today',
+         center: 'title',
+         right : 'month,agendaWeek,agendaDay'
+       },
+       buttonText: {
+         today: 'today',
+         month: 'month',
+         week : 'week',
+         day  : 'day'
+       },
+       events    : events,
+       /*eventClick: function(event) {
+                var modal = $("#calendar-show");
+                modal.modal();
+            },*/
+            eventRender: function(event, element) {
+        if (event.className == 'Completed') {
+            element.css({
+                'background-color': 'green',
+                'border-color': 'green'
+            });
+        }
+        else if (event.className == 'Pending') {
+            element.css({
+                'background-color': 'red',
+                'border-color': 'red'
+            });
+        }
+        else if (event.className == 'Inprogress') {
+            element.css({
+                'background-color': 'orange',
+                'border-color': 'orange'
+            });
+        }
+        
+        
+    },
+
+    
+     })
+</script>
+
+</body>
+</html>
+
+<?php } ?>
 <script>
   $(".to-do").on("click", function(){
       //console.log($(this).attr('data-value'));

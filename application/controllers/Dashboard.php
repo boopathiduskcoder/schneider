@@ -55,13 +55,34 @@ class Dashboard extends CI_Controller {
             'title' => $entry->equipmentname,
             'start' => date('Y-m-d', strtotime($entry->date_and_time)),
             'id' => $entry->id,
-           'color'=>'#007bff'
+           'color'=>'#ff00ac',
+           'type' => $entry->status,
+           'className' => $entry->status
     
             
         );
     }
 
     $data['json'] = json_encode($jsonevents);
+
+    $querys= $this->db->query("SELECT `b`.*, `e`.`name` as `equipmentname`, `l`.`location_name` FROM `breakdown` `b` JOIN `equipments` `e` ON `e`.`id` = `b`.`equipment_id` JOIN `location` `l` ON `l`.`id` = `e`.`location_id` JOIN `employee` `te` ON `te`.`id` = `b`.`technician_id` Where `te`.`em_id` ='$id' ");
+         $jsoneventss = array();
+
+    foreach($querys->result() as $entrys)
+    {
+        $jsoneventss[] = array(
+            'title' => $entrys->equipmentname,
+            'start' => date('Y-m-d', strtotime($entrys->date_and_time)),
+            'id' => $entrys->id,
+           'color'=>'#ff00ac',
+           'type' => $entrys->status,
+           'className' => $entrys->status
+    
+            
+        );
+    }
+
+    $data['jsons'] = json_encode($jsoneventss);
            
         $this->load->view('backend/dashboard',$data);
         }
