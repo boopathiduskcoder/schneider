@@ -44,11 +44,17 @@
     return $result;
     }
     public function getstock(){
-        $sql = "SELECT * FROM `stock`";
+        /*$sql = "SELECT * FROM `stock` ";
         $query=$this->db->query($sql);
         $result = $query->result();
      
-        return $result;
+        return $result;*/
+            $this->db->select('s.*, v.vendor_name');
+            $this->db->from('stock s');
+            $this->db->join('vendor_list v', 'v.vid = s.vendor','left');
+            $query=$this->db->get();
+            $result = $query->result();
+            return $result; 
         }
         public function GetStockById($id){
             $this->db->select('s.*');

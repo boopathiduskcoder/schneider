@@ -57,7 +57,7 @@
                                         <?php foreach ($stock as $value) {?>
                                 <tr>
                                     <td><?php echo $value->productname;?></td>
-                                    <td><?php echo $value->vendor;?></td>
+                                    <td><?php echo $value->vendor_name;?></td>
                                     <td><?php echo $value->stock_in_hand;?></td>
                                     <td><?php echo $value->unit;?></td>
                                     <?php if($value->stock_in_hand != 0){?>
@@ -100,7 +100,7 @@
                                 <select name="vendor" class="select2 form-control custom-select" id="vendor" style="width: 100%" required >
 									<option>Select Vendor</option>
 									<?php foreach($vendor_list as $vendor): ?>
-									<option value="<?php echo $vendor->vendor_name ?>"><?php echo $vendor->vendor_name ?></option>
+									<option value="<?php echo $vendor->vid ?>"><?php echo $vendor->vendor_name ?></option>
 									 <?php endforeach; ?>
 								 </select>
                             </div>
@@ -111,6 +111,10 @@
                             <div class="form-group">
                                 <label class="control-label">Unit</label>
                                 <input type="text" name="unit" value="" class="form-control" id="unit" required>
+                            </div>
+                            <div class="form-group">
+                                <label class="control-label">Minimum Quantity</label>
+                                <input type="text" name="minquantity" value="" class="form-control" id="minquantity" required>
                             </div>
                             <?php echo validation_errors(); ?>
                             <?php echo $this->upload->display_errors(); ?>
@@ -144,9 +148,10 @@ $.ajax({
 // Populate the form fields with the data returned from server
 $('#btnSubmit').find('[name="aid"]').val(response.stockbyid.id).end();
 $('#btnSubmit').find('[name="productname"]').val(response.stockbyid.productname).end();
-$('#btnSubmit').find('[name="vendor"]').val(response.stockbyid.vendorname).end();
+$('#btnSubmit').find('[name="vendor"]').val(response.stockbyid.vendor).end();
 $('#btnSubmit').find('[name="stock_in_hand"]').val(response.stockbyid.stock_in_hand).end();
 $('#btnSubmit').find('[name="unit"]').val(response.stockbyid.unit).end();
+$('#btnSubmit').find('[name="minquantity"]').val(response.stockbyid.minquantity).end();
  
                            
 });

@@ -83,13 +83,28 @@ date_default_timezone_set('Asia/Dhaka');
                                     <li>
                                         <div class="message-center">
                                             <!-- Message -->
-                                            <?php foreach($leavetoday as $value): ?>
+                                            <?php if($this->session->userdata('user_type') !='TECHNICIAN') { ?>
+                                            <?php //foreach($notification as $value): ?>
                                             <a href="#">
-                                                <div class="btn btn-danger btn-circle"><i class="fa fa-link"></i></div>
-                                                <div class="mail-contnet">
-                                                    <h5><?php echo $value->first_name; ?></h5> <span class="mail-desc"><?php echo $value->reason; ?></span> <span class="time"><?php echo $value->start_date; ?></span> </div>
+                                            <?php $items = $this->preventive_model->GetAllstocknotification();
+                                            //print_r($items);
+                                            foreach($items as $value){
+                                                //print_r($value); 
+                                                $productstock=$value->stock_in_hand;
+                                                $minquantity=$value->minquantity;
+                                                $productname=$value->productname;
+                                                if($productstock == $minquantity)
+			                                            { ?>
+                                                            <div class="btn btn-danger btn-circle"><i class="fa fa-link"></i></div>
+                                                            <div class="mail-contnet">
+                                                                <h5><?php echo $productname; ?></h5><span class="time">Reached minimum quantity</span> </div>
+
+			                                         <?php 
+                                                       }}
+                                                      ?>
                                             </a>
-                                            <?php endforeach; ?>
+                                            <?php //endforeach; ?>
+                                            <?php } ?>
                                         </div>
                                     </li>
                                     <li>

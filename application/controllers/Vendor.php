@@ -1059,7 +1059,7 @@ class Vendor extends CI_Controller {
             $vendor = $this->input->post('vendor');
             $stock_in_hand = $this->input->post('stock_in_hand');
             $unit= $this->input->post('unit');     
-    
+            $minquantity= $this->input->post('minquantity');     
            
             $this->load->library('form_validation');
             $this->form_validation->set_error_delimiters();
@@ -1067,6 +1067,7 @@ class Vendor extends CI_Controller {
             $this->form_validation->set_rules('vendor', 'Vendor','trim|required');
             $this->form_validation->set_rules('stock_in_hand', 'stock in hand','trim|required');
             $this->form_validation->set_rules('unit', 'Unit','trim|required');
+            $this->form_validation->set_rules('minquantity', 'minquantity','trim|required');
             if ($this->form_validation->run() == FALSE) 
             {
                 throw new Exception(validation_errors(), 1);             
@@ -1077,6 +1078,7 @@ class Vendor extends CI_Controller {
             $data['vendor']=$vendor;
             $data['stock_in_hand']=$stock_in_hand;
             $data['unit']=$unit;
+            $data['minquantity']=$minquantity;
             if(empty($id)){
                 $success = $this->vendor_model->Add_stock($data);  
                 $message="Successfully added";      

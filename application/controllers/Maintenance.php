@@ -1153,6 +1153,7 @@ public function Update_status(){
             $id=$items->id;
             $stock=$productstock-$quantity;
 
+
             $data = array(
                     'stock_in_hand' => $stock
             );
@@ -1291,8 +1292,9 @@ header("Content-Disposition: attachment;filename={$filename}.xls ");
             
 }    
 public function download_complaint(){
-
-	$month=date('Y-m', strtotime($this->input->post('month')));
+	$mon = $this->input->get('month');
+	print_r($mon);
+	$month=date('Y-m', strtotime($mon));
 	$type =2;
 	$date = date('Y-m-d');
 	$employeeData = $this->preventive_model->download_complaint($month,$type);

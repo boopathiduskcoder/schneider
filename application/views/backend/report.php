@@ -111,13 +111,13 @@
                     <div class="col-md-4">
                         <div class="card card-outline-info">
                         <div class="card-body">
-                                    <form method="post" action="download_complaint" enctype="multipart/form-data">
+                                   <!-- <form method="post" action="download_complaint" enctype="multipart/form-data">-->
                                         <div class="form-body">
                                             <div class="row ">
                                                 <div class="col-md-8">
                                                 <div class="form-group">
 								                         <label class="control-label">Month</label>
-								                           <input type="text" name="month" value="" class="form-control monthdatepicker"  autocomplete="off">
+								                           <input type="text" name="month" value="" id="month" class="form-control monthdatepicker"  autocomplete="off">
 							                    </div>
                                                 </div>
                                                 <!--/span-->
@@ -125,9 +125,9 @@
                                             <!--/row-->
                                         </div>
                                         <div class="form-actions">
-                                            <button type="submit" class="btn btn-info">Export</button>
+                                            <button type="submit" class="btn btn-info mybtn">Export</button>
                                         </div>
-                                    </form>
+                                    <!--</form>-->
                             </div>
                            
                             
@@ -144,7 +144,22 @@
 </div>
 <!-- Column -->
 </div>
+<script>
+  /*  $('.mybtn').on('click', function(event) {
+        alert('hi');
+        var month = $('#month').val();
+        //$('#month').val(month);
+        $.ajax({
+	url: 'download_complaint?month=' + month,
+	method: 'GET',
+	data: '',
+	dataType: 'json',
+}).done(function (response) {
+	console.log(response);
+});
 
+});*/
+</script>
 
 <?php $this->load->view('backend/footer'); ?>
 <style>

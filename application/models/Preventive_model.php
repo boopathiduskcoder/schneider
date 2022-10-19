@@ -213,4 +213,21 @@ public function GetAllstock($product){
       $result = $query->row();
       return $result; 
 }     
+public function GetAllnotification($minquantity,$id){
+  $this->db->select('s.*, v.vendor_name');
+  $this->db->from('stock s');
+  $this->db->join('vendor_list v', 'v.vid = s.vendor','left');
+  $this->db->where('s.minquantity',$minquantity);
+  $this->db->where('s.id',$id);
+  $query=$this->db->get();
+  $result = $query->row();
+  return $result; 
+}
+public function GetAllstocknotification(){
+  $this->db->select('s.*');
+      $this->db->from('stock s');
+      $query=$this->db->get();
+      $result = $query->result();
+      return $result; 
+}   
     }
