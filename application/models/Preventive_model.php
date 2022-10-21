@@ -35,6 +35,17 @@
     $result = $query->result();
         return $result;         
   }
+  public function GetAlltechni(){
+    $id = $this->session->userdata('user_login_id');
+    $this->db->select('e.*');
+    $this->db->from('employee e');
+    $where =" e.em_id !='$id' and e.em_role = 'TECHNICIAN' ";
+    $this->db->where($where);
+    //$this->db->where('e.em_role','TECHNICIAN');
+    $query=$this->db->get();
+    $result = $query->result();
+        return $result;         
+  }
   public function GetAllBreakdown($type){
     $this->db->select('b.*, e.name as equipmentname,d.dep_name,t.name as breakdown_name,te.first_name,te.last_name');
     $this->db->from('breakdown b');
@@ -97,7 +108,7 @@ public function complaint_delete($id){
   $this->db->delete('breakdown',array('id'=> $id));
 }
 public function Getbreakdownview($id){
-  $this->db->select('b.*, e.name as equipmentname,d.dep_name,t.name as breakdown_name,te.first_name,te.last_name');
+  $this->db->select('b.*, b.id as bid, e.*,e.name as equipmentname,d.dep_name,t.name as breakdown_name,te.first_name,te.last_name');
   $this->db->from('breakdown b');
   $this->db->join('equipments e', 'e.id = b.equipment_id');
   $this->db->join('department d','d.id = b.department_id');
@@ -108,8 +119,8 @@ public function Getbreakdownview($id){
   $result = $query->row();
   return $result;        
 }
-public function Update_breakdownstatus($id, $data){
-  $this->db->where('id',$id);
+public function Update_breakdownstatus($idb, $data){
+  $this->db->where('id',$idb);
   $this->db->update('breakdown',$data);
 }
 public function GetAllcomplaints($id){
@@ -125,7 +136,7 @@ public function GetAllcomplaints($id){
   return $result; 
 }
 public function Getpreventiveview($id){
-  $this->db->select('p.*,e.name as equipmentname,l.location_name as location,s.name as servicename');
+  $this->db->select('p.*,e.id as eid,e.name as equipmentname,l.location_name as location,s.name as servicename');
   $this->db->from('preventives p');
   $this->db->join('equipments e', 'e.id = p.equipment_id');
   $this->db->join('location l', 'l.id = p.location_id');
@@ -191,7 +202,7 @@ public function Gettechinprogresslist($id){
   return $result; 
 }
 public function Getcalendarlist(){
-  $this->db->select('b.*, e.name as equipmentname, l.location_name');
+  $this->db->select('b.*, e.name as equipmentname,l.location_name');
  $this->db->from('breakdown b');
  $this->db->join('equipments e', 'e.id = b.equipment_id');
  $this->db->join('location l', 'l.id = e.location_id');

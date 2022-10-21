@@ -46,6 +46,7 @@ date_default_timezone_set('Asia/Dhaka');
             $id = $this->session->userdata('user_login_id');
             $basicinfo = $this->employee_model->GetBasic($id); 
             $settingsvalue = $this->settings_model->GetSettingsValue();
+            //$items = $this->preventive_model->GetAllstocknotification();
             $year =  date('y');
             $y = substr( $year, -2);
             $date = date("m/d/$y");
@@ -75,6 +76,7 @@ date_default_timezone_set('Asia/Dhaka');
                             <a class="nav-link dropdown-toggle text-muted text-muted waves-effect waves-dark" href="#" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false"> <i class="mdi mdi-message"></i>
                                 <div class="notify"> <span class="heartbit"></span> <span class="point"></span> </div>
                             </a>
+                           
                             <div class="dropdown-menu mailbox scale-up-left">
                                 <ul>
                                     <li>
@@ -82,28 +84,29 @@ date_default_timezone_set('Asia/Dhaka');
                                     </li>
                                     <li>
                                         <div class="message-center">
-                                            <!-- Message -->
-                                            <?php if($this->session->userdata('user_type') !='TECHNICIAN') { ?>
-                                            <?php //foreach($notification as $value): ?>
+                                        <?php if($this->session->userdata('user_type') !='TECHNICIAN') { ?>
                                             <a href="#">
-                                            <?php $items = $this->preventive_model->GetAllstocknotification();
-                                            //print_r($items);
-                                            foreach($items as $value){
-                                                //print_r($value); 
-                                                $productstock=$value->stock_in_hand;
-                                                $minquantity=$value->minquantity;
-                                                $productname=$value->productname;
-                                                if($productstock == $minquantity)
-			                                            { ?>
+                                            <?php $this->db->select('s.*');
+                                                  $this->db->from('stock s');
+                                                  $query=$this->db->get();
+                                                  $result = $query->result();
+                                                 foreach($result as $value){
+
+                                                 $productstock=$value->stock_in_hand;
+                                                  $minquantity=$value->minquantity;
+                                                 $productname=$value->productname;
+                                                if($productstock <= $minquantity)
+                                                 { ?>
+                                            
+			                                       
                                                             <div class="btn btn-danger btn-circle"><i class="fa fa-link"></i></div>
                                                             <div class="mail-contnet">
-                                                                <h5><?php echo $productname; ?></h5><span class="time">Reached minimum quantity</span> </div>
+                                                                <h5><?php echo $productname;  ?></h5><span class="time">Reached minimum quantity</span> </div>
 
 			                                         <?php 
-                                                       }}
+                                                      }}
                                                       ?>
                                             </a>
-                                            <?php //endforeach; ?>
                                             <?php } ?>
                                         </div>
                                     </li>
@@ -112,6 +115,7 @@ date_default_timezone_set('Asia/Dhaka');
                                     </li>
                                 </ul>
                             </div>
+                            
                         </li>
                     </ul>
                     <ul class="navbar-nav my-lg-0">

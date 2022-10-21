@@ -1117,6 +1117,7 @@ public function Viewbreakdown()
 		$id = base64_decode($this->input->get('id'));
 		$data['breakdown']= $this->preventive_model->Getbreakdownview($id);
 		$data['product'] = $this->preventive_model->GetAllproducts();
+		$data['technician'] = $this->preventive_model->GetAlltechni();
 		$this->load->view('backend/breakdown_view',$data);  
 	}
 	else
@@ -1130,16 +1131,21 @@ public function Update_status(){
 		{
 			throw new Exception("Session expired", 1);                
 		} 
-	$id     = $this->input->post('id');                     
+	$idb     = $this->input->post('id');     
 	$date = $this->input->post('date');   
-	$action = $this->input->post('action');
+	$summary = $this->input->post('summary');
+	$priority = $this->input->post('priority');
+	$technician_id = $this->input->post('technician_id');
+	$instruction = $this->input->post('instruction');
 	$product = $this->input->post('product'); 
 	$quantity = $this->input->post('quantity');     
 	$status  = $this->input->post('status');     
 	$this->load->library('form_validation');
 	$this->form_validation->set_error_delimiters();
 	$this->form_validation->set_rules('date', 'date','trim|required');
-	$this->form_validation->set_rules('action', 'action','trim|required');
+	$this->form_validation->set_rules('summary', 'summary','trim|required');
+	$this->form_validation->set_rules('priority', 'priority','trim|required');
+	$this->form_validation->set_rules('instruction', 'instruction','trim|required');
 	$this->form_validation->set_rules('product', 'product','trim|required');
 	$this->form_validation->set_rules('quantity', 'quantity','trim|required');
 	$this->form_validation->set_rules('status', 'status','trim|required');
@@ -1163,9 +1169,9 @@ public function Update_status(){
 
      
 		$data = array();
-		$data = array('completeddate' => $date,'actiontaken' => $action,'product' => $product,'quantity' => $quantity,'status' => $status);
-		if(!empty($id)){
-			$success = $this->preventive_model->Update_breakdownstatus($id,$data); 
+		$data = array('completeddate' => $date,'summary' => $summary,'priority' => $priority, 'instruction' => $instruction,'product' => $product,'quantity' => $quantity,'status' => $status);
+		if(!empty($idb)){
+			$success = $this->preventive_model->Update_breakdownstatus($idb,$data); 
 			$message= "Successfully updated"; 
 		} 
 		$response['status']=TRUE;
@@ -1196,6 +1202,10 @@ if($this->session->userdata('user_login_access') != False)
 {
     $id = base64_decode($this->input->get('id'));
     $data['preventive']= $this->preventive_model->Getpreventiveview($id);
+	$data['equipments'] = $this->preventive_model->Getallequipmentslist();
+			$data['departments'] = $this->preventive_model->Getalldepartments();
+			$data['breakdowntypes'] = $this->preventive_model->GetAllBreakdowntypes();
+			$data['technicians'] = $this->preventive_model->GetAlltechnicians();
     $this->load->view('backend/preventive_view',$data);  
 }
 else
@@ -1209,6 +1219,7 @@ if($this->session->userdata('user_login_access') != False)
 {
 	//$id = base64_decode($this->input->get('id'));
 	//$data['fireextingu']= $this->temperature_model->Getfireextingview($id);
+	
 	$this->load->view('backend/complaint_view');  
 }
 else
@@ -1331,6 +1342,44 @@ header("Content-Disposition: attachment;filename={$filename}.xls ");
             
 }    
 
-
+public function Add_preventivecomplaint(){
+	try {
+		if($this->session->userdata('user_login_access') == False) 
+		{
+			throw new Exception("Session expired", 1);                
+		} 
+	$id     = $this->input->post('id');                    
+	$equipmentid = $this->input->post('eid');  
+	$departmentid = $this->input->post('departmentid');    
+	$breakdownid  = $this->input->post('breakdownid');  
+	$technicianid  = $this->input->post('technicianid');    
+	$dateandtime  = $this->input->post('dateandtime');     
+	$details = $this->input->post('details'); 
+	$type  = '3';     
+	$this->load->library('form_validation');
+	$this->form_validation->set_error_delimiters();
+	$this->form_validation->set_rules('departmentid', 'departmentid','trim|required');
+	$this->form_validation->set_rules('breakdownid', 'breakdownid','trim|required|xss_clean');
+	$this->form_validation->set_rules('technicianid', 'technicianid','trim|required|xss_clean');
+	$this->form_validation->set_rules('dateandtime', 'dateandtime','trim|required|xss_clean');
+	$this->form_validation->set_rules('details', 'details','trim|required|xss_clean');
+   
+	if ($this->form_validation->run() == FALSE) {
+		echo validation_errors();
+	}
+		$data = array();
+		$data = array('equipment_id' => $equipmentid,'department_id' => $departmentid,'breakdown_id' => $breakdownid, 'technician_id' => $technicianid,'date_and_time' => $dateandtime,'details' => $details,'type'=>$type);
+		if(empty($id)){
+			$success = $this->preventive_model->Add_breakdown($data); 
+			$message="Successfully added";      
+		} 
+		$response['status']=TRUE;
+		$response['message']=$message;  
+	}  catch (Exception $e) {
+		$response['status']=FALSE;
+		$response['message']=$e->getMessage();
+	}    
+	echo json_encode($response);
+}
 }
 ?>
