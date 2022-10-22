@@ -130,16 +130,19 @@ public function GetAllcomplaints($id){
   $this->db->join('department d','d.id = b.department_id');
   $this->db->join('breakdowntypes t','t.id=b.breakdown_id');
   $this->db->join('employee te','te.id=b.technician_id');
-  $this->db->where('te.em_id',$id);
+  $where =" te.em_id ='$id' and b.type != '3' ";
+ $this->db->where($where);
   $query=$this->db->get();
   $result = $query->result();
   return $result; 
 }
 public function Getpreventiveview($id){
-  $this->db->select('p.*,e.id as eid,e.name as equipmentname,l.location_name as location,s.name as servicename');
+  $this->db->select('p.*,e.*,e.id as eid, te.name as type, e.name as equipmentname,l.location_name as location,el.location_name as locations,s.name as servicename');
   $this->db->from('preventives p');
   $this->db->join('equipments e', 'e.id = p.equipment_id');
+  $this->db->join('location el', 'el.id = e.location_id');
   $this->db->join('location l', 'l.id = p.location_id');
+  $this->db->join('eqiuipment_type te', 'te.id = e.type');
   $this->db->join('service_interval s', 's.id = p.interval_id');
   $this->db->where('p.id',$id);
   $query=$this->db->get();

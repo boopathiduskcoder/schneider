@@ -1169,7 +1169,7 @@ public function Update_status(){
 
      
 		$data = array();
-		$data = array('completeddate' => $date,'summary' => $summary,'priority' => $priority, 'instruction' => $instruction,'product' => $product,'quantity' => $quantity,'status' => $status);
+		$data = array('completeddate' => $date,'summary' => $summary,'technician_id' => $technician_id,'priority' => $priority, 'instruction' => $instruction,'product' => $product,'quantity' => $quantity,'status' => $status);
 		if(!empty($idb)){
 			$success = $this->preventive_model->Update_breakdownstatus($idb,$data); 
 			$message= "Successfully updated"; 

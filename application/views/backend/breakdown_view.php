@@ -10,7 +10,11 @@
             <div class="card">
 
                 <div class="card-content pt20 pb20 profile-header">
+                    <?php if(!empty($breakdown->image)){ ?>
                     <img src="<?php echo base_url(); ?>assets/images/equipments/<?php echo $breakdown->image; ?>" alt="" class="img-fluid rounded-circle">
+                    <?php }else {?>
+                        <img src="<?php echo base_url(); ?>assets/images/equipments/no-image.png" alt="" class="img-fluid rounded-circle">
+                       <?php } ?>
                     <h6 class="card-title text-center mb20">MODEL: <?php echo $breakdown->model ?></h6>
                     <h4 class="card-title text-center mb20">TAG NO:  <?php echo $breakdown->tag_no ?></h4>
                     
@@ -85,9 +89,7 @@
 				<div class="modal-body">
                    <div class="row">
 						<div class="col-md-6">  
-                        <div class="form-group ">
-                        <input type="hidden" name="id" value="<?php echo $breakdown->bid; ?>">
-                        </div> 
+                        
                                             <div class="form-group ">
                                                 <label class="control-label">Priority</label>
                                                 <select class="select2 form-control custom-select" data-placeholder="Select status" name="priority" style="width:100%" tabindex="1">
@@ -118,6 +120,9 @@
                                                 <label for="message-text" class="control-label">Work Instructions</label>
                                                 <textarea class="form-control" name="instruction" id="message-text1" minlength="10" maxlength="1400"></textarea>
                                             </div>
+                                            <div class="form-group ">
+                        <input type="hidden" name="id" value="<?php echo $breakdown->bid; ?>">
+                        </div> 
                                              
                         </div>
                     

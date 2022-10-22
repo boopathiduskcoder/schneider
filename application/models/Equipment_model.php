@@ -412,12 +412,12 @@
   }
 
 public function GetAssetByIdbreakdown($id,$type){
-  $this->db->select('b.*, e.name as equipmentname,d.dep_name,t.name as breakdown_name,te.firstname,te.lastname');
+  $this->db->select('b.*, e.name as equipmentname,d.dep_name,t.name as breakdown_name,te.first_name,te.last_name');
   $this->db->from('breakdown b');
   $this->db->join('equipments e', 'e.id = b.equipment_id','left');
   $this->db->join('department d','d.id = b.department_id','left');
   $this->db->join('breakdowntypes t','t.id=b.breakdown_id','left');
-  $this->db->join('technicians te','te.id=b.technician_id','left');
+  $this->db->join('employee te','te.id=b.technician_id','left');
   $this->db->where('b.type',$type);
   $this->db->where('e.id',$id);
   $query=$this->db->get();
@@ -425,12 +425,12 @@ public function GetAssetByIdbreakdown($id,$type){
   return $result; 
 }
 public function GetAssetByIdcomplaints($id,$type){
-  $this->db->select('b.*, e.name as equipmentname,d.dep_name,t.name as breakdown_name,te.firstname,te.lastname');
+  $this->db->select('b.*, e.name as equipmentname,d.dep_name,t.name as breakdown_name,te.first_name,te.last_name');
   $this->db->from('breakdown b');
   $this->db->join('equipments e', 'e.id = b.equipment_id','left');
   $this->db->join('department d','d.id = b.department_id','left');
   $this->db->join('breakdowntypes t','t.id=b.breakdown_id','left');
-  $this->db->join('technicians te','te.id=b.technician_id','left');
+  $this->db->join('employee te','te.id=b.technician_id','left');
   $this->db->where('b.type',$type);
   $this->db->where('e.id',$id);
   $query=$this->db->get();
