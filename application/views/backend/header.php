@@ -107,6 +107,33 @@ date_default_timezone_set('Asia/Dhaka');
                                                       }}
                                                       ?>
                                             </a>
+                                            <a href="#">
+                                            <?php $this->db->select('p.*,e.*');
+                                                  $this->db->from('preventives p');
+                                                  $this->db->join('equipments e', 'e.id = p.equipment_id');
+                                                  $query=$this->db->get();
+                                                  $result = $query->result();
+                                                 foreach($result as $value){
+
+                                                 $equipment_id=$value->name;
+                                                 $date1= $value->next_date;
+                                                         $date2 = date('Y-m-d');
+                                                         $date1 = strtotime($date1);
+                                                         $date2 = strtotime($date2);
+                                                         $datediff = $date1 - $date2;
+                                                         $no_of_days =  floor($datediff / (60 * 60 * 24));
+                                                if($value->notify >= $no_of_days AND $no_of_days > 0 )
+                                                 { ?>
+                                            
+			                                       
+                                                            <div class="btn btn-danger btn-circle"><i class="fa fa-link"></i></div>
+                                                            <div class="mail-contnet">
+                                                                <h5><?php echo $equipment_id .' '.'(PM)' ;?></h5><span class="time"><?php echo $no_of_days.' ' .'days left'; ?></span> </div>
+
+			                                         <?php 
+                                                      }}
+                                                      ?>
+                                            </a>
                                             <?php } ?>
                                         </div>
                                     </li>

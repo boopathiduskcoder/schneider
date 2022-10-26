@@ -223,9 +223,11 @@ $.ajax({
 	console.log(response);
 // Populate the form fields with the data returned from server
 $('#btnSubmit').find('[name="aid"]').val(response.assetsByid.id).end();
-$('#btnSubmit').find('[name="location"]').val(response.assetsByid.location_id).end();
+//$('#btnSubmit').find('[name="location"]').val(response.assetsByid.location_id).end();
+$(`select[name^='location'] option[value=${response.assetsByid.location_id}]`).attr('selected','selected').trigger('change');
 $('#btnSubmit').find('[name="name"]').val(response.assetsByid.name).end();
-$('#btnSubmit').find('[name="type"]').val(response.assetsByid.type).end();
+//$('#btnSubmit').find('[name="type"]').val(response.assetsByid.type).end();
+$(`select[name^='type'] option[value=${response.assetsByid.type}]`).attr('selected','selected').trigger('change');
 $('#btnSubmit').find('[name="tag_no"]').val(response.assetsByid.tag_no).end();
 $('#btnSubmit').find('[name="model"]').val(response.assetsByid.model).end();   
 $('#btnSubmit').find('[name="type1"]').val(response.assetsByid.type1).end();                                                
@@ -235,7 +237,8 @@ $('#btnSubmit').find('[name="slno"]').val(response.assetsByid.slno).end();
 $('#btnSubmit').find('[name="parts_included"]').val(response.assetsByid.parts_included).end();                                              
 $('#btnSubmit').find('[name="warrenty"]').val(response.assetsByid.warrenty).end();                                              
 $('#btnSubmit').find('[name="power"]').val(response.assetsByid.power).end();                                              
-$('#btnSubmit').find('[name="status"]').val(response.assetsByid.status).end();                                              
+//$('#btnSubmit').find('[name="status"]').val(response.assetsByid.status).end(); 
+$(`select[name^='status'] option[value=${response.assetsByid.status}]`).attr('selected','selected').trigger('change');
 $('#btnSubmit').find('[name="specification"]').val(response.assetsByid.specification).end();                                             
 });
 });

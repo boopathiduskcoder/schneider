@@ -39,6 +39,7 @@
                                                 <th>Vendor</th>
                                                 <th>Stock in hand</th>
                                                 <th>Unit</th>
+                                                <th>Minimum Quanity</th>
                                                 <th>Status</th>
                                                 <th>Action</th>
                                             </tr>
@@ -49,6 +50,7 @@
                                                 <th>Vendor</th>
                                                 <th>Stock in hand</th>
                                                 <th>Unit</th>
+                                                <th>Minimum Quanity</th>
                                                 <th>Status</th>
                                                 <th>Action</th>
                                             </tr>
@@ -58,10 +60,18 @@
                                 <tr>
                                     <td><?php echo $value->productname;?></td>
                                     <td><?php echo $value->vendor_name;?></td>
-                                    <td><?php echo $value->stock_in_hand;?></td>
+                                    <?php $minquantity=$value->minquantity;
+                                    $productstock=$value->stock_in_hand;
+                                    if($productstock <= $minquantity)
+                                                 { ?>
+                                    <td><?php echo $value->stock_in_hand; ?> <span class="badge badge-danger">Reached minimum quantity</span></td>
+                                    <?php } else { ?>
+                                        <td><?php echo $value->stock_in_hand; ?></td>
+                                    <?php }?>
                                     <td><?php echo $value->unit;?></td>
+                                    <td><?php echo $value->minquantity;?></td>
                                     <?php if($value->stock_in_hand != 0){?>
-                                    <td><?php echo 'In Stock';?></td>
+                                    <td><span class="badge badge-success"><?php echo 'In stock';?></span></td>
                                     <?php } else{ ?>
                                         <td><span class="badge badge-danger"><?php echo 'Out of stock';?></span></td>
                                         
@@ -148,7 +158,8 @@ $.ajax({
 // Populate the form fields with the data returned from server
 $('#btnSubmit').find('[name="aid"]').val(response.stockbyid.id).end();
 $('#btnSubmit').find('[name="productname"]').val(response.stockbyid.productname).end();
-$('#btnSubmit').find('[name="vendor"]').val(response.stockbyid.vendor).end();
+//$('#btnSubmit').find('[name="vendor"]').val(response.stockbyid.vendor).end();
+$(`select[name^='vendor'] option[value=${response.stockbyid.vendor}]`).attr('selected','selected').trigger('change');
 $('#btnSubmit').find('[name="stock_in_hand"]').val(response.stockbyid.stock_in_hand).end();
 $('#btnSubmit').find('[name="unit"]').val(response.stockbyid.unit).end();
 $('#btnSubmit').find('[name="minquantity"]').val(response.stockbyid.minquantity).end();

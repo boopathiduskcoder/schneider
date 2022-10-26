@@ -79,9 +79,9 @@
         $result = $query->row();
         return $result;         
     }
-      public function Update_Electricity($id, $data){
+      public function Update_Preventive($id, $data){
         $this->db->where('id',$id);
-        $this->db->update('electricity_consuming',$data);
+        $this->db->update('preventives',$data);
       }
       public function preventive_delete($id){
         $this->db->delete('preventives',array('id'=> $id));
@@ -243,5 +243,13 @@ public function GetAllstocknotification(){
       $query=$this->db->get();
       $result = $query->result();
       return $result; 
-}   
+}  
+public function Send_mail($technicianid){
+  $this->db->select('e.em_email');
+  $this->db->from('employee e');
+  $this->db->where('e.id',$technicianid);
+  $query=$this->db->get();
+  $result = $query->row();
+  return $result;         
+} 
     }

@@ -107,7 +107,8 @@
                                                 <h6 class="text-small text-muted">Installation Date</h6>
                                             </div>
                                             <div class="col-md-6 mb20">
-                                                <h6><?php echo $plant_data->installation_date; ?></h6>
+                                                <h6><?php $date= strtotime($plant_data->installation_date);
+                                                          echo date("d-F-y", $date);?></h6>
                                             </div>
                                         </div>
                                         <div class="row">
@@ -194,9 +195,9 @@
                                                           $sdata = $this->db->get_where('service_interval',array('id '=>$sid))->row();
                                                           echo  $sdata->name; ?></td>
                                                 <td><?php $date= strtotime($value->last_date);
-                                                          echo date("d-F-y", $date);;?></td>
+                                                          echo date("d-F-y", $date);?></td>
                                                 <td><?php $date= strtotime($value->next_date);
-                                                          echo date("d-F-y", $date);;?>
+                                                          echo date("d-F-y", $date);?>
                                                 <br><span class="badge badge-success">
                                                      <?php
                                                          $date1= $value->next_date;

@@ -113,7 +113,7 @@
 							</div>  
                             <div class="form-group">
 								<label class="control-label">Status</label>
-								<select name="status" class="select2 form-control custom-select" style="width: 100%" required>
+								<select id="status" name="status" class="select2 form-control custom-select" style="width: 100%" required>
 									<option>Select</option>
 									<option value="ACTIVE">Active</option>
 									<option value="INACTIVE">In-active</option>
@@ -185,10 +185,12 @@ $('#btnSubmit').find('[name="email"]').val(response.technicianbyid.em_email).end
 $('#btnSubmit').find('[name="password"]').val(response.technicianbyid.em_password).end();
 $('#pass_hide').hide();
 $('#btnSubmit').find('[name="contact"]').val(response.technicianbyid.em_phone).end();  
-$('#btnSubmit').find('[name="status"]').val(response.technicianbyid.status).end();
-/*var status =  $('#btnSubmit').find('[name="status"]').val(response.technicianbyid.status);
-alert(status);
-$("select[name^='status'] option[value='active']").attr("selected","selected").trigger('change');*/
+/*$('#btnSubmit').find('[name="status"]').val(response.technicianbyid.status).end();
+var status =  $('#btnSubmit').find('[name="status"]').val(response.technicianbyid.status);
+alert(status);*/
+// console.log(response.technicianbyid.status, "============", $('#status option[value='.response.technicianbyid.status.']').attr('selected','selected'));
+// $('#status option[value="INACTIVE"]').attr('selected','selected');
+$(`select[name^='status'] option[value=${response.technicianbyid.status}]`).attr('selected','selected').trigger('change');
                          
 });
 });

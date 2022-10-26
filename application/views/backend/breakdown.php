@@ -169,10 +169,14 @@ $.ajax({
 	console.log(response);
 // Populate the form fields with the data returned from server
 $('#btnSubmit').find('[name="id"]').val(response.breakbyid.id).end();
-$('#btnSubmit').find('[name="equipmentid"]').val(response.breakbyid.equipment_id).end();
-$('#btnSubmit').find('[name="departmentid"]').val(response.breakbyid.department_id).end();
-$('#btnSubmit').find('[name="breakdownid"]').val(response.breakbyid.breakdown_id).end();
-$('#btnSubmit').find('[name="technicianid"]').val(response.breakbyid.technician_id).end();
+//$('#btnSubmit').find('[name="equipmentid"]').val(response.breakbyid.equipment_id).end();
+$(`select[name^='equipmentid'] option[value=${response.breakbyid.equipment_id}]`).attr('selected','selected').trigger('change');
+//$('#btnSubmit').find('[name="departmentid"]').val(response.breakbyid.department_id).end();
+$(`select[name^='departmentid'] option[value=${response.breakbyid.department_id}]`).attr('selected','selected').trigger('change');
+//$('#btnSubmit').find('[name="breakdownid"]').val(response.breakbyid.breakdown_id).end();
+$(`select[name^='breakdownid'] option[value=${response.breakbyid.breakdown_id}]`).attr('selected','selected').trigger('change');
+//$('#btnSubmit').find('[name="technicianid"]').val(response.breakbyid.technician_id).end();
+$(`select[name^='technicianid'] option[value=${response.breakbyid.technician_id}]`).attr('selected','selected').trigger('change');
 $('#btnSubmit').find('[name="dateandtime"]').val(response.breakbyid.date_and_time).end();  
 $('#btnSubmit').find('[name="details"]').val(response.breakbyid.details).end();  
                            

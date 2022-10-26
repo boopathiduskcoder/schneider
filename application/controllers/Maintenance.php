@@ -932,12 +932,13 @@ class Maintenance extends CI_Controller
             {
                 throw new Exception("Session expired", 1);                
             } 
-		$id     = $this->input->post('id');                     
-        $ass_name = $this->input->post('ass_name');   
+		$id     = $this->input->post('id');     
+        $ass_name = $this->input->post('ass_name');
 		$location = $this->input->post('location');    
         $service_days  = $this->input->post('service_days');     
         $startdate  = $this->input->post('startdate');     
         $enddate = $this->input->post('enddate'); 
+		$notify = $this->input->post('notify'); 
 		$status = $this->input->post('status');      
         $this->load->library('form_validation');
         $this->form_validation->set_error_delimiters();
@@ -952,13 +953,13 @@ class Maintenance extends CI_Controller
             echo validation_errors();
         }
             $data = array();
-            $data = array('equipment_id' => $ass_name,'location_id' => $location,'interval_id' => $service_days,'last_date' => $startdate,'next_date' => $enddate,'status' => $status);
+            $data = array('equipment_id' => $ass_name,'location_id' => $location,'interval_id' => $service_days,'last_date' => $startdate,'notify' => $notify,'next_date' => $enddate,'status' => $status);
 			if(empty($id)){
                 $success = $this->preventive_model->Add_Preventive($data); 
                 $message="Successfully added";      
             } 
             else {
-                $success = $this->equipment_model->Update_Equipment($id,$data); 
+                $success = $this->preventive_model->Update_Preventive($id,$data); 
                 $message= "Successfully updated"; 
             }
             $response['status']=TRUE;
@@ -1068,7 +1069,50 @@ public function Add_complaint(){
 	$technicianid  = $this->input->post('technicianid');    
 	$dateandtime  = $this->input->post('dateandtime');     
 	$details = $this->input->post('details'); 
-	$type  = '2';     
+	$type  = '2';  
+	 $email_tech =$this->preventive_model->Send_mail($technicianid); 
+	 $emailtech = $email_tech->em_email;
+	 $this->load->library('email');
+	 $config = array(
+		'protocol' => 'smtp',
+		 'smtp_host' => 'ssl://smtp.googlemail.com',
+		 'smtp_port' => 465,
+		 'smtp_user' => 'ezhil.sujee@gmail.com', // change it to yours
+		 'smtp_pass' => 'ezhil.sujee', // change it to yours
+		 'mailtype' => 'html',
+		 'charset' => 'iso-8859-1',
+		 'wordwrap' => TRUE
+			 );
+ 
+			 $message =  "
+			 <html>
+			 <head>
+				 <title>Verification Code</title>
+			 </head>
+			 <body>
+				 <h2>Thank you for Registering.</h2>
+				 <p>Dear:".$equipmentid ."</p>
+				 <p>Email: ".$departmentid."</p>
+				 <p>Please click the link below to activate your account.</p>
+				 <h4><a href='".base_url()."welcome/activate/".$breakdownid."/'>Activate My Account</a></h4>
+			 </body>
+			 </html>
+			 ";
+
+ $this->load->library('email', $config);
+ $this->email->set_newline("\r\n");
+ $this->email->from($config['smtp_user']);
+ $this->email->to($emailtech);
+ $this->email->subject('Signup Verification Email');
+ $this->email->message($message);
+
+ //sending email
+ if($this->email->send()){
+echo 'success'; }
+ else{
+	show_error($this->email->print_debugger());
+
+ }
 	$this->load->library('form_validation');
 	$this->form_validation->set_error_delimiters();
 	$this->form_validation->set_rules('equipmentid', 'equipmentid','trim|required');
@@ -1083,6 +1127,7 @@ public function Add_complaint(){
 	}
 		$data = array();
 		$data = array('equipment_id' => $equipmentid,'department_id' => $departmentid,'breakdown_id' => $breakdownid, 'technician_id' => $technicianid,'date_and_time' => $dateandtime,'details' => $details,'type'=>$type);
+		exit;
 		if(empty($id)){
 			$success = $this->preventive_model->Add_breakdown($data); 
 			$message="Successfully added";      

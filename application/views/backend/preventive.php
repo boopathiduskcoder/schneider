@@ -39,6 +39,7 @@
                                                 <th>Service</th>
                                                 <th>Last Date </th>
                                                 <th>Next Date </th>
+                                                <th>Notify</th>
                                                 <th>Status</th>
                                                 <th>Action </th>
                                             </tr>
@@ -50,6 +51,7 @@
                                                 <th>Service</th>
                                                 <th>Last Date </th>
                                                 <th>Next Date </th>
+                                                <th>Notify</th>
                                                 <th>Status</th>
                                                 <th>Action </th>
                                             </tr>
@@ -71,15 +73,23 @@
                                                           echo date("d-F-y", $date);?></td>
                                                 <td><?php $date= strtotime($value->next_date);
                                                           echo date("d-F-y", $date);?>
-                                                <br><span class="badge badge-success">
+                                                <br>
                                                      <?php
                                                          $date1= $value->next_date;
-                                                         $date2 =$value->last_date;
+                                                         $date2 = date('Y-m-d');
                                                          $date1 = strtotime($date1);
                                                          $date2 = strtotime($date2);
                                                          $datediff = $date1 - $date2;
                                                          $no_of_days =  floor($datediff / (60 * 60 * 24));
-                                                         echo $no_of_days.' ' .'days left'; ?></span></td>
+                                                         if($value->notify <= $no_of_days ){  ?>
+                                                         <span class="badge badge-success"><?php echo $no_of_days.' ' .'days left'; ?></span>
+                                                         <?php } 
+                                                         elseif($value->notify >= $no_of_days AND $no_of_days > 0 ) {?>
+                                                         <span class="badge badge-warning"><?php echo $no_of_days.' ' .'days left'; ?></span>
+                                                         <?php }elseif($no_of_days < 0 ) { ?>
+                                                            <span class="badge badge-danger"><?php echo $no_of_days.' ' .'days left'; ?></span>
+                                                         <?php  } ?>
+                                                         <td><?php echo  $value->notify. ' ' .'days';?></td>
                                                 <td><?php echo $value->status;?></td>
                                                 <td class="jsgrid-align-center ">
                                                     <a href="#" title="Edit" class="btn btn-sm btn-info waves-effect waves-light preventive" data-id="<?php echo $value->id ?>"><i class="fa fa-pencil-square-o"></i></a>
@@ -123,7 +133,7 @@
                                         <h4 class="modal-title" id="exampleModalLabel1">Add Maintenance</h4>
                                         <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
                                     </div>
-                                    <form method="post" action="Add_Preventive" id="tasksModalform" enctype="multipart/form-data">
+                                    <form method="post" action="Add_Preventive" id="btnSubmit" enctype="multipart/form-data">
                                     <div class="modal-body">
                                              <div class="form-group row">
                                                 <label class="control-label col-md-3">Asset List</label>
@@ -158,15 +168,18 @@
                                                 <input type="text" name="startdate" value="" class="form-control col-md-3 mydatetimepickerFull" id="recipient-name1">
                                                 
                                                 <label class="control-label col-md-2">Next Service Date</label>
-                                                <input type="text" name="enddate" value="" class="form-control col-md-3 mydatetimepickerFull" id="recipient-name1">
+                                                <input type="text" name="enddate"  class="form-control col-md-3 mydatetimepickerFull" id="recipient-name1">
                                         </div>
                                         <div class="form-group row">
-								            <label class="control-label col-md-3">Status</label>
-								            <select name="status" class="form-control custom-select col-md-8 proid" style="width: 100%" required>
-									        <option>Select</option>
-									        <option value="Active">Active</option>
-									        <option value="In-active">In-active</option>
-								       </select>
+                                                <label class="control-label col-md-3">Notify before(days)</label>
+                                                <input type="text" name="notify"  class="form-control col-md-3" id="recipient-name1">
+
+								                <label class="control-label col-md-2">Status</label>
+								                <select name="status" class="form-control custom-select col-md-3 proid" style="width: 100%" required>
+									            <option>Select</option>
+									            <option value="Active">Active</option>
+									            <option value="In-active">In-active</option>
+								                </select>
 							           </div> 
                                     </div>
                                     <div class="modal-footer">
@@ -195,12 +208,17 @@ $.ajax({
 	console.log(response);
 // Populate the form fields with the data returned from server
 $('#btnSubmit').find('[name="id"]').val(response.preventivebyid.id).end();
-$('#btnSubmit').find('[name="ass_name"]').val(response.preventivebyid.equipment_id).end();
-$('#btnSubmit').find('[name="location"]').val(response.preventivebyid.location_id).end();
-$('#btnSubmit').find('[name="service_days"]').val(response.preventivebyid.interval_id).end();
-$('#btnSubmit').find('[name="startdate"]').val(response.preventivebyid.last_date).datepicker('option', 'dateFormat', 'YYYY-MM-DD').end();
+//$('#btnSubmit').find('[name="ass_name"]').val(response.preventivebyid.equipment_id).end();
+$(`select[name^='ass_name'] option[value=${response.preventivebyid.equipment_id}]`).attr('selected','selected').trigger('change');
+//$('#btnSubmit').find('[name="location"]').val(response.preventivebyid.location_id).end();
+$(`select[name^='location'] option[value=${response.preventivebyid.location_id}]`).attr('selected','selected').trigger('change');
+//$('#btnSubmit').find('[name="service_days"]').val(response.preventivebyid.interval_id).end();
+$(`select[name^='service_days'] option[value=${response.preventivebyid.interval_id}]`).attr('selected','selected').trigger('change');
+$('#btnSubmit').find('[name="startdate"]').val(response.preventivebyid.last_date).end();
 $('#btnSubmit').find('[name="enddate"]').val(response.preventivebyid.next_date).end();  
-$('#btnSubmit').find('[name="status"]').val(response.preventivebyid.status).end();  
+$('#btnSubmit').find('[name="notify"]').val(response.preventivebyid.notify).end();  
+//$('#btnSubmit').find('[name="status"]').val(response.preventivebyid.status).end(); 
+$(`select[name^='status'] option[value=${response.preventivebyid.status}]`).attr('selected','selected').trigger('change');
                            
 });
 });
