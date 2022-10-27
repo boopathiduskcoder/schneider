@@ -349,8 +349,10 @@
                                                 <td><?php echo $value->location_name; ?></td>
                                                 <?php if($value->status=='Inprogress'){ ?>
                                                     <td><span class="badge badge-primary"><?php echo $value->status; ?><span></td>
-                                                    <?php } else{?>
+                                                    <?php } elseif($value->status=='Pending'){?>
                                                     <td><span class="badge badge-warning"><?php echo $value->status; ?><span></td>
+                                                    <?php }else{ ?>
+                                                        
                                                     <?php } ?>
                                             </tr>
                                                 

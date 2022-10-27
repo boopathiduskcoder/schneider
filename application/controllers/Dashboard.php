@@ -32,7 +32,10 @@ class Dashboard extends CI_Controller {
             $this->db->select('b.*');
             $this->db->from('breakdown b');
             $this->db->join('employee e', 'e.id = b.technician_id');
-            $this->db->where('e.em_id', $id);
+            $where =" e.em_id ='$id' and b.status != '' ";
+            $this->db->where($where);
+            //$this->db->where('e.em_id', $id);
+            //$this->db->where('b.status' != ' ');
             $query=$this->db->get();
             $result = $query->result_array();
       $data= [];

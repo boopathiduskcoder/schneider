@@ -88,6 +88,8 @@
     }
     public function Add_breakdown($data){
       $this->db->insert('breakdown',$data);
+      $last_id = $this->db->insert_id();
+      return  $last_id;
      }
      public function GetbreakdownById($id){
       $this->db->select('b.*');
@@ -197,7 +199,7 @@ public function Gettechinprogresslist($id){
  $this->db->join('equipments e', 'e.id = b.equipment_id');
  $this->db->join('location l', 'l.id = e.location_id');
  $this->db->join('employee te', 'te.id = b.technician_id');
- $where =" te.em_id ='$id' and b.status != 'Completed' ";
+ $where =" te.em_id ='$id' and b.status != 'Completed' and b.status != '' ";
  $this->db->where($where);
   $query=$this->db->get();
   //print_r($this->db->last_query());
@@ -244,12 +246,28 @@ public function GetAllstocknotification(){
       $result = $query->result();
       return $result; 
 }  
-public function Send_mail($technicianid){
-  $this->db->select('e.em_email');
+public function userid($technicianid){
+  $this->db->select('e.id');
   $this->db->from('employee e');
   $this->db->where('e.id',$technicianid);
   $query=$this->db->get();
   $result = $query->row();
   return $result;         
 } 
+public function Add_usernotifiy($data1){
+  $this->db->insert('user_notification',$data1);
+ }
+ public function Getallnotifications($id){
+  $this->db->select('e.*,b.*, b.id as bid,u.*,te.*, te.name as equipmentname,d.dep_name,t.name as breakdown_name,e.first_name,e.last_name');
+  $this->db->from('employee e');
+  $this->db->join('user_notification u', 'u.user_id = e.id');
+  $this->db->join('breakdown b', 'b.id = u.service_id');
+  $this->db->join('equipments te', 'te.id = b.equipment_id');
+  $this->db->join('department d','d.id = b.department_id');
+  $this->db->join('breakdowntypes t','t.id=b.breakdown_id');
+  $this->db->where('e.em_id',$id);
+  $query=$this->db->get();
+  $result = $query->result();
+  return $result; 
+}  
     }

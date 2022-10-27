@@ -134,11 +134,44 @@ date_default_timezone_set('Asia/Dhaka');
                                                       }}
                                                       ?>
                                             </a>
-                                            <?php } ?>
+                                            <?php }else{ ?>
+                                                <?php 
+                                                      $id = $this->session->userdata('user_login_id');
+                                                     
+                                                      $this->db->select('e.*,b.*, b.id as bid,u.*,te.*, te.name as equipmentname,d.dep_name,t.name as breakdown_name,e.first_name,e.last_name');
+                                                      $this->db->from('employee e');
+                                                      $this->db->join('user_notification u', 'u.user_id = e.id');
+                                                      $this->db->join('breakdown b', 'b.id = u.service_id');
+                                                      $this->db->join('equipments te', 'te.id = b.equipment_id');
+                                                      $this->db->join('department d','d.id = b.department_id');
+                                                      $this->db->join('breakdowntypes t','t.id=b.breakdown_id');
+                                                      $this->db->where('e.em_id',$id);
+                                                    
+                                                      $this->db->order_by('u.id' , 'desc')->limit(1);
+                                                      $query=$this->db->get();
+                                                      $result = $query->result();
+                                                     foreach($result as $value){ ?>
+                                                           
+                                                               <a href="<?php echo base_url(); ?>maintenance/viewbreakdown?id=<?php echo base64_encode($value->bid); ?>">
+                                                                <div class="btn btn-danger btn-circle"><i class="fa fa-link"></i></div>
+                                                                <div class="mail-contnet">
+                                                                    <h5><?php echo $value->equipmentname ;?></h5><span class="time"><?php echo $value->message; ?></span></div>
+                                                                    </a> 
+                                                                   
+                                                         <?php 
+                                                          }
+                                                          ?>
+                                                
+                                                        <?php } ?>
                                         </div>
                                     </li>
+                                    
                                     <li>
-                                        <a class="nav-link text-center" href="javascript:void(0);"> <strong>Check all notifications</strong> <i class="fa fa-angle-right"></i> </a>
+                                    <?php if($this->session->userdata('user_type') !='TECHNICIAN') { ?>
+                                        <a class="nav-link text-center" href=""> <strong>Check all notifications</strong> <i class="fa fa-angle-right"></i> </a>
+                                    <?php }else{?>
+                                        <a class="nav-link text-center" href="allnotifications"> <strong>Check all notifications</strong> <i class="fa fa-angle-right"></i> </a>
+                                    <?php } ?>
                                     </li>
                                 </ul>
                             </div>

@@ -1070,10 +1070,12 @@ public function Add_complaint(){
 	$dateandtime  = $this->input->post('dateandtime');     
 	$details = $this->input->post('details'); 
 	$type  = '2';  
-	 $email_tech =$this->preventive_model->Send_mail($technicianid); 
-	 $emailtech = $email_tech->em_email;
-	 $this->load->library('email');
-	 $config = array(
+	 $uid =$this->preventive_model->userid($technicianid); 
+	 $user_id = $uid->id;
+	 $service_id =$id;
+	 $created_date = date('Y-m-d H:i:s');
+	 $message ='Manager assigned complaint for you';
+	 /*$config = array(
 		'protocol' => 'smtp',
 		 'smtp_host' => 'ssl://smtp.googlemail.com',
 		 'smtp_port' => 465,
@@ -1112,7 +1114,7 @@ echo 'success'; }
  else{
 	show_error($this->email->print_debugger());
 
- }
+ }*/
 	$this->load->library('form_validation');
 	$this->form_validation->set_error_delimiters();
 	$this->form_validation->set_rules('equipmentid', 'equipmentid','trim|required');
@@ -1127,9 +1129,12 @@ echo 'success'; }
 	}
 		$data = array();
 		$data = array('equipment_id' => $equipmentid,'department_id' => $departmentid,'breakdown_id' => $breakdownid, 'technician_id' => $technicianid,'date_and_time' => $dateandtime,'details' => $details,'type'=>$type);
-		exit;
+		
 		if(empty($id)){
 			$success = $this->preventive_model->Add_breakdown($data); 
+			$data1 = array();
+		   $data1 = array('user_id' => $user_id,'service_id' => $success,'created_date' => $created_date, 'message' => $message);
+			$this->preventive_model->Add_usernotifiy($data1); 
 			$message="Successfully added";      
 		} 
 		else {
@@ -1426,5 +1431,45 @@ public function Add_preventivecomplaint(){
 	}    
 	echo json_encode($response);
 }
+public function sendMail()
+{//Load email library
+$this->load->library('email');
+
+//SMTP & mail configuration
+$config = array(
+    'protocol'  => 'smtp',
+    'smtp_host' => 'ssl://smtp.googlemail.com',
+    'smtp_port' => 465,
+    'smtp_user' => '',
+    'smtp_pass' => '',
+    'mailtype'  => 'html',
+    'charset'   => 'utf-8'
+);
+$this->email->initialize($config);
+$this->email->set_mailtype("html");
+$this->email->set_newline("\r\n");
+
+//Email content
+$htmlContent = '<h1>Sending email via SMTP server</h1>';
+$htmlContent .= '<p>This email has sent via SMTP server from CodeIgniter application.</p>';
+
+$this->email->to('eezhilarasi.duskcoder@gmail.com');
+$this->email->from('ezhil.sujee@gmail.com','MyWebsite');
+$this->email->subject('How to send email via SMTP server in CodeIgniter');
+$this->email->message($htmlContent);
+
+//Send email
+if($this->email->send()){
+	echo 'success'; }
+	 else{
+		show_error($this->email->print_debugger());
+	
+	 }
+	}
+	public function allnotifications(){
+		$id = $this->session->userdata('user_login_id');
+		$data['allnotifications'] = $this->preventive_model->Getallnotifications($id);
+    $this->load->view('backend/allnotifications',$data);  
+	}
 }
 ?>

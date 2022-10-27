@@ -152,6 +152,9 @@
                                 <li><a href="<?php echo base_url(); ?>maintenance/complaintslist"> Complaints</a></li>
                             </ul>
                         </li>
+                        <li> <a class="" href="<?php echo base_url(); ?>maintenance/allnotifications" aria-expanded="false"><i class="fa fa-bell"></i><span class="hide-menu">All Notifications </span></a>
+                           
+                        </li>
                        
                         <?php } ?>
                     </ul>
