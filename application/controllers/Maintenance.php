@@ -1175,6 +1175,21 @@ public function Viewbreakdown()
 		redirect(base_url() , 'refresh');
 	}
 }
+public function Viewcomplaint()
+{
+	if($this->session->userdata('user_login_access') != False) 
+	{
+		$id = base64_decode($this->input->get('id'));
+		$data['breakdown']= $this->preventive_model->Getbreakdownview($id);
+		$data['product'] = $this->preventive_model->GetAllproducts();
+		$data['technician'] = $this->preventive_model->GetAlltechni();
+		$this->load->view('backend/complaint_view',$data);  
+	}
+	else
+	{
+		redirect(base_url() , 'refresh');
+	}
+}
 public function Update_status(){
 	try {
 		if($this->session->userdata('user_login_access') == False) 
@@ -1471,5 +1486,21 @@ if($this->email->send()){
 		$data['allnotifications'] = $this->preventive_model->Getallnotifications($id);
     $this->load->view('backend/allnotifications',$data);  
 	}
+	public function all_notifications(){
+	$data['allnotifications'] = $this->preventive_model->Getall_notifications();
+    $this->load->view('backend/all_notifications',$data);  
+	}
+	public function exportpdf(){
+		$mpdf = new \Mpdf\Mpdf();
+		$mpdf->showImageErrors = true;
+		$id = base64_decode($this->input->get('id'));
+		$data['breakdown']= $this->preventive_model->Getbreakdownview($id);
+		$data['product'] = $this->preventive_model->GetAllproducts();
+		$data['technician'] = $this->preventive_model->GetAlltechni();
+        $html = $this->load->view('backend/exportpdf',$data,true);
+		$file_name = 'Complaintsdetails.pdf';
+        $mpdf->WriteHTML($html);
+        $mpdf->Output($file_name, 'I');
+	   }
 }
 ?>

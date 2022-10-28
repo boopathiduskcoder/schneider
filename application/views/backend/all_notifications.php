@@ -35,8 +35,8 @@
                          <?php } ?>
                         <div class="d-flex flex-column ml-2"><h6><b><?php echo $value->equipmentname; ?></b></h6><span class="text-black-50"><?php echo $value->breakdown_name; ?></span></div>
                     </div>
-                    <h6><?php echo $value->message; ?></h6>
-                    <div class="d-flex justify-content-between install mt-3"><span><b><?php echo $value->created_date; ?></b></span><a href="<?php echo base_url(); ?>maintenance/viewbreakdown?id=<?php echo base64_encode($value->bid); ?>"><span class="text-primary"><b>View&nbsp;<i class="fa fa-angle-right"></i></b></span></a></div>
+                    <h6>Assigned to <?php echo $value->first_name.' '.$value->last_name; ?></h6>
+                    <div class="d-flex justify-content-between install mt-3"><span><i class='fa fa-calendar' style='font-size:20px;color:#1976d2'></i> <b> <?php echo  date('d-M-Y', strtotime($value->created_date)); ?></b></span></div>
                 </div>
             </div>
             

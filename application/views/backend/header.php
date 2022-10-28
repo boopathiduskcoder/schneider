@@ -85,7 +85,7 @@ date_default_timezone_set('Asia/Dhaka');
                                     <li>
                                         <div class="message-center">
                                         <?php if($this->session->userdata('user_type') !='TECHNICIAN') { ?>
-                                            <a href="#">
+                                           
                                             <?php $this->db->select('s.*');
                                                   $this->db->from('stock s');
                                                   $query=$this->db->get();
@@ -98,16 +98,16 @@ date_default_timezone_set('Asia/Dhaka');
                                                 if($productstock <= $minquantity)
                                                  { ?>
                                             
-			                                       
+                                                            <a href="#">
                                                             <div class="btn btn-danger btn-circle"><i class="fa fa-link"></i></div>
                                                             <div class="mail-contnet">
                                                                 <h5><?php echo $productname;  ?></h5><span class="time">Reached minimum quantity</span> </div>
-
+                                                                </a>
 			                                         <?php 
                                                       }}
                                                       ?>
-                                            </a>
-                                            <a href="#">
+                                           
+                                            
                                             <?php $this->db->select('p.*,e.*');
                                                   $this->db->from('preventives p');
                                                   $this->db->join('equipments e', 'e.id = p.equipment_id');
@@ -125,15 +125,15 @@ date_default_timezone_set('Asia/Dhaka');
                                                 if($value->notify >= $no_of_days AND $no_of_days > 0 )
                                                  { ?>
                                             
-			                                       
+                                                            <a href="#">
                                                             <div class="btn btn-danger btn-circle"><i class="fa fa-link"></i></div>
                                                             <div class="mail-contnet">
                                                                 <h5><?php echo $equipment_id .' '.'(PM)' ;?></h5><span class="time"><?php echo $no_of_days.' ' .'days left'; ?></span> </div>
-
+                                                                </a>
 			                                         <?php 
                                                       }}
                                                       ?>
-                                            </a>
+                                           
                                             <?php }else{ ?>
                                                 <?php 
                                                       $id = $this->session->userdata('user_login_id');
@@ -165,18 +165,67 @@ date_default_timezone_set('Asia/Dhaka');
                                                         <?php } ?>
                                         </div>
                                     </li>
+                                    <?php if($this->session->userdata('user_type') =='TECHNICIAN') { ?>
+                                    <li>
+                                        <a class="nav-link text-center" href="<?php echo base_url(); ?>maintenance/allnotifications"> <strong>Check all notifications</strong> <i class="fa fa-angle-right"></i> </a>
+                                    </li>
+                                    <?php } ?>
+                                </ul>
+                            </div>
+                            
+                        </li>
+                        <?php if($this->session->userdata('user_type') !='TECHNICIAN') { ?>
+                        <li class="nav-item dropdown">
+                            <a class="nav-link dropdown-toggle text-muted text-muted waves-effect waves-dark" href="#" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false"> <i class="fa fa-bell"></i>
+                                <div class="notify"> <span class="heartbit"></span> <span class="point"></span> </div>
+                            </a>
+                           
+                            <div class="dropdown-menu mailbox scale-up-left">
+                                <ul>
+                                    <li>
+                                        <div class="drop-title">Notifications</div>
+                                    </li>
+                                    <li>
+                                        <div class="message-center">
+                                        <?php if($this->session->userdata('user_type') !='TECHNICIAN') { ?>
+                                           
+                                            
+                                    
+                                                <?php 
+                                                      $this->db->select('e.*,b.*, b.id as bid,u.*,te.*, te.name as equipmentname,d.dep_name,t.name as breakdown_name,e.first_name,e.last_name');
+                                                      $this->db->from('employee e');
+                                                      $this->db->join('user_notification u', 'u.user_id = e.id');
+                                                      $this->db->join('breakdown b', 'b.id = u.service_id');
+                                                      $this->db->join('equipments te', 'te.id = b.equipment_id');
+                                                      $this->db->join('department d','d.id = b.department_id');
+                                                      $this->db->join('breakdowntypes t','t.id=b.breakdown_id');
+                                                      $this->db->order_by('u.id' , 'desc')->limit(1);
+                                                      $query=$this->db->get();
+                                                      $result = $query->result();
+                                                     foreach($result as $value){ ?>
+                                                           
+                                                               <a href="<?php echo base_url(); ?>maintenance/viewbreakdown?id=<?php echo base64_encode($value->bid); ?>">
+                                                                <div class="btn btn-danger btn-circle"><i class="fa fa-link"></i></div>
+                                                                <div class="mail-contnet">
+                                                                    <h5><?php echo $value->equipmentname ;?></h5><span class="time"><?php echo $value->dep_name; ?></span></div>
+                                                                    </a> 
+                                                                   
+                                                         <?php 
+                                                          }
+                                                          ?>
+                                                
+                                                        <?php } ?>
+                                        </div>
+                                    </li>
                                     
                                     <li>
-                                    <?php if($this->session->userdata('user_type') !='TECHNICIAN') { ?>
-                                        <a class="nav-link text-center" href=""> <strong>Check all notifications</strong> <i class="fa fa-angle-right"></i> </a>
-                                    <?php }else{?>
-                                        <a class="nav-link text-center" href="allnotifications"> <strong>Check all notifications</strong> <i class="fa fa-angle-right"></i> </a>
-                                    <?php } ?>
+                                        <a class="nav-link text-center" href="<?php echo base_url(); ?>maintenance/all_notifications"> <strong>Check all notifications</strong> <i class="fa fa-angle-right"></i> </a>
                                     </li>
                                 </ul>
                             </div>
                             
                         </li>
+                        <?php } ?>
                     </ul>
                     <ul class="navbar-nav my-lg-0">
                         <li class="nav-item dropdown">
