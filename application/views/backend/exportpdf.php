@@ -1,195 +1,40 @@
-<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/css/bootstrap.min.css">
-<!DOCTYPE html>
-<html>
-	<head>
-		<meta charset="utf-8" />
-		<title>Export Complaint pdf</title>
-
-		<style>
-			.invoice-box {
-				max-width: 800px;
-				margin: auto;
-				padding: 30px;
-				border: 1px solid #eee;
-				box-shadow: 0 0 10px rgba(0, 0, 0, 0.15);
-				font-size: 16px;
-				line-height: 24px;
-				font-family: 'Helvetica Neue', 'Helvetica', Helvetica, Arial, sans-serif;
-				color: #555;
-			}
-
-			.invoice-box table {
-				width: 100%;
-				line-height: inherit;
-				text-align: left;
-			}
-
-			.invoice-box table td {
-				padding: 5px;
-				vertical-align: top;
-			}
-
-			.invoice-box table tr td:nth-child(2) {
-				text-align: right;
-			}
-
-			.invoice-box table tr.top table td {
-				padding-bottom: 20px;
-			}
-
-			.invoice-box table tr.top table td.title {
-				font-size: 45px;
-				line-height: 45px;
-				color: #333;
-			}
-
-			.invoice-box table tr.information table td {
-				padding-bottom: 40px;
-			}
-
-			.invoice-box table tr.heading td {
-				background: #eee;
-				border-bottom: 1px solid #ddd;
-				font-weight: bold;
-			}
-
-			.invoice-box table tr.details td {
-				padding-bottom: 20px;
-			}
-
-			.invoice-box table tr.item td {
-				border-bottom: 1px solid #eee;
-			}
-
-			.invoice-box table tr.item.last td {
-				border-bottom: none;
-			}
-
-			.invoice-box table tr.total td:nth-child(2) {
-				border-top: 2px solid #eee;
-				font-weight: bold;
-			}
-
-			@media only screen and (max-width: 600px) {
-				.invoice-box table tr.top table td {
-					width: 100%;
-					display: block;
-					text-align: center;
-				}
-
-				.invoice-box table tr.information table td {
-					width: 100%;
-					display: block;
-					text-align: center;
-				}
-			}
-
-			/** RTL **/
-			.invoice-box.rtl {
-				direction: rtl;
-				font-family: Tahoma, 'Helvetica Neue', 'Helvetica', Helvetica, Arial, sans-serif;
-			}
-
-			.invoice-box.rtl table {
-				text-align: right;
-			}
-
-			.invoice-box.rtl table tr td:nth-child(2) {
-				text-align: left;
-			}
-		</style>
-	</head>
-
-	<body>
-		<div class="invoice-box">
-			<table cellpadding="0" cellspacing="0">
-				<tr class="top">
-					<td colspan="2">
-						<table>
-							<tr>
-								<td class="title">
-                                    <?php if(!empty($breakdown->image)) { ?>
-									<img src="<?php echo base_url(); ?>assets/images/equipments/<?php echo $breakdown->image; ?>" style="width: 70px; height:70px" />
-								    <?php } else{?>
-                                        <img src="<?php echo base_url(); ?>assets/images/no_image.png " style="width: 70px; height:70px"  >
-                                        <?php } ?>
-                                </td>
-
-								<td>
-                                Equipment Name: <?php echo $breakdown->equipmentname; ?><br />
-							    Date:<?php echo date('d F Y', strtotime( $breakdown->date_and_time)); ?><br />
-								</td>
-							</tr>
-						</table>
-					</td>
-				</tr>
-
-				<tr class="information">
-					<td colspan="2">
-						<table>
-							<tr>
-								<td>
-									Equipment Name: <?php echo $breakdown->equipmentname; ?><br />
-									Department Name: <?php echo $breakdown->dep_name; ?><br />
-									Breakdown type: <?php echo $breakdown->breakdown_name; ?>
-								</td>
-
-								<td>
-									Assigned to: <?php echo $breakdown->first_name.' '.$breakdown->last_name; ?><br />
-									Date:<?php echo  date('d F Y', strtotime($breakdown->completeddate)); ?><br />
-                                    Status: <?php echo $breakdown->bstatus; ?>
-								</td>
-							</tr>
-						</table>
-					</td>
-				</tr>
-
-				<tr class="heading">
-					<td>Payment Method</td>
-
-					<td>Check #</td>
-				</tr>
-
-				<tr class="details">
-					<td>Check</td>
-
-					<td>1000</td>
-				</tr>
-
-				<tr class="heading">
-					<td>Item</td>
-
-					<td>Price</td>
-				</tr>
-
-				<tr class="item">
-					<td>Website design</td>
-
-					<td>$300.00</td>
-				</tr>
-
-				<tr class="item">
-					<td>Hosting (3 months)</td>
-
-					<td>$75.00</td>
-				</tr>
-
-				<tr class="item last">
-					<td>Domain name (1 year)</td>
-
-					<td>$10.00</td>
-				</tr>
-
-				<tr class="total">
-					<td></td>
-
-					<td>Total: $385.00</td>
-				</tr>
-			</table>
-		</div>
-	</body>
-</html>
-Footer
-© 2022 GitHub, Inc.
-Footer navigation
-Terms
+<table style="height: 90px; width: 100%; border-collapse: collapse; border-style: solid;" border="1">
+  <tbody>
+    <tr style="height: 18px;">
+      <td style="width: 50%; height: 50px;"><img src="<?php echo base_url(); ?>assets/images/index_logo.png " ></td>
+      <td style="width: 75%; height: 50px;"><b><center>&nbsp;<h3>SCHNEIDER PROTOTYPING INDIA PVT.LTD. </h3>&nbsp;<br><hr>&nbsp; 
+	  <h1>BREAKDOWN SLIP</h1>&nbsp;</center> </b>
+	</td>
+    </tr>
+    <tr style="height: 18px;">
+      <td style="width: 50%; height: 50px;">&nbsp;<h4> Department: <i><?php echo $breakdown->dep_name; ?></i>&nbsp; <hr>Location: <i><?php echo $breakdown->location_name; ?></i> </h4> &nbsp;</td>
+      <td style="width: 25%; height: 25px;"><h4>Reported Date & Time: <i><?php echo date('d F Y , h:i:s', strtotime( $breakdown->date_and_time)); ?></i></h4></td>
+    </tr>
+    <tr style="height: 18px;">
+      <td style="width: 50%; height: 50px;"><h4>Type of Breakdown: <i><?php echo $breakdown->breakdown_name; ?></i></h4></td>
+      <td style="width: 50%; height: 50px;"><h4>Completed Date: <i><?php echo  date('d F Y', strtotime($breakdown->completeddate)); ?></i></h4></td>
+    </tr>
+    
+  </tbody>
+</table>
+<table style="border-collapse: collapse; width: 100%;" border="1">
+  <tbody>
+    <tr>
+      <td style="width: 50%; height: 50px;"><h5>Breakdown Details:</h5></td>
+    </tr>
+  </tbody>
+</table>
+<table style="border-collapse: collapse; width: 100%;" border="1">
+  <tbody>
+    <tr>
+      <td style="width: 50%; height: 50px;"><h5>Action taken Details:</h5></td>
+    </tr>
+  </tbody>
+</table>
+<table style="border-collapse: collapse; width: 100%;" border="1">
+  <tbody>
+    <tr>
+      <td style="width: 50%; height: 50px;"><h5>If any Pending:</h5></td>
+    </tr>
+  </tbody>
+</table>

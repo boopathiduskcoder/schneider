@@ -110,11 +110,12 @@ public function complaint_delete($id){
   $this->db->delete('breakdown',array('id'=> $id));
 }
 public function Getbreakdownview($id){
-  $this->db->select('b.*, b.status as bstatus, b.id as bid, e.*,e.name as equipmentname,d.dep_name,t.name as breakdown_name,te.first_name,te.last_name');
+  $this->db->select('b.*, b.status as bstatus, l.location_name, b.id as bid, e.*,e.name as equipmentname,d.dep_name,t.name as breakdown_name,te.first_name,te.last_name');
   $this->db->from('breakdown b');
   $this->db->join('equipments e', 'e.id = b.equipment_id');
   $this->db->join('department d','d.id = b.department_id');
   $this->db->join('breakdowntypes t','t.id=b.breakdown_id');
+  $this->db->join('location l', 'l.id = e.location_id');
    $this->db->join('employee te','te.id=b.technician_id');
   $this->db->where('b.id',$id);
   $query=$this->db->get();

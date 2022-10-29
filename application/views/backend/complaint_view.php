@@ -67,7 +67,7 @@
                                         
 
                     <hr>
-                    <a href="<?php echo base_url(); ?>maintenance/exportpdf?id=<?php echo base64_encode($breakdown->bid); ?> " class="btn btn-info" role="button">Export Pdf</a>
+                    <a href="<?php echo base_url(); ?>maintenance/exportpdf?id=<?php echo base64_encode($breakdown->bid); ?> " class="btn btn-info" role="button" target="_blank">Export Pdf</a>
                 </div>
                 <!--content-->
 
